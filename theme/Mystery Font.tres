@@ -1,0 +1,13 @@
+[gd_resource type="FontFile" format=3 uid="uid://binw5rd4q56go"]
+
+[resource]
+resource_name = "Mystery Font"
+face_index = null
+embolden = null
+transform = null
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)

@@ -1,0 +1,34 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bia5m7q7lf4el"]
+
+[ext_resource type="FontFile" uid="uid://nx0bsdvw0qx8" path="res://note/Sticky Notes.ttf" id="1_g67jn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mc2b2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pqccq"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06mm2"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvhq2"]
+bg_color = Color(0.737255, 0.737255, 0.737255, 1)
+
+[resource]
+Button/font_sizes/font_size = 94
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/colors/font_outline_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 3
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/font_sizes/font_size = 22
+Label/fonts/font = ExtResource("1_g67jn")
+Label/styles/normal = SubResource("StyleBoxEmpty_mc2b2")
+Panel/styles/panel = SubResource("StyleBoxFlat_pqccq")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_06mm2")
+TextEdit/colors/font_color = Color(0, 0, 0, 1)
+TextEdit/font_sizes/font_size = 22
+TextEdit/fonts/font = ExtResource("1_g67jn")
+TextEdit/styles/normal = SubResource("StyleBoxFlat_kvhq2")

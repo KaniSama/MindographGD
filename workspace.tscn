@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://dvmeetwo45r5x"]
+
+[ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="1_b57wb"]
+[ext_resource type="PackedScene" uid="uid://d4chdj16ohjeu" path="res://HUD.tscn" id="1_x5m7j"]
+[ext_resource type="Script" path="res://scripts/workspace.gd" id="1_y2ddc"]
+[ext_resource type="Script" path="res://scripts/NoteList.gd" id="3_k3r8y"]
+[ext_resource type="Script" path="res://scripts/LinkDrawer.gd" id="4_wlja4"]
+[ext_resource type="Script" path="res://scripts/MainCamera.gd" id="5_4rrw0"]
+[ext_resource type="Script" path="res://scripts/ExitConfirmationDialog.gd" id="7_apvsg"]
+
+[node name="Workspace" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_y2ddc")
+
+[node name="Background" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11227.5
+offset_top = -7936.0
+offset_right = 11227.5
+offset_bottom = 7936.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("1_b57wb")
+stretch_mode = 1
+
+[node name="NoteList" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("3_k3r8y")
+
+[node name="LinkDrawer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_wlja4")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("5_4rrw0")
+
+[node name="HUD" parent="." instance=ExtResource("1_x5m7j")]
+
+[node name="ExitConfirmationDialog" type="ConfirmationDialog" parent="."]
+disable_3d = true
+canvas_item_default_texture_filter = 0
+initial_position = 2
+title = "You have unsaved changes!"
+size = Vector2i(359, 100)
+unresizable = true
+always_on_top = true
+ok_button_text = "Yes, exit without saving"
+dialog_text = "Are you sure you want to close Mindograph?"
+script = ExtResource("7_apvsg")
+
+[connection signal="gui_input" from="Background" to="." method="_on_background_gui_input"]
+[connection signal="linkNextTargetChanged" from="NoteList" to="." method="_on_note_list_link_next_target_changed"]
+[connection signal="rmbNote" from="NoteList" to="." method="_on_note_list_rmb_note"]
+[connection signal="confirmed" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_confirmed"]
+[connection signal="custom_action" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_custom_action"]

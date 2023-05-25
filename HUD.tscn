@@ -1,0 +1,297 @@
+[gd_scene load_steps=18 format=3 uid="uid://d4chdj16ohjeu"]
+
+[ext_resource type="Script" path="res://scripts/HUD.gd" id="1_o0uj5"]
+[ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_iy3s7"]
+[ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_5jkwq"]
+[ext_resource type="Script" path="res://scripts/RMBMenu.gd" id="5_h6hcv"]
+[ext_resource type="Script" path="res://scripts/FPSCounter.gd" id="5_lbe0d"]
+[ext_resource type="Script" path="res://scripts/ProjectNameTextBox.gd" id="6_fafbr"]
+[ext_resource type="Script" path="res://scripts/ColorPicker.gd" id="6_v8v05"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1v5q"]
+bg_color = Color(0, 0, 0, 0.164706)
+
+[sub_resource type="InputEventKey" id="InputEventKey_pmifv"]
+command_or_control_autoremap = true
+keycode = 78
+
+[sub_resource type="Shortcut" id="Shortcut_m5ktq"]
+events = [SubResource("InputEventKey_pmifv")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_apk2l"]
+device = -1
+command_or_control_autoremap = true
+keycode = 83
+unicode = 115
+
+[sub_resource type="Shortcut" id="Shortcut_cptha"]
+events = [SubResource("InputEventKey_apk2l")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_pfi0t"]
+device = -1
+command_or_control_autoremap = true
+keycode = 79
+unicode = 111
+
+[sub_resource type="Shortcut" id="Shortcut_x01ce"]
+events = [SubResource("InputEventKey_pfi0t")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfjwi"]
+bg_color = Color(0, 0, 0, 0.164706)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqoso"]
+bg_color = Color(0.0823529, 0.0901961, 0.0666667, 0.764706)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3fss0"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_o0uj5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ButtonContainer" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 47.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m1v5q")
+
+[node name="ButtonAdd" type="Button" parent="CanvasLayer/ButtonContainer"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 44.0
+offset_bottom = 43.0
+theme = ExtResource("2_iy3s7")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_m5ktq")
+text = "➕"
+
+[node name="ButtonSave" type="Button" parent="CanvasLayer/ButtonContainer"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 4.0
+offset_right = 87.0
+offset_bottom = 43.0
+theme = ExtResource("2_iy3s7")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_cptha")
+text = "💾"
+
+[node name="ButtonLoad" type="Button" parent="CanvasLayer/ButtonContainer"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 4.0
+offset_right = 130.0
+offset_bottom = 43.0
+theme = ExtResource("2_iy3s7")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_x01ce")
+text = "📁"
+
+[node name="FPSCounter" type="Label" parent="CanvasLayer/ButtonContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -94.0
+offset_top = 12.0
+offset_right = -11.0
+offset_bottom = 38.0
+grow_horizontal = 0
+text = "FPS: "
+horizontal_alignment = 2
+script = ExtResource("5_lbe0d")
+
+[node name="MenuBackdrop" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bfjwi")
+
+[node name="RMBMenu" type="ItemList" parent="CanvasLayer/MenuBackdrop"]
+layout_mode = 0
+offset_right = 227.0
+offset_bottom = 249.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_cqoso")
+auto_height = true
+item_count = 8
+item_0/text = "Pin"
+item_0/icon = ExtResource("3_5jkwq")
+item_1/text = "Connect"
+item_2/text = ""
+item_2/disabled = true
+item_3/text = "Disconnect"
+item_4/text = "Delete"
+item_5/text = "Duplicate"
+item_6/text = ""
+item_6/disabled = true
+item_7/text = "Change Colour    >"
+script = ExtResource("5_h6hcv")
+
+[node name="ColorPickerBackdrop" type="Panel" parent="CanvasLayer/MenuBackdrop"]
+visible = false
+clip_contents = true
+layout_mode = 0
+offset_right = 299.0
+offset_bottom = 603.0
+
+[node name="ColorPicker" type="ColorPicker" parent="CanvasLayer/MenuBackdrop/ColorPickerBackdrop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 112.0
+offset_top = 56.0
+offset_right = 39.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+edit_alpha = false
+picker_shape = 1
+script = ExtResource("6_v8v05")
+
+[node name="ColorOKButton" type="Button" parent="CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker"]
+layout_mode = 2
+text = "OK"
+
+[node name="LinkDrawer" type="Control" parent="CanvasLayer"]
+visible = false
+top_level = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DialogBackdrop" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_force_pass_scroll_events = false
+
+[node name="DialogList" type="VBoxContainer" parent="CanvasLayer/DialogBackdrop"]
+visible = false
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -207.0
+offset_top = 283.0
+offset_right = 207.0
+offset_bottom = -283.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_force_pass_scroll_events = false
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="CanvasLayer/DialogBackdrop/DialogList"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Project Name:"
+
+[node name="ProjectNameTextBox" type="LineEdit" parent="CanvasLayer/DialogBackdrop/DialogList"]
+layout_mode = 2
+mouse_force_pass_scroll_events = false
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_3fss0")
+placeholder_text = "ProjectName.mg"
+max_length = 64
+context_menu_enabled = false
+script = ExtResource("6_fafbr")
+
+[node name="DialogButtonOK" type="Button" parent="CanvasLayer/DialogBackdrop/DialogList"]
+layout_mode = 2
+text = "OK"
+
+[node name="DialogButtonCancel" type="Button" parent="CanvasLayer/DialogBackdrop/DialogList"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="ProjectListBackground" type="Panel" parent="CanvasLayer/DialogBackdrop"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -292.0
+offset_top = 30.0
+offset_right = 124.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProjectListContainer" type="ItemList" parent="CanvasLayer/DialogBackdrop/ProjectListBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_top = 11.0
+offset_right = -11.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+item_count = 2
+item_0/text = "+ New Project!"
+item_0/icon = ExtResource("3_5jkwq")
+item_1/text = ""
+item_1/selectable = false
+item_1/disabled = true
+
+[node name="ProjectListButtonCancel" type="Button" parent="CanvasLayer/DialogBackdrop/ProjectListBackground"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = -31.0
+offset_right = 208.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Cancel"
+
+[node name="ProjectListButtonOpenDir" type="Button" parent="CanvasLayer/DialogBackdrop/ProjectListBackground"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = -77.0
+offset_right = 208.0
+offset_bottom = -46.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Open Project Directory"
+
+[connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonAdd" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonSave" to="." method="_on_button_save_pressed"]
+[connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
+[connection signal="gui_input" from="CanvasLayer/MenuBackdrop" to="." method="_on_menu_backdrop_gui_input"]
+[connection signal="item_clicked" from="CanvasLayer/MenuBackdrop/RMBMenu" to="." method="_on_rmb_menu_item_clicked"]
+[connection signal="color_changed" from="CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker" to="." method="_on_color_picker_color_changed"]
+[connection signal="text_changed" from="CanvasLayer/DialogBackdrop/DialogList/ProjectNameTextBox" to="CanvasLayer/DialogBackdrop/DialogList/ProjectNameTextBox" method="_on_text_changed"]
+[connection signal="pressed" from="CanvasLayer/DialogBackdrop/DialogList/DialogButtonOK" to="." method="_on_dialog_button_ok_pressed"]
+[connection signal="pressed" from="CanvasLayer/DialogBackdrop/DialogList/DialogButtonCancel" to="." method="_on_dialog_button_cancel_pressed"]
+[connection signal="item_activated" from="CanvasLayer/DialogBackdrop/ProjectListBackground/ProjectListContainer" to="." method="_on_project_list_container_item_activated"]
+[connection signal="item_clicked" from="CanvasLayer/DialogBackdrop/ProjectListBackground/ProjectListContainer" to="." method="_on_project_list_container_item_clicked"]
+[connection signal="pressed" from="CanvasLayer/DialogBackdrop/ProjectListBackground/ProjectListButtonCancel" to="." method="_on_project_list_button_cancel_pressed"]
+[connection signal="pressed" from="CanvasLayer/DialogBackdrop/ProjectListBackground/ProjectListButtonOpenDir" to="." method="_on_project_list_button_open_dir_pressed"]

@@ -1,0 +1,173 @@
+[gd_scene load_steps=10 format=3 uid="uid://ddeucfi3rye2c"]
+
+[ext_resource type="Script" path="res://note/note.gd" id="1_gr2mf"]
+[ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_yj778"]
+[ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_gm0tl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2fyyi"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_uwyne"]
+command_or_control_autoremap = true
+shift_pressed = true
+keycode = 4194309
+
+[sub_resource type="Shortcut" id="Shortcut_nhxbe"]
+events = [SubResource("InputEventKey_uwyne")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_whnel"]
+keycode = 4194305
+
+[sub_resource type="Shortcut" id="Shortcut_1hbb0"]
+events = [SubResource("InputEventKey_whnel")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rxfwm"]
+bg_color = Color(0, 0, 0, 0.176471)
+
+[node name="Note" type="Panel"]
+offset_right = 267.0
+offset_bottom = 261.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_2fyyi")
+script = ExtResource("1_gr2mf")
+
+[node name="NoteContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_yj778")
+
+[node name="NoteBg" type="Panel" parent="NoteContainer"]
+modulate = Color(1, 0.945098, 0.694118, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextWrapper" type="PanelContainer" parent="NoteContainer"]
+modulate = Color(1, 0.992157, 0.572549, 1)
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 28.0
+offset_right = -15.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="NoteText" type="Label" parent="NoteContainer/TextWrapper"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Double-click to edit text"
+autowrap_mode = 2
+text_overrun_behavior = 3
+
+[node name="TextEdit" type="TextEdit" parent="NoteContainer/TextWrapper"]
+visible = false
+layout_mode = 2
+wrap_mode = 1
+
+[node name="Dragger" type="Panel" parent="NoteContainer"]
+modulate = Color(1, 1, 1, 0.388235)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 22.0
+grow_horizontal = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 6
+
+[node name="Resizer" type="Panel" parent="NoteContainer"]
+modulate = Color(1, 1, 1, 0.388235)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 12
+
+[node name="OkButton" type="Button" parent="NoteContainer"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 6.0
+offset_top = 5.0
+offset_right = 142.0
+offset_bottom = 141.0
+grow_horizontal = 0
+scale = Vector2(0.4, 0.4)
+shortcut = SubResource("Shortcut_nhxbe")
+text = "✅"
+flat = true
+
+[node name="CancelButton" type="Button" parent="NoteContainer"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 6.0
+offset_top = 64.0
+offset_right = 142.0
+offset_bottom = 200.0
+grow_horizontal = 0
+scale = Vector2(0.4, 0.4)
+shortcut = SubResource("Shortcut_1hbb0")
+text = "❌"
+flat = true
+
+[node name="PinIcon" type="TextureRect" parent="NoteContainer"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -3.5
+offset_top = -14.0
+offset_right = 3.5
+offset_bottom = 18.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("3_gm0tl")
+expand_mode = 1
+stretch_mode = 2
+
+[node name="DropShadow" type="Panel" parent="NoteContainer"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rxfwm")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="gui_input" from="NoteContainer/NoteBg" to="." method="_on_note_bg_gui_input"]
+[connection signal="gui_input" from="NoteContainer/TextWrapper" to="." method="_on_text_wrapper_gui_input"]
+[connection signal="gui_input" from="NoteContainer/TextWrapper/TextEdit" to="." method="_on_text_edit_gui_input"]
+[connection signal="gui_input" from="NoteContainer/Dragger" to="." method="_on_dragger_gui_input"]
+[connection signal="gui_input" from="NoteContainer/Resizer" to="." method="_on_resizer_gui_input"]
+[connection signal="pressed" from="NoteContainer/OkButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="NoteContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
