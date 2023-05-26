@@ -54,8 +54,7 @@ func addNote() -> Note:
 	add_child(newNote)
 	connectNoteSignals(newNote)
 	
-	newNote.UID = nextNoteUID
-	nextNoteUID += 1
+	newNote.UID = getNextUID()
 	
 	newNote.changeColour(get_parent().getLastColour())
 	
@@ -121,7 +120,7 @@ func connectNoteSignals(note: Note):
 
 
 func addConnection(note1, note2):
-	if (note1 != note2 && !connections.has( [note1, note2] ) && !connections.has( [note2.get_instance_id(), note1.get_instance_id()] )):
+	if (note1 != note2 && !connections.has( [note1, note2] ) && !connections.has( [note2, note1] )):
 		connections.append( [note1, note2] )
 
 func connectionRequest(note : Note):
@@ -138,7 +137,11 @@ func removeFromConnections(note):
 	for i in range(connections.size()-1, -1, -1):
 		if (connections[i].has(note)):
 			connections.remove_at(i)
-			print("removing connection " + connections[i])
+#			print("removing connection " + connections[i])
+#	for i in connections:
+#		if (i.has(note)):
+#			connections.erase(i)
+#			print("removing connection " + str(i))
 
 func changeLinkNextTarget(note):
 	linkNextTarget = note
@@ -177,6 +180,26 @@ func getNoteByUID(_UID : int) -> Note:
 			return _note
 	
 	return null
+
+func UIDExists(_UID : int) -> bool:
+	for _note in get_children():
+		if (_UID == _note.UID):
+			return true
+	
+	return false
+
+func reshuffleUIDs():
+	nextNoteUID = 0
+	
+	for _note in get_children():
+		_note.UID = getNextUID()
+
+func getNextUID() -> int:
+	while (UIDExists(nextNoteUID)):
+		nextNoteUID += 1
+	
+	return nextNoteUID
+
 
 ################################################ SAVE / LOAD SYSTEM
 
@@ -225,6 +248,7 @@ func saveToFile():
 	for connection in connections:
 		## Connection[0].UID (int)
 		## Connection[1].UID (int)
+		printt(connection[0].UID, connection[1].UID)
 		file.store_64(connection[0].UID)
 		file.store_64(connection[1].UID)
 	
@@ -271,12 +295,15 @@ func loadFromFile(projectName):
 		## Connection[1].UID (int)
 		var _UID1 = file.get_64()
 		var _UID2 = file.get_64()
+		printt(_UID1, _UID2)
 		
 		addConnection(getNoteByUID(_UID1), getNoteByUID(_UID2))
-		print(connections[connectionHalf])
+		#print(connections[connectionHalf])
 	queue_redraw()
 	
 	file.close()
+	
+	reshuffleUIDs()
 
 #var fileSaveScript = [
 #	"Add-Type -AssemblyName System.Windows.Forms",

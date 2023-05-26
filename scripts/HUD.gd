@@ -98,7 +98,7 @@ func refreshProjectList():
 
 func setProjectList(projects : Array):
 	projectList.clear()
-	projectList.add_item("+ New Project!", null, true)
+	projectList.add_item("+ New Project!", load("res://sprites/sPin.png"), true)
 	projectList.add_item("", null, false)
 	
 	for project in projects:

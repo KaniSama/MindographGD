@@ -133,6 +133,7 @@ func ButtonAddPressed():
 
 func ButtonSavePressed():
 	noteList.saveToFile()
+	setModified(false)
 
 func ButtonLoadPressed():
 	noteList.loadFromFile()
