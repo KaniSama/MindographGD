@@ -7,6 +7,7 @@ signal NewNote(note : Note)
 signal CreateLink(note1 : Note)
 signal OpenProjectRequested(projectName : String)
 signal CreateProjectRequested(projectName : String)
+signal OpenSettingsRequested
 
 ## RMB Menus
 @onready var rmbMenu = $CanvasLayer/MenuBackdrop/RMBMenu
@@ -54,7 +55,8 @@ func _process(delta):
 
 func _draw():
 	if (drawingLink && linkTarget != null):
-		draw_line(linkTarget.pinPosition, linkDrawer.position, Color.CRIMSON, 3, false)
+		#draw_line(linkTarget.pinPosition, linkDrawer.position, Color.CRIMSON, 3, false)
+		draw_dashed_line(linkTarget.pinPosition, linkDrawer.position, Color.CRIMSON, 3, 5, false)
 
 func _input(event):
 	if (event is InputEventMouseButton && event.button_index == MOUSE_BUTTON_LEFT && event.pressed):
@@ -107,7 +109,9 @@ func setProjectList(projects : Array):
 
 func openRmbMenu():
 	rmbMenu.visible = true
-	rmbMenu.position = get_viewport().get_mouse_position()
+	var mpos = get_viewport().get_mouse_position()
+	rmbMenu.position.x = clamp(mpos.x, 0, get_viewport_rect().size.x - rmbMenu.size.x)
+	rmbMenu.position.y = clamp(mpos.y, 0, get_viewport_rect().size.y - rmbMenu.size.y)
 	menuBackdrop.visible = true
 	popupVisible = true
 
@@ -152,6 +156,7 @@ func _on_menu_backdrop_gui_input(event):
 
 func _on_color_picker_color_changed(color):
 	currentColour = color
+	get_parent().setLastColour(color)
 
 
 
@@ -239,3 +244,7 @@ func _on_dialog_button_ok_pressed():
 		showProjectNameChangeDialogWindow(false)
 
 
+
+
+func _on_button_settings_pressed():
+	emit_signal("OpenSettingsRequested")

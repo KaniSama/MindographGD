@@ -16,6 +16,7 @@ var pinned : bool = false
 
 @onready var dragger = $NoteContainer/Dragger
 @onready var pinIcon = $NoteContainer/PinIcon
+@onready var pinShadow = $NoteContainer/PinIcon2
 var dragging : bool = false
 var offset : Vector2
 
@@ -78,15 +79,16 @@ func resize():
 
 func pin():
 	pinned = !pinned
+	dragger.modulate = Color(0,0,0,0) if pinned else Color(1,1,1,.3882352)
+	
+	pinIcon.visible = pinned
+	pinShadow.visible = pinned
+	resizer.visible = !pinned
 	
 	if (pinned):
 		dragger.mouse_default_cursor_shape = CursorShape.CURSOR_POINTING_HAND
-		pinIcon.visible = true
-		resizer.visible = false
 	else:
 		dragger.mouse_default_cursor_shape = CursorShape.CURSOR_DRAG
-		pinIcon.visible = false
-		resizer.visible = true
 
 func updatePinPosition():
 	pinPosition.x = position.x + size.x * .5

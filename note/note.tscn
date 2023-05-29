@@ -131,6 +131,25 @@ shortcut = SubResource("Shortcut_1hbb0")
 text = "❌"
 flat = true
 
+[node name="PinIcon2" type="TextureRect" parent="NoteContainer"]
+visible = false
+modulate = Color(0, 0, 0, 0.47451)
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -22.5
+offset_top = 20.0
+offset_right = -8.5
+offset_bottom = 54.0
+grow_horizontal = 2
+rotation = -1.71391
+mouse_filter = 2
+texture = ExtResource("3_gm0tl")
+expand_mode = 1
+stretch_mode = 2
+
 [node name="PinIcon" type="TextureRect" parent="NoteContainer"]
 visible = false
 texture_filter = 1

@@ -1,0 +1,94 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxr3mu53rs5hc"]
+
+[ext_resource type="Script" path="res://scripts/AppSettingsWindow.gd" id="1_y4fiy"]
+
+[node name="AppSettingsWindow" type="Window"]
+initial_position = 1
+title = "Application Settings"
+size = Vector2i(458, 406)
+wrap_controls = true
+transient = true
+exclusive = true
+script = ExtResource("1_y4fiy")
+
+[node name="BG" type="ScrollContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+
+[node name="GridContainer" type="GridContainer" parent="BG"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="AutosaveLabel" type="Label" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Autosave"
+horizontal_alignment = 2
+
+[node name="Autosave" type="CheckButton" parent="BG/GridContainer"]
+layout_direction = 3
+layout_mode = 2
+
+[node name="ASFrequencyLabel" type="Label" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Autosave frequency (minutes)"
+horizontal_alignment = 2
+
+[node name="AutosaveFreq" type="SpinBox" parent="BG/GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="BG/GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="BG/GridContainer"]
+layout_mode = 2
+
+[node name="DefaultNoteColourLabel" type="Label" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Default note colour"
+horizontal_alignment = 2
+
+[node name="DefaultNoteColour" type="ColorPickerButton" parent="BG/GridContainer"]
+layout_mode = 2
+text = "DefColor"
+
+[node name="NoteFontLabel" type="Label" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Note text font"
+horizontal_alignment = 2
+
+[node name="NoteFont" type="LineEdit" parent="BG/GridContainer"]
+layout_mode = 2
+placeholder_text = "Enter font name"
+
+[node name="ResetFontButton" type="Button" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Reset default font"
+
+[node name="FontsButton" type="Button" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Open the fonts folder"
+
+[node name="HSeparator4" type="HSeparator" parent="BG/GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator5" type="HSeparator" parent="BG/GridContainer"]
+layout_mode = 2
+
+[node name="CurrentVersion" type="Label" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Current version: "
+horizontal_alignment = 2
+
+[node name="UpdateButton" type="Button" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Check for updates"
+
+[connection signal="about_to_popup" from="." to="." method="_on_about_to_popup"]
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="pressed" from="BG/GridContainer/UpdateButton" to="." method="_on_update_button_pressed"]

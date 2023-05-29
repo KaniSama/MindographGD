@@ -2,15 +2,17 @@ extends Control
 class_name Workspace
 
 const AppName = "                 [Mindograph]"
+const CurrentVersion = "v0.0.0.3"
 
 var ProjectName : String = "NewMindographProject.mg"
 var ProjectList : Array = []
-var modified : bool = false
+var Modified : bool = false
 
 @onready var hud : Node = $HUD
 @onready var noteList : Node = $NoteList
 
 @onready var exitConfirmationDialog = $ExitConfirmationDialog
+@onready var appSettingsWindow = $AppSettingsWindow
 
 var lastColour: Color = Color.KHAKI
 
@@ -28,6 +30,7 @@ func _ready():
 	hud.NewNote.connect(Duplicate)
 	hud.OpenProjectRequested.connect(loadProject)
 	hud.CreateProjectRequested.connect(createProject)
+	hud.OpenSettingsRequested.connect(OpenSettings)
 
 
 ##################################################### PROJECT LIST
@@ -35,6 +38,8 @@ func clearWorkspace():
 	noteList.clearNotesAndConnections()
 
 func initProgram():
+	#checkGithubLatestRelease()
+	
 	ProjectList.clear()
 	
 	var dir = DirAccess.open("user://Projects")
@@ -53,19 +58,19 @@ func initProgram():
 	if (ProjectList.size() <= 0):
 		OS.alert("Project list empty!")
 
-func loadProject(projectName : String):
+func loadProject(_project_name : String):
 	clearWorkspace()
 	
-	setProjectName(projectName)
+	setProjectName(_project_name)
 #	noteList.loadFromFile(projectName)
 	
-	noteList.readOnNextFrame = [true, projectName]
+	noteList.readOnNextFrame = [true, _project_name]
 
 
 
-func createProject(projectName : String):
+func createProject(_project_name : String):
 	clearWorkspace()
-	setProjectName(projectName)
+	setProjectName(_project_name)
 
 func updateProjectList():
 	ProjectList.clear()
@@ -87,7 +92,7 @@ func updateProjectList():
 func _notification(what):
 	if (what == NOTIFICATION_WM_CLOSE_REQUEST):
 		
-		if (modified):
+		if (Modified):
 			## Stops the program from closing
 			get_tree().set_auto_accept_quit(false)
 			print("Close Request Notified (cancelling)")
@@ -103,10 +108,10 @@ func _input(event):
 		setModified()
 
 func setModified(_modified : bool = true):
-	modified = _modified
+	Modified = _modified
 	
 	var _modifiedString = ""
-	if (modified):
+	if (Modified):
 		_modifiedString = "* "
 	
 	setWindowName(_modifiedString + getWindowName())
@@ -125,6 +130,9 @@ func setWindowName(newName : String):
 		newName + AppName
 	)
 
+
+func OpenSettings():
+	appSettingsWindow.popup_centered()
 
 
 ##################################################### HUD INTERACTIONS
@@ -152,6 +160,7 @@ func Duplicate(note : Note):
 	)
 	
 	_note.dragging = true
+	_note.offset = -Vector2(_note.size.x * .5, 8)
 
 
 ######################################################## GET / SETTERS
@@ -165,6 +174,13 @@ func getProjectList() -> Array:
 	updateProjectList()
 	return ProjectList
 
+
+func getCurrentVersion() -> String:
+	return CurrentVersion
+
+
+func setLastColour(newColour : Color):
+	lastColour = newColour
 
 ########################################################## SIGNALS
 func _on_note_list_rmb_note(note):
