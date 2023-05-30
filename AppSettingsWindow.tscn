@@ -1,14 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://dxr3mu53rs5hc"]
+[gd_scene load_steps=2 format=3 uid="uid://c3i7rai8kuhfr"]
 
-[ext_resource type="Script" path="res://scripts/AppSettingsWindow.gd" id="1_y4fiy"]
+[ext_resource type="Script" path="res://scripts/Workspace/AppSettingsWindow.gd" id="1_y4fiy"]
 
 [node name="AppSettingsWindow" type="Window"]
+disable_3d = true
 initial_position = 1
 title = "Application Settings"
-size = Vector2i(458, 406)
+size = Vector2i(415, 406)
 wrap_controls = true
 transient = true
-exclusive = true
 script = ExtResource("1_y4fiy")
 
 [node name="BG" type="ScrollContainer" parent="."]
@@ -78,6 +78,20 @@ text = "Open the fonts folder"
 layout_mode = 2
 
 [node name="HSeparator5" type="HSeparator" parent="BG/GridContainer"]
+layout_mode = 2
+
+[node name="OpenProjectsButton" type="Button" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Open the Projects folder"
+
+[node name="OpenConfigButton" type="Button" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Open the Config file"
+
+[node name="HSeparator6" type="HSeparator" parent="BG/GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator7" type="HSeparator" parent="BG/GridContainer"]
 layout_mode = 2
 
 [node name="CurrentVersion" type="Label" parent="BG/GridContainer"]

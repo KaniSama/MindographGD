@@ -1,12 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://d4chdj16ohjeu"]
+[gd_scene load_steps=18 format=3 uid="uid://pi852642fy8e"]
 
-[ext_resource type="Script" path="res://scripts/HUD.gd" id="1_o0uj5"]
+[ext_resource type="Script" path="res://scripts/HUDElements/HUD.gd" id="1_jaeg1"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_iy3s7"]
 [ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_5jkwq"]
-[ext_resource type="Script" path="res://scripts/RMBMenu.gd" id="5_h6hcv"]
-[ext_resource type="Script" path="res://scripts/FPSCounter.gd" id="5_lbe0d"]
-[ext_resource type="Script" path="res://scripts/ProjectNameTextBox.gd" id="6_fafbr"]
-[ext_resource type="Script" path="res://scripts/ColorPicker.gd" id="6_v8v05"]
+[ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="3_7s1mp"]
+[ext_resource type="Script" path="res://scripts/HUDElements/RMBMenu.gd" id="5_orq2i"]
+[ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.gd" id="6_b3ab8"]
+[ext_resource type="Script" path="res://scripts/HUDElements/ProjectNameTextBox.gd" id="7_utv7t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1v5q"]
 bg_color = Color(0, 0, 0, 0.164706)
@@ -49,7 +49,7 @@ bg_color = Color(1, 1, 1, 1)
 [node name="HUD" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_o0uj5")
+script = ExtResource("1_jaeg1")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -118,7 +118,7 @@ offset_bottom = 38.0
 grow_horizontal = 0
 text = "FPS: "
 horizontal_alignment = 2
-script = ExtResource("5_lbe0d")
+script = ExtResource("3_7s1mp")
 
 [node name="MenuBackdrop" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -148,7 +148,7 @@ item_5/text = "Duplicate"
 item_6/text = ""
 item_6/disabled = true
 item_7/text = "Change Colour    >"
-script = ExtResource("5_h6hcv")
+script = ExtResource("5_orq2i")
 
 [node name="ColorPickerBackdrop" type="Panel" parent="CanvasLayer/MenuBackdrop"]
 visible = false
@@ -162,16 +162,16 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 272.0
-offset_top = 136.0
-offset_right = 119.0
-offset_bottom = 136.0
+offset_left = 320.0
+offset_top = 160.0
+offset_right = 143.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
 edit_alpha = false
 picker_shape = 1
-script = ExtResource("6_v8v05")
+script = ExtResource("6_b3ab8")
 
 [node name="ColorOKButton" type="Button" parent="CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker"]
 layout_mode = 2
@@ -222,7 +222,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_3fss0")
 placeholder_text = "ProjectName.mg"
 max_length = 64
 context_menu_enabled = false
-script = ExtResource("6_fafbr")
+script = ExtResource("7_utv7t")
 
 [node name="DialogButtonOK" type="Button" parent="CanvasLayer/DialogBackdrop/DialogList"]
 layout_mode = 2

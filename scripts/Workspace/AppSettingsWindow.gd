@@ -1,6 +1,8 @@
 extends Window
 
 @onready var versionLabel = $BG/GridContainer/CurrentVersion
+@onready var autosave = $BG/GridContainer/Autosave
+@onready var autosaveFrequency = $BG/GridContainer/AutosaveFreq
 
 
 ########################################### OVERRIDES
@@ -12,6 +14,14 @@ func _ready():
 
 
 ########################################### HELPER FUNCTIONS
+########################################### GET SETTERS
+
+func setAutosave(_value : bool = true):
+	autosave.set_pressed(_value)
+
+func setAutosaveFrequency(_value : int):
+	autosaveFrequency.set_value(_value)
+
 
 ########################################### SIGNALS
 
@@ -41,9 +51,14 @@ func _on_request_completed(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	
 	var currentVersion = get_parent().getCurrentVersion()
-	if (currentVersion != json["name"]):
-		OS.alert("Version " + json["name"] + " available! \nOpening browser...")
-		OS.shell_open("https://github.com/KaniSama/MindographGD/releases/latest")
+	match (get_parent().compareVersions(currentVersion, json["name"])):
+		0:
+			OS.alert("You are using the latest version! Good job!")
+		1:
+			OS.alert("Somehow you're using an unreleased version! HOW")
+		2:
+			OS.alert("Version " + json["name"] + " available! \nOpening browser...")
+			OS.shell_open("https://github.com/KaniSama/MindographGD/releases/latest")
 	
 	var HTTPrequester = find_child("HTTPrequester")
 	if (HTTPrequester != null):

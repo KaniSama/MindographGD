@@ -1,18 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://dvmeetwo45r5x"]
+[gd_scene load_steps=9 format=3 uid="uid://qiwjq1r6rkdv"]
 
+[ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_4ra6h"]
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="1_b57wb"]
-[ext_resource type="PackedScene" uid="uid://d4chdj16ohjeu" path="res://HUD.tscn" id="1_x5m7j"]
-[ext_resource type="Script" path="res://scripts/workspace.gd" id="1_y2ddc"]
+[ext_resource type="PackedScene" uid="uid://pi852642fy8e" path="res://HUD.tscn" id="1_x5m7j"]
 [ext_resource type="Script" path="res://scripts/NoteList.gd" id="3_k3r8y"]
-[ext_resource type="Script" path="res://scripts/LinkDrawer.gd" id="4_wlja4"]
-[ext_resource type="Script" path="res://scripts/MainCamera.gd" id="5_4rrw0"]
-[ext_resource type="Script" path="res://scripts/ExitConfirmationDialog.gd" id="7_apvsg"]
-[ext_resource type="PackedScene" uid="uid://dxr3mu53rs5hc" path="res://AppSettingsWindow.tscn" id="8_6aont"]
+[ext_resource type="Script" path="res://scripts/Workspace/LinkDrawer.gd" id="4_jpsxb"]
+[ext_resource type="Script" path="res://scripts/Workspace/MainCamera.gd" id="5_86ptm"]
+[ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_qcw1y"]
+[ext_resource type="PackedScene" uid="uid://c3i7rai8kuhfr" path="res://AppSettingsWindow.tscn" id="8_6aont"]
 
 [node name="Workspace" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_y2ddc")
+script = ExtResource("1_4ra6h")
 
 [node name="Background" type="TextureRect" parent="."]
 texture_filter = 1
@@ -45,10 +45,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("4_wlja4")
+script = ExtResource("4_jpsxb")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-script = ExtResource("5_4rrw0")
+script = ExtResource("5_86ptm")
 
 [node name="HUD" parent="." instance=ExtResource("1_x5m7j")]
 
@@ -62,7 +62,7 @@ unresizable = true
 always_on_top = true
 ok_button_text = "Yes, exit without saving"
 dialog_text = "Are you sure you want to close Mindograph?"
-script = ExtResource("7_apvsg")
+script = ExtResource("7_qcw1y")
 
 [node name="AppSettingsWindow" parent="." instance=ExtResource("8_6aont")]
 visible = false

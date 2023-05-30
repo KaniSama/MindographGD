@@ -37,8 +37,6 @@ var target : Note = null
 var linkTarget : Note = null
 var drawingLink : bool = true
 
-var popupVisible = true
-
 ############################################################# overrides
 func _ready():
 	refreshProjectList()
@@ -69,6 +67,13 @@ func _input(event):
 			queue_redraw()
 
 
+
+
+############################################################### get / setters
+func getPopupVisible() -> bool :
+	return dialogBackdrop.visible || menuBackdrop.visible
+
+
 ############################################################### helpers
 func changeTarget(newTarget : Note = null):
 	target = newTarget
@@ -80,7 +85,6 @@ func changeLinkTarget(newTarget : Note = null):
 func showDialogBackdrop(_show : bool = true):
 	showButtonContainer(!_show)
 	dialogBackdrop.visible = _show
-	popupVisible = _show
 
 func showProjectNameChangeDialogWindow(_show : bool = true):
 	showDialogBackdrop(_show)
@@ -113,13 +117,11 @@ func openRmbMenu():
 	rmbMenu.position.x = clamp(mpos.x, 0, get_viewport_rect().size.x - rmbMenu.size.x)
 	rmbMenu.position.y = clamp(mpos.y, 0, get_viewport_rect().size.y - rmbMenu.size.y)
 	menuBackdrop.visible = true
-	popupVisible = true
 
 func closeRmbMenu():
 	rmbMenu.visible = false
 	menuBackdrop.visible = false
 	coloring = false
-	popupVisible = false
 
 
 func startLink():

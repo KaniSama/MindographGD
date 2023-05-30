@@ -50,7 +50,6 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="TextWrapper" type="PanelContainer" parent="NoteContainer"]
-modulate = Color(1, 0.992157, 0.572549, 1)
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
