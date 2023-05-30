@@ -1,4 +1,6 @@
 # MindographGodot
+![Banner](/demo/mindograph_splash.png)
+
 Mindograph is a tool for visually organizing ideas.  
 Pin notes onto the virtual corkboard and connect them with virtual red string!  
 
