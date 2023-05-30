@@ -19,13 +19,13 @@ func _ready():
 	noteResource = preload("res://note/note.tscn")
 
 func _input(event):
-	if (event is InputEventKey && event.pressed && event.keycode == KEY_T):
+#	if (event is InputEventKey && event.pressed && event.keycode == KEY_T):
 #		var j = get_child(0)
 #		for i in get_children():
 #			if (i is Note) && (j is Note) && (i.get_index() != 0):
 #				addConnection(i, j)
 #			j = i
-		print(connections)
+#		print(connections)
 	pass
 
 func _process(delta):
@@ -295,7 +295,7 @@ func loadFromFile(projectName):
 		## Connection[1].UID (int)
 		var _UID1 = file.get_64()
 		var _UID2 = file.get_64()
-		printt(_UID1, _UID2)
+#		printt(_UID1, _UID2)
 		
 		addConnection(getNoteByUID(_UID1), getNoteByUID(_UID2))
 		#print(connections[connectionHalf])

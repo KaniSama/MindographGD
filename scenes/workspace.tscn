@@ -1,18 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://qiwjq1r6rkdv"]
+[gd_scene load_steps=9 format=3 uid="uid://dowqipayg1sbx"]
 
-[ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_4ra6h"]
-[ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="1_b57wb"]
-[ext_resource type="PackedScene" uid="uid://pi852642fy8e" path="res://HUD.tscn" id="1_x5m7j"]
-[ext_resource type="Script" path="res://scripts/NoteList.gd" id="3_k3r8y"]
-[ext_resource type="Script" path="res://scripts/Workspace/LinkDrawer.gd" id="4_jpsxb"]
-[ext_resource type="Script" path="res://scripts/Workspace/MainCamera.gd" id="5_86ptm"]
-[ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_qcw1y"]
-[ext_resource type="PackedScene" uid="uid://c3i7rai8kuhfr" path="res://AppSettingsWindow.tscn" id="8_6aont"]
+[ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_wvxdq"]
+[ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
+[ext_resource type="Script" path="res://scripts/NoteList.gd" id="3_hmkl8"]
+[ext_resource type="Script" path="res://scripts/Workspace/LinkDrawer.gd" id="4_lxu64"]
+[ext_resource type="Script" path="res://scripts/Workspace/MainCamera.gd" id="5_0kgjp"]
+[ext_resource type="PackedScene" uid="uid://pi852642fy8e" path="res://scenes/HUD.tscn" id="6_6cy78"]
+[ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_2kai4"]
+[ext_resource type="PackedScene" uid="uid://c3i7rai8kuhfr" path="res://scenes/AppSettingsWindow.tscn" id="8_nua0u"]
 
 [node name="Workspace" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_4ra6h")
+script = ExtResource("1_wvxdq")
 
 [node name="Background" type="TextureRect" parent="."]
 texture_filter = 1
@@ -29,14 +29,14 @@ offset_bottom = 7936.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
-texture = ExtResource("1_b57wb")
+texture = ExtResource("2_owwm3")
 stretch_mode = 1
 
 [node name="NoteList" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
-script = ExtResource("3_k3r8y")
+script = ExtResource("3_hmkl8")
 
 [node name="LinkDrawer" type="Control" parent="."]
 layout_mode = 1
@@ -45,12 +45,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("4_jpsxb")
+script = ExtResource("4_lxu64")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-script = ExtResource("5_86ptm")
+script = ExtResource("5_0kgjp")
 
-[node name="HUD" parent="." instance=ExtResource("1_x5m7j")]
+[node name="HUD" parent="." instance=ExtResource("6_6cy78")]
 
 [node name="ExitConfirmationDialog" type="ConfirmationDialog" parent="."]
 disable_3d = true
@@ -62,9 +62,9 @@ unresizable = true
 always_on_top = true
 ok_button_text = "Yes, exit without saving"
 dialog_text = "Are you sure you want to close Mindograph?"
-script = ExtResource("7_qcw1y")
+script = ExtResource("7_2kai4")
 
-[node name="AppSettingsWindow" parent="." instance=ExtResource("8_6aont")]
+[node name="AppSettingsWindow" parent="." instance=ExtResource("8_nua0u")]
 visible = false
 
 [connection signal="gui_input" from="Background" to="." method="_on_background_gui_input"]
