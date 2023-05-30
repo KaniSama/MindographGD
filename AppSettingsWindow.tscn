@@ -41,6 +41,8 @@ horizontal_alignment = 2
 
 [node name="AutosaveFreq" type="SpinBox" parent="BG/GridContainer"]
 layout_mode = 2
+max_value = 120.0
+rounded = true
 
 [node name="HSeparator" type="HSeparator" parent="BG/GridContainer"]
 layout_mode = 2

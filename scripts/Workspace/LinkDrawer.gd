@@ -20,7 +20,6 @@ func _draw():
 		else:
 			# if one of the objects does not exist,
 			# delete connection from array
-			#print("deleting connection " + str(noteList.connections[i]))
 			noteList.connections.erase(i)
 
 func _process(delta):

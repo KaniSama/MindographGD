@@ -15,7 +15,8 @@ run/main_scene="res://workspace.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Mindograph"
 config/features=PackedStringArray("4.0", "Forward Plus")
-boot_splash/show_image=false
+boot_splash/image="res://demo/mindograph_splash.png"
+boot_splash/use_filter=false
 config/icon="res://sprites/sPin.png"
 config/windows_native_icon="res://sprites/sPin.ico"
 

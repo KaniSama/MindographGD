@@ -10,9 +10,11 @@ signal CreateProjectRequested(projectName : String)
 signal OpenSettingsRequested
 
 ## RMB Menus
+@onready var canvas = $CanvasLayer
 @onready var rmbMenu = $CanvasLayer/MenuBackdrop/RMBMenu
 @onready var menuBackdrop = $CanvasLayer/MenuBackdrop
-@onready var linkDrawer = $CanvasLayer/LinkDrawer
+@onready var linkDrawer = $LinkDrawer
+@onready var linkDrawerStart = $LinkDrawerStart
 @onready var colorPicker = $CanvasLayer/MenuBackdrop/ColorPickerBackdrop
 
 ## Modal Dialogs
@@ -35,26 +37,19 @@ var coloring = false
 var target : Note = null
 
 var linkTarget : Note = null
-var drawingLink : bool = true
+var drawingLink : bool = false
 
 ############################################################# overrides
 func _ready():
 	refreshProjectList()
 
 func _process(delta):
-	if (drawingLink):
-		linkDrawer.position = get_global_mouse_position()
-		queue_redraw()
 	linkDrawer.visible = drawingLink
 	colorPicker.visible = coloring
 	
 	if (coloring && target != null):
 		target.changeColour(currentColour)
 
-func _draw():
-	if (drawingLink && linkTarget != null):
-		#draw_line(linkTarget.pinPosition, linkDrawer.position, Color.CRIMSON, 3, false)
-		draw_dashed_line(linkTarget.pinPosition, linkDrawer.position, Color.CRIMSON, 3, 5, false)
 
 func _input(event):
 	if (event is InputEventMouseButton && event.button_index == MOUSE_BUTTON_LEFT && event.pressed):

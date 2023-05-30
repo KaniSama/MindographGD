@@ -16,11 +16,18 @@ func _ready():
 ########################################### HELPER FUNCTIONS
 ########################################### GET SETTERS
 
-func setAutosave(_value : bool = true):
-	autosave.set_pressed(_value)
+## If _emit_signal is true, these values will save to the config.json file
+func setAutosave(_value : bool = true, _emit_signal : bool = true):
+	if (_emit_signal):
+		autosave.set_pressed(_value)
+	else:
+		autosave.set_pressed_no_signal(_value)
 
-func setAutosaveFrequency(_value : int):
-	autosaveFrequency.set_value(_value)
+func setAutosaveFrequency(_value : int, _emit_signal : bool = true):
+	if (_emit_signal):
+		autosaveFrequency.set_value(_value)
+	else:
+		autosaveFrequency.set_value_no_signal(_value)
 
 
 ########################################### SIGNALS
@@ -44,10 +51,9 @@ func _on_update_button_pressed():
 
 func _on_request_completed(result, response_code, headers, body):
 	
-	if (result != 0 || response_code != 200):
+	if (result != OK || response_code != 200):
 		return
 	
-	#rintt(result, response_code, headers, body)
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	
 	var currentVersion = get_parent().getCurrentVersion()

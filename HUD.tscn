@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://pi852642fy8e"]
+[gd_scene load_steps=19 format=3 uid="uid://pi852642fy8e"]
 
 [ext_resource type="Script" path="res://scripts/HUDElements/HUD.gd" id="1_jaeg1"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_iy3s7"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="3_7s1mp"]
 [ext_resource type="Script" path="res://scripts/HUDElements/RMBMenu.gd" id="5_orq2i"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.gd" id="6_b3ab8"]
+[ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawer.gd" id="7_8123t"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ProjectNameTextBox.gd" id="7_utv7t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1v5q"]
@@ -50,6 +51,17 @@ bg_color = Color(1, 1, 1, 1)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_jaeg1")
+
+[node name="LinkDrawerStart" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("7_8123t")
+
+[node name="LinkDrawer" type="Control" parent="."]
+visible = false
+top_level = true
+layout_mode = 3
+anchors_preset = 0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -162,10 +174,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 320.0
-offset_top = 160.0
-offset_right = 143.0
-offset_bottom = 160.0
+offset_left = 368.0
+offset_top = 184.0
+offset_right = 167.0
+offset_bottom = 184.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
@@ -176,14 +188,6 @@ script = ExtResource("6_b3ab8")
 [node name="ColorOKButton" type="Button" parent="CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker"]
 layout_mode = 2
 text = "OK"
-
-[node name="LinkDrawer" type="Control" parent="CanvasLayer"]
-visible = false
-top_level = true
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="DialogBackdrop" type="Panel" parent="CanvasLayer"]
 anchors_preset = 15
@@ -292,6 +296,7 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Open Project Directory"
 
+[connection signal="visibility_changed" from="LinkDrawer" to="LinkDrawerStart" method="_on_link_drawer_visibility_changed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonAdd" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonLoad" to="." method="_on_button_load_pressed"]

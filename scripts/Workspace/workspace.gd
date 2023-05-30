@@ -55,7 +55,7 @@ func initProgram():
 	
 	# Get files in Projects directory
 	var files = dir.get_files()
-	printt(files)
+	
 	for line in files:
 		if (line.right(3) == ".mg"):
 			ProjectList.append(line)
@@ -102,10 +102,14 @@ func initProgram():
 	var config : Dictionary = JSON.parse_string(configString)
 	
 	Config = config
-	print(Config)
-
-#	appSettingsWindow.setAutosave(bool(Config["autosave"]))
-#	appSettingsWindow.setAutosaveFrequency(int(Config["autosavefreqmins"]))
+	Config["version"] = getCurrentVersion()
+	
+	# Read the config and set the variables
+	if (Config["maximized"]):
+		get_tree().root.get_window().set_mode(Window.MODE_MAXIMIZED)
+	
+	appSettingsWindow.setAutosave(Config["autosave"], false)
+	appSettingsWindow.setAutosaveFrequency(Config["autosavefreqmins"], false)
 
 func loadProject(_project_name : String):
 	clearWorkspace()
@@ -130,7 +134,6 @@ func updateProjectList():
 		return
 	
 	var files = dir.get_files()
-	printt(files)
 	for line in files:
 		if (line.right(3) == ".mg"):
 			ProjectList.append(line)
@@ -144,7 +147,6 @@ func _notification(what):
 		if (Modified):
 			## Stops the program from closing
 			get_tree().set_auto_accept_quit(false)
-			print("Close Request Notified (cancelling)")
 			
 			# Close AppSettings window
 			CloseSettings()
