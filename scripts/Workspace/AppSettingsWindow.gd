@@ -1,9 +1,13 @@
 extends Window
 
+
+signal UpdateConfig(key : String, value)
+
+
 @onready var versionLabel = $BG/GridContainer/CurrentVersion
 @onready var autosave = $BG/GridContainer/Autosave
 @onready var autosaveFrequency = $BG/GridContainer/AutosaveFreq
-
+@onready var defaultColour = $BG/GridContainer/DefaultNoteColour
 
 ########################################### OVERRIDES
 
@@ -29,11 +33,16 @@ func setAutosaveFrequency(_value : int, _emit_signal : bool = true):
 	else:
 		autosaveFrequency.set_value_no_signal(_value)
 
+func setDefaultColour(_value : Color):
+	defaultColour.color = _value
+
+
 
 ########################################### SIGNALS
 
 func _on_about_to_popup():
-	find_child("DefaultNoteColour").color = get_parent().getLastColour()
+	#find_child("DefaultNoteColour").color = get_parent().getLastColour()
+	pass
 
 func _on_close_requested():
 	hide()
@@ -69,3 +78,24 @@ func _on_request_completed(result, response_code, headers, body):
 	var HTTPrequester = find_child("HTTPrequester")
 	if (HTTPrequester != null):
 		HTTPrequester.queue_free()
+
+
+
+func _on_autosave_toggled(button_pressed):
+	emit_signal("UpdateConfig", "autosave", button_pressed)
+
+func _on_autosave_freq_value_changed(value):
+	emit_signal("UpdateConfig", "autosavefreqmins", value)
+
+func _on_default_note_colour_color_changed(color):
+	emit_signal("UpdateConfig", "defaultcolour", color)
+
+
+
+
+
+func _on_open_projects_button_pressed():
+	OS.shell_open(ProjectSettings.globalize_path("user://Projects"))
+
+func _on_open_config_button_pressed():
+	OS.shell_open(ProjectSettings.globalize_path("user://Config"))

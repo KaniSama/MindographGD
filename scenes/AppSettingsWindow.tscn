@@ -30,9 +30,10 @@ layout_mode = 2
 text = "Autosave"
 horizontal_alignment = 2
 
-[node name="Autosave" type="CheckButton" parent="BG/GridContainer"]
+[node name="Autosave" type="CheckBox" parent="BG/GridContainer"]
 layout_direction = 3
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="ASFrequencyLabel" type="Label" parent="BG/GridContainer"]
 layout_mode = 2
@@ -67,13 +68,16 @@ horizontal_alignment = 2
 [node name="NoteFont" type="LineEdit" parent="BG/GridContainer"]
 layout_mode = 2
 placeholder_text = "Enter font name"
+editable = false
 
 [node name="ResetFontButton" type="Button" parent="BG/GridContainer"]
 layout_mode = 2
+disabled = true
 text = "Reset default font"
 
 [node name="FontsButton" type="Button" parent="BG/GridContainer"]
 layout_mode = 2
+disabled = true
 text = "Open the fonts folder"
 
 [node name="HSeparator4" type="HSeparator" parent="BG/GridContainer"]
@@ -107,4 +111,9 @@ text = "Check for updates"
 
 [connection signal="about_to_popup" from="." to="." method="_on_about_to_popup"]
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="toggled" from="BG/GridContainer/Autosave" to="." method="_on_autosave_toggled"]
+[connection signal="value_changed" from="BG/GridContainer/AutosaveFreq" to="." method="_on_autosave_freq_value_changed"]
+[connection signal="color_changed" from="BG/GridContainer/DefaultNoteColour" to="." method="_on_default_note_colour_color_changed"]
+[connection signal="pressed" from="BG/GridContainer/OpenProjectsButton" to="." method="_on_open_projects_button_pressed"]
+[connection signal="pressed" from="BG/GridContainer/OpenConfigButton" to="." method="_on_open_config_button_pressed"]
 [connection signal="pressed" from="BG/GridContainer/UpdateButton" to="." method="_on_update_button_pressed"]

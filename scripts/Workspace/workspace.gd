@@ -7,7 +7,7 @@ const CurrentVersion = [0, 0, 1, 0]
 var Config : Dictionary = {}
 const ConfigFileLocation = "user://Config/config.json"
 
-var ProjectName : String = "NewMindographProject.mg"
+var ProjectName : String = "!!untitled!!"
 var ProjectList : Array = []
 var Modified : bool = false
 
@@ -16,6 +16,8 @@ var Modified : bool = false
 
 @onready var exitConfirmationDialog = $ExitConfirmationDialog
 @onready var appSettingsWindow = $AppSettingsWindow
+
+@onready var autosaveTimer = $AutosaveTimer
 
 var lastColour: Color = Color.KHAKI
 
@@ -35,6 +37,9 @@ func _ready():
 	hud.OpenProjectRequested.connect(loadProject)
 	hud.CreateProjectRequested.connect(createProject)
 	hud.OpenSettingsRequested.connect(OpenSettings)
+	
+	## Connect to the AppSettingsWindow object's signals
+	appSettingsWindow.UpdateConfig.connect(UpdateConfigFromSettings)
 
 
 ##################################################### PROJECT LIST
@@ -104,12 +109,23 @@ func initProgram():
 	Config = config
 	Config["version"] = getCurrentVersion()
 	
+	var _colourToArray = Config["defaultcolour"].replace("(","").replace(")","").split(",")
+	var _colourArray = []
+	for i in _colourToArray:
+		_colourArray.append(float(i))
+	var _newDefaultColour = Color(_colourArray[0], _colourArray[1], _colourArray[2], _colourArray[3])
+	Config["defaultcolour"] = _newDefaultColour
+	
 	# Read the config and set the variables
 	if (Config["maximized"]):
 		get_tree().root.get_window().set_mode(Window.MODE_MAXIMIZED)
 	
-	appSettingsWindow.setAutosave(Config["autosave"], false)
-	appSettingsWindow.setAutosaveFrequency(Config["autosavefreqmins"], false)
+	appSettingsWindow.setAutosave(Config["autosave"], true)
+	appSettingsWindow.setAutosaveFrequency(Config["autosavefreqmins"], true)
+	appSettingsWindow.setDefaultColour(Config["defaultcolour"])
+	setLastColour(Config["defaultcolour"])
+	
+	UpdateConfigFromSettings("autosave", Config["autosave"])
 
 func loadProject(_project_name : String):
 	clearWorkspace()
@@ -223,6 +239,14 @@ func Duplicate(note : Note):
 
 
 
+######################################################## TIMER INTERACTIONS
+func startAutosaveTimer(_seconds : int = 60):
+	autosaveTimer.start(_seconds)
+
+func stopAutosaveTimer():
+	autosaveTimer.stop()
+
+
 ######################################################## HELPERS
 func strToVersion(string : String) -> Array:
 	var _version_strs = string.strip_edges().replacen("v", "").split(".")
@@ -255,6 +279,17 @@ func compareVersions(_v1, _v2) -> int:
 	return _result
 
 
+func UpdateConfigFromSettings(_key : String, _value : Variant):
+	setConfigKey(_key, _value)
+	
+	if (_key == "defaultcolour" && _value is Color):
+		setLastColour(_value)
+	
+	if (_key == "autosave" && _value || _key == "autosavefreqmins" && _value != 0 && Config["autosave"]):
+		startAutosaveTimer(Config["autosavefreqmins"] * 60)
+	elif (_key == "autosave" && !_value || _key == "autosavefreqmins" && _value == 0):
+		stopAutosaveTimer()
+
 func saveConfigToFile(config : Dictionary = Config):
 	var configFile = FileAccess.open(ConfigFileLocation, FileAccess.WRITE)
 	configFile.store_line(JSON.stringify(config,"\t",false,true))
@@ -282,6 +317,10 @@ func getCurrentVersion() -> String:
 		else:
 			_version += str(CurrentVersion[i])
 	return _version
+
+
+func getTimeTillAutosave() -> int:
+	return autosaveTimer.time_left
 
 
 func setLastColour(newColour : Color):
@@ -313,3 +352,7 @@ func _on_note_list_link_next_target_changed(note):
 	hud.changeHoverNote(note)
 
 
+
+func _on_autosave_timer_timeout():
+	if (getProjectName() != "!!untitled!!"):
+		noteList.saveToFile()

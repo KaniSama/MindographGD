@@ -67,8 +67,12 @@ script = ExtResource("7_2kai4")
 [node name="AppSettingsWindow" parent="." instance=ExtResource("8_nua0u")]
 visible = false
 
+[node name="AutosaveTimer" type="Timer" parent="."]
+wait_time = 300.0
+
 [connection signal="gui_input" from="Background" to="." method="_on_background_gui_input"]
 [connection signal="linkNextTargetChanged" from="NoteList" to="." method="_on_note_list_link_next_target_changed"]
 [connection signal="rmbNote" from="NoteList" to="." method="_on_note_list_rmb_note"]
 [connection signal="confirmed" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_confirmed"]
 [connection signal="custom_action" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_custom_action"]
+[connection signal="timeout" from="AutosaveTimer" to="." method="_on_autosave_timer_timeout"]

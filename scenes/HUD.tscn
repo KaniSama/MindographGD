@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://pi852642fy8e"]
+[gd_scene load_steps=20 format=3 uid="uid://pi852642fy8e"]
 
 [ext_resource type="Script" path="res://scripts/HUDElements/HUD.gd" id="1_jaeg1"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_iy3s7"]
 [ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_5jkwq"]
 [ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="3_7s1mp"]
+[ext_resource type="Script" path="res://scripts/HUDElements/AutosaveTimerLabel.gd" id="5_aflcu"]
 [ext_resource type="Script" path="res://scripts/HUDElements/RMBMenu.gd" id="5_orq2i"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.gd" id="6_b3ab8"]
 [ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawer.gd" id="7_8123t"]
@@ -132,6 +133,21 @@ text = "FPS: "
 horizontal_alignment = 2
 script = ExtResource("3_7s1mp")
 
+[node name="TimerCounter" type="Label" parent="CanvasLayer/ButtonContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -233.0
+offset_top = 11.0
+offset_right = -150.0
+offset_bottom = 37.0
+grow_horizontal = 0
+text = "Seconds until autosave: "
+horizontal_alignment = 2
+script = ExtResource("5_aflcu")
+
 [node name="MenuBackdrop" type="Panel" parent="CanvasLayer"]
 visible = false
 anchors_preset = 15
@@ -174,10 +190,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 416.0
-offset_top = 208.0
-offset_right = 191.0
-offset_bottom = 208.0
+offset_left = 448.0
+offset_top = 224.0
+offset_right = 207.0
+offset_bottom = 224.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
