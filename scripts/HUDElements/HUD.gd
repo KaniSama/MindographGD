@@ -40,6 +40,8 @@ var linkTarget : Note = null
 var drawingLink : bool = false
 
 ############################################################# overrides
+func _____OVERRIDES():pass
+
 func _ready():
 	refreshProjectList()
 
@@ -65,16 +67,24 @@ func _input(event):
 
 
 ############################################################### get / setters
+func _____GET_SETTERS():pass
+
 func getPopupVisible() -> bool :
 	return dialogBackdrop.visible || menuBackdrop.visible
 
 
 ############################################################### helpers
+func _____HELPERS():pass
+
 func changeTarget(newTarget : Note = null):
 	target = newTarget
 
 func changeLinkTarget(newTarget : Note = null):
 	linkTarget = newTarget
+
+
+func showButtonContainer(_show : bool = true):
+	buttonContainer.visible = _show
 
 
 func showDialogBackdrop(_show : bool = true):
@@ -85,6 +95,7 @@ func showProjectNameChangeDialogWindow(_show : bool = true):
 	showDialogBackdrop(_show)
 	
 	dialog.visible = _show
+
 
 func showProjectList(_show : bool = true):
 	showDialogBackdrop(_show)
@@ -106,6 +117,9 @@ func setProjectList(projects : Array):
 		projectList.add_item(project, null, true)
 
 
+############################################################### RMB MENU
+func _____RMB_MENU():pass
+
 func openRmbMenu():
 	rmbMenu.visible = true
 	var mpos = get_viewport().get_mouse_position()
@@ -119,6 +133,9 @@ func closeRmbMenu():
 	coloring = false
 
 
+############################################################### LINK
+func _____LINK():pass
+
 func startLink():
 	drawingLink = true
 
@@ -129,12 +146,10 @@ func finishLink():
 	queue_redraw()
 
 
-func showButtonContainer(_show : bool = true):
-	buttonContainer.visible = _show
-
-
 
 ################################################################## signals
+func _____SIGNALS():pass
+
 func _on_button_pressed():
 	emit_signal("HudButtonAddPressed")
 

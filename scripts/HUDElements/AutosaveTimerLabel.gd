@@ -11,7 +11,6 @@ func _process(_delta: float) -> void:
 	text = _initText + str(_time)
 
 
-## the following code is added by me
 func _input(event):
 	if (event is InputEventKey && event.keycode == KEY_F && event.pressed):
 		visible = !visible

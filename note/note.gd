@@ -33,6 +33,9 @@ var editing = false
 @onready var dropShadow = $NoteContainer/DropShadow
 
 
+################################################## OVERRIDES
+func _____OVERRIDES():pass
+
 func _ready():
 	# Disable Text Edit elements
 	exitTextEditMode(false)
@@ -52,6 +55,8 @@ func _process(delta):
 		dropShadow.visible = false
 
 
+################################################## SIZE / POSITION CONTROLS
+func _____SIZE_POS():pass
 
 func onDragStart():
 	offset = position - get_global_mouse_position()
@@ -95,6 +100,9 @@ func updatePinPosition():
 	pinPosition.y = position.y + 8
 
 
+################################################### MODES
+func _____TEXT_EDIT():pass
+
 func enterTextEditMode():
 	textEdit.visible = true
 	okButton.visible = true
@@ -122,6 +130,10 @@ func exitTextEditMode(saveText: bool):
 		noteText.text = textEdit.text
 
 
+
+#################################################### GET/SETTERS
+func _____GET_SETTERS():pass
+
 func changeColour(newColour : Color):
 	noteBg.set_modulate(newColour)
 	colour = newColour
@@ -137,7 +149,11 @@ func setText(_text : String):
 func getEscapedText() -> String:
 	return noteText.text.c_escape()
 
-################################################ Signals
+
+
+################################################### SIGNALS
+func _____SIGNALS():pass
+
 func removeFromConnections():
 	emit_signal("RemoveFromConnections", self)
 
@@ -152,6 +168,8 @@ func emitUnhovered(note = self):
 
 #func requestLastColour(note: Note):
 #	emit_signal("ColourRequested", note)
+
+func _____TRUE_SIGNALS():pass
 
 func _on_dragger_gui_input(event):
 	if (event is InputEventMouseButton):

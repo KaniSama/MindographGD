@@ -15,18 +15,12 @@ var readOnNextFrame = [false, ""]
 
 var nextNoteUID : int = 0
 
+
+###################################################### OVERRIDES
+func _____OVERRIDES():pass
+
 func _ready():
 	noteResource = preload("res://note/note.tscn")
-
-func _input(event):
-#	if (event is InputEventKey && event.pressed && event.keycode == KEY_T):
-#		var j = get_child(0)
-#		for i in get_children():
-#			if (i is Note) && (j is Note) && (i.get_index() != 0):
-#				addConnection(i, j)
-#			j = i
-#		print(connections)
-	pass
 
 func _process(delta):
 	if (readOnNextFrame[0]):
@@ -35,7 +29,10 @@ func _process(delta):
 		loadFromFile(readOnNextFrame[1])
 		readOnNextFrame = [false, ""]
 
+
+
 ############################################### Note control
+func _____NOTE_CONTROL():pass
 
 # Nukes the whole note list
 func clearNotesAndConnections():
@@ -117,7 +114,13 @@ func connectNoteSignals(note: Note):
 	note.connect("unhovered", untarget)
 	#newNote.connect("ColourRequested", changeColour)
 
+func changeColour(note):
+	note.changeColour(get_parent().getLastColor())
 
+
+
+######################################################## CONNECTIONS
+func _____CONNECTIONS():pass
 
 func addConnection(note1, note2):
 	if (note1 != note2 && !connections.has( [note1, note2] ) && !connections.has( [note2, note1] )):
@@ -155,6 +158,9 @@ func untarget(note):
 		print(linkNextTarget)
 
 
+################################################## NOTE RENDER ORDER
+func _____NOTE_ORDER():pass
+
 func noteClicked(event, note):
 	putNoteOnTop(note)
 	
@@ -170,10 +176,9 @@ func putNoteOnTop(note):
 	move_child(note, get_child_count()-1)
 
 
-func changeColour(note):
-	note.changeColour(get_parent().getLastColor())
 
-
+################################################## NOTE UIDS
+func _____NOTE_UIDS():pass
 func getNoteByUID(_UID : int) -> Note:
 	for _note in get_children():
 		if (is_instance_valid(_note) && _note.UID == _UID):
@@ -202,6 +207,7 @@ func getNextUID() -> int:
 
 
 ################################################ SAVE / LOAD SYSTEM
+func _____SAVE_LOAD():pass
 
 func saveToFile():
 	var projectName : String = get_parent().getProjectName()
@@ -305,46 +311,3 @@ func loadFromFile(projectName):
 	
 	reshuffleUIDs()
 
-#var fileSaveScript = [
-#	"Add-Type -AssemblyName System.Windows.Forms",
-#	"$FileBrowser = New-Object System.Windows.Forms.SaveFileDialog",
-#	"$FileBrowser.filter = \"Mindograph File (.mg)| *.mg\"",
-#	"[void]$FileBrowser.ShowDialog()",
-#	"$FileBrowser.FileName"
-#]
-#var fileLoadScript = [
-#	"Add-Type -AssemblyName System.Windows.Forms",
-#	"$FileBrowser = New-Object System.Windows.Forms.OpenFileDialog",
-#	"$FileBrowser.filter = \"Mindograph File (.mg)| *.mg\"",
-#	"[void]$FileBrowser.ShowDialog()",
-#	"$FileBrowser.FileName"
-#]
-#
-## Give it an Array of valid PS commands
-#func exec_script(ps_script : Array) -> Array:
-#
-#	# Set file path
-#	var dir = DirAccess.open("user://")
-#	var path = ProjectSettings.globalize_path(dir.get_current_dir())
-#
-#	# Create the PS-File
-#	var save_file = FileAccess.open(path + "MindographGodotPSScriptTemp.ps1", FileAccess.WRITE)
-#
-#	for line in ps_script:
-#		save_file.store_line(line)
-#
-#	save_file.flush()
-#	save_file.close()
-#
-#	# Execute PowerShell script
-#	var output = []
-#	OS.execute("powershell.exe", ["-ExecutionPolicy", "Bypass", "-File", path + "/MindographGodotPSScriptTemp.ps1"], output, true, false)
-#
-#	# Try remove the \r\n from output string (does not work for some reason)
-#	for i in output:
-#		i = i.strip_edges()
-#
-#	# Remove the script for cleanliness reasons
-#	dir.remove(path + "/MindographGodotPSScriptTemp.ps1")
-#
-#	return output

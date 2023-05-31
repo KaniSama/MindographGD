@@ -22,6 +22,11 @@ var Modified : bool = false
 var lastColour: Color = Color.KHAKI
 
 
+
+##################################################### OVERRIDES
+func _____OVERRIDES():pass
+
+
 func _ready():
 	
 	## Initiates the program's state,
@@ -42,7 +47,33 @@ func _ready():
 	appSettingsWindow.UpdateConfig.connect(UpdateConfigFromSettings)
 
 
-##################################################### PROJECT LIST
+func _notification(what):
+	if (what == NOTIFICATION_WM_CLOSE_REQUEST):
+		
+		if (Modified):
+			## Stops the program from closing
+			get_tree().set_auto_accept_quit(false)
+			
+			# Close AppSettings window
+			CloseSettings()
+			
+			# Make GUI Question
+			exitConfirmationDialog.popup_centered()
+		else:
+			get_tree().set_auto_accept_quit(true)
+
+
+func _input(event):
+	if (!hud.getPopupVisible() && (event is InputEventKey || event is InputEventMouseButton)):
+		setModified()
+
+
+
+
+##################################################### PROJECT MANAGEMENT
+func _____PROJECT_MANAGEMENT():pass
+
+
 func clearWorkspace():
 	noteList.clearNotesAndConnections()
 
@@ -157,35 +188,7 @@ func updateProjectList():
 
 
 ##################################################### WINDOW BEHAVIOUR
-func _notification(what):
-	if (what == NOTIFICATION_WM_CLOSE_REQUEST):
-		
-		if (Modified):
-			## Stops the program from closing
-			get_tree().set_auto_accept_quit(false)
-			
-			# Close AppSettings window
-			CloseSettings()
-			
-			# Make GUI Question
-			exitConfirmationDialog.popup_centered()
-		else:
-			get_tree().set_auto_accept_quit(true)
-
-
-func _input(event):
-	if (!hud.getPopupVisible() && (event is InputEventKey || event is InputEventMouseButton)):
-		setModified()
-
-func setModified(_modified : bool = true):
-	Modified = _modified
-	
-	var _modifiedString = ""
-	if (Modified):
-		_modifiedString = "* "
-	
-	setWindowName(_modifiedString + getWindowName())
-
+func _____WINDOW_SETTERS():pass
 
 func setProjectName(projectName : String):
 	ProjectName = projectName
@@ -203,6 +206,16 @@ func setWindowName(newName : String):
 	)
 
 
+func setModified(_modified : bool = true):
+	Modified = _modified
+	
+	var _modifiedString = ""
+	if (Modified):
+		_modifiedString = "* "
+	
+	setWindowName(_modifiedString + getWindowName())
+
+
 func OpenSettings():
 	appSettingsWindow.popup_centered()
 
@@ -210,7 +223,11 @@ func CloseSettings():
 	appSettingsWindow.hide()
 
 
+
+
 ##################################################### HUD INTERACTIONS
+func _____HUD_SIGNALS():pass
+
 func ButtonAddPressed():
 	noteList.addNote()
 
@@ -223,6 +240,8 @@ func ButtonLoadPressed():
 
 
 ###################################################### NOTE INTERACTIONS
+func _____NOTE_INTERACTIONS():pass
+
 func ClearFocus():
 	grab_focus()
 
@@ -240,6 +259,8 @@ func Duplicate(note : Note):
 
 
 ######################################################## TIMER INTERACTIONS
+func _____TIMER_INTERACTIONS():pass
+
 func startAutosaveTimer(_seconds : int = 60):
 	autosaveTimer.start(_seconds)
 
@@ -248,6 +269,8 @@ func stopAutosaveTimer():
 
 
 ######################################################## HELPERS
+func _____HELPERS():pass
+
 func strToVersion(string : String) -> Array:
 	var _version_strs = string.strip_edges().replacen("v", "").split(".")
 	var _version_ints = []
@@ -298,8 +321,14 @@ func saveConfigToFile(config : Dictionary = Config):
 
 
 ######################################################## GET / SETTERS
+func _____GET_SETTERS():pass
+
 func getLastColour() -> Color:
 	return lastColour
+
+func setLastColour(newColour : Color):
+	lastColour = newColour
+
 
 func getProjectName() -> String:
 	return ProjectName
@@ -323,9 +352,8 @@ func getTimeTillAutosave() -> int:
 	return autosaveTimer.time_left
 
 
-func setLastColour(newColour : Color):
-	lastColour = newColour
-
+func getConfigKey(_value : Variant) -> String:
+	return Config.find_key(_value)
 
 func setConfigKey(key : String, value : Variant):
 	Config[key] = value
@@ -335,6 +363,8 @@ func setConfigKey(key : String, value : Variant):
 
 
 ########################################################## SIGNALS
+func _____SIGNALS():pass
+
 func _on_note_list_rmb_note(note):
 	hud.changeTarget(note)
 	hud.openRmbMenu()
