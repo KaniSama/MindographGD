@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bia5m7q7lf4el"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bia5m7q7lf4el"]
 
 [ext_resource type="FontFile" uid="uid://nx0bsdvw0qx8" path="res://note/Sticky Notes.ttf" id="1_g67jn"]
 
@@ -12,6 +12,13 @@ bg_color = Color(1, 1, 1, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvhq2"]
 bg_color = Color(0.937255, 0.937255, 0.937255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ki45w"]
+bg_color = Color(0.858824, 0.858824, 0.858824, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 
 [resource]
 Button/font_sizes/font_size = 94
@@ -32,3 +39,4 @@ TextEdit/colors/font_color = Color(0, 0, 0, 1)
 TextEdit/font_sizes/font_size = 22
 TextEdit/fonts/font = ExtResource("1_g67jn")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_kvhq2")
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ki45w")

@@ -98,4 +98,4 @@ func _on_open_projects_button_pressed():
 	OS.shell_open(ProjectSettings.globalize_path("user://Projects"))
 
 func _on_open_config_button_pressed():
-	OS.shell_open(ProjectSettings.globalize_path("user://Config"))
+	OS.shell_open(ProjectSettings.globalize_path("user://Config/config.json"))

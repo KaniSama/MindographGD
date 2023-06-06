@@ -4,7 +4,16 @@ class_name Workspace
 const AppName = "                 [Mindograph]"
 const CurrentVersion = [0, 0, 1, 0]
 
-var Config : Dictionary = {}
+@onready var Config : Dictionary = {
+	"version" : getCurrentVersion(),
+	"maximized" : true,
+	"windoww" : 1280,
+	"windowh" : 720,
+	"autosave" : true,
+	"autosavefreqmins" : 5,
+	"defaultcolour" : getLastColour(),
+	"defaultfont" : "default"
+}
 const ConfigFileLocation = "user://Config/config.json"
 
 var ProjectName : String = "!!untitled!!"
@@ -14,8 +23,9 @@ var Modified : bool = false
 @onready var hud : Node = $HUD
 @onready var noteList : Node = $NoteList
 
-@onready var exitConfirmationDialog = $ExitConfirmationDialog
-@onready var appSettingsWindow = $AppSettingsWindow
+@onready var exitConfirmationDialog : ConfirmationDialog = $ExitConfirmationDialog
+@onready var appSettingsWindow : Window = $AppSettingsWindow
+@onready var replaceWindow : Window = $ReplaceWindow
 
 @onready var autosaveTimer = $AutosaveTimer
 
@@ -36,15 +46,20 @@ func _ready():
 	## Connect to the HUD object's signals
 	hud.HudButtonAddPressed.connect(ButtonAddPressed)
 	hud.HudButtonSavePressed.connect(ButtonSavePressed)
-	hud.HudButtonLoadPressed.connect(ButtonLoadPressed)
+#	hud.HudButtonLoadPressed.connect(ButtonLoadPressed)
 	hud.CreateLink.connect(CreateLink)
 	hud.NewNote.connect(Duplicate)
 	hud.OpenProjectRequested.connect(loadProject)
 	hud.CreateProjectRequested.connect(createProject)
 	hud.OpenSettingsRequested.connect(OpenSettings)
+	hud.OpenReplaceRequested.connect(OpenReplace)
 	
-	## Connect to the AppSettingsWindow object's signals
+	## Connect to the subwindow objects's signals
 	appSettingsWindow.UpdateConfig.connect(UpdateConfigFromSettings)
+	replaceWindow.Confirm.connect(ReplaceTextInNotes)
+	
+	## Connect to the main window's signals
+	get_tree().root.get_window().size_changed.connect(WindowResized)
 
 
 func _notification(what):
@@ -115,15 +130,7 @@ func initProgram():
 	if (!dir.file_exists(configFileName)):
 		configFile = FileAccess.open(configFileName, FileAccess.WRITE)
 		
-		var config : Dictionary = {
-			"version" : getCurrentVersion(),
-			"maximized" : true,
-			"autosave" : true,
-			"autosavefreqmins" : 5,
-			"defaultcolour" : getLastColour(),
-			"defaultfont" : "default"
-		}
-		configFile.store_line(JSON.stringify(config,"\t",false,true))
+		configFile.store_line(JSON.stringify(Config,"\t",false,true))
 		
 		configFile.flush()
 		configFile.close()
@@ -148,8 +155,11 @@ func initProgram():
 	Config["defaultcolour"] = _newDefaultColour
 	
 	# Read the config and set the variables
+	var window = get_tree().root.get_window()
 	if (Config["maximized"]):
-		get_tree().root.get_window().set_mode(Window.MODE_MAXIMIZED)
+		window.set_mode(Window.MODE_MAXIMIZED)
+	else:
+		window.size = Vector2(Config["windoww"], Config["windowh"])
 	
 	appSettingsWindow.setAutosave(Config["autosave"], true)
 	appSettingsWindow.setAutosaveFrequency(Config["autosavefreqmins"], true)
@@ -162,7 +172,6 @@ func loadProject(_project_name : String):
 	clearWorkspace()
 	
 	setProjectName(_project_name)
-#	noteList.loadFromFile(projectName)
 	
 	noteList.readOnNextFrame = [true, _project_name]
 
@@ -223,6 +232,24 @@ func CloseSettings():
 	appSettingsWindow.hide()
 
 
+func OpenReplace():
+	replaceWindow.popup_centered()
+
+func CloseReplace():
+	replaceWindow.hide()
+
+
+func WindowResized():
+	var window = get_tree().root.get_window()
+	
+	UpdateConfigFromSettings("windoww", window.size.x)
+	UpdateConfigFromSettings("windowh", window.size.y)
+	
+	if (window.mode == Window.MODE_MAXIMIZED):
+		UpdateConfigFromSettings("maximized", true)
+	else:
+		UpdateConfigFromSettings("maximized", false)
+
 
 
 ##################################################### HUD INTERACTIONS
@@ -235,8 +262,9 @@ func ButtonSavePressed():
 	noteList.saveToFile()
 	setModified(false)
 
-func ButtonLoadPressed():
-	noteList.loadFromFile()
+#func ButtonLoadPressed():
+#	noteList.readOnNextFrame = [true, ProjectName]
+#	noteList.loadFromFile()
 
 
 ###################################################### NOTE INTERACTIONS
@@ -255,6 +283,15 @@ func Duplicate(note : Note):
 	
 	_note.dragging = true
 	_note.offset = -Vector2(_note.size.x * .5, 8)
+
+func ReplaceTextInNotes(_what : String, _forWhat : String, _whole : bool, _ignoreCase : bool):
+	_what = _what.strip_edges()
+	_forWhat = _forWhat.strip_edges()
+	
+	var _notesChanged = noteList.replaceTextInNotes(_what, _forWhat, _whole, _ignoreCase)
+	
+	OS.alert(str(_notesChanged) + " notes changed! :)")
+
 
 
 

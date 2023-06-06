@@ -2,12 +2,13 @@ extends Control
 
 signal HudButtonAddPressed
 signal HudButtonSavePressed
-signal HudButtonLoadPressed
+#signal HudButtonLoadPressed
 signal NewNote(note : Note)
 signal CreateLink(note1 : Note)
 signal OpenProjectRequested(projectName : String)
 signal CreateProjectRequested(projectName : String)
 signal OpenSettingsRequested
+signal OpenReplaceRequested
 
 ## RMB Menus
 @onready var canvas = $CanvasLayer
@@ -106,7 +107,7 @@ func showProjectList(_show : bool = true):
 
 
 func refreshProjectList():
-	setProjectList(get_parent().getProjectList())
+	setProjectList(parent.getProjectList())
 
 func setProjectList(projects : Array):
 	projectList.clear()
@@ -168,7 +169,7 @@ func _on_menu_backdrop_gui_input(event):
 
 func _on_color_picker_color_changed(color):
 	currentColour = color
-	get_parent().setLastColour(color)
+	parent.setLastColour(color)
 
 
 
@@ -219,7 +220,7 @@ func _on_rmb_menu_item_clicked(index, at_position, mouse_button_index):
 
 
 func _on_project_list_button_open_dir_pressed():
-	setProjectList(get_parent().getProjectList())
+	setProjectList(parent.getProjectList())
 	OS.shell_open(ProjectSettings.globalize_path("user://Projects"))
 
 func _on_project_list_button_cancel_pressed():
@@ -260,3 +261,6 @@ func _on_dialog_button_ok_pressed():
 
 func _on_button_settings_pressed():
 	emit_signal("OpenSettingsRequested")
+
+func _on_button_replace_pressed():
+	emit_signal("OpenReplaceRequested")

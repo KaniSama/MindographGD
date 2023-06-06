@@ -118,6 +118,61 @@ func changeColour(note):
 	note.changeColour(get_parent().getLastColor())
 
 
+## TODO : FIX!!
+func replaceTextInNotes(_what : String, _forWhat : String, _whole : bool, _ignoreCase : bool) -> int:
+	var _notesChanged : int = 0
+	var _notes = get_children()
+	
+	printt(_notes)
+	for _note in _notes:
+		var _text = _note.getText()
+	
+		if (_whole):
+			var _found = []
+			var _length = _what.length()
+			
+			var _position = 0
+			while ((_text.findn(_what, _position) if _ignoreCase else _text.find(_what, _position)) > -1):
+				_position = (_text.findn(_what, _position) if _ignoreCase else _text.find(_what, _position))
+				
+				if (_position == 0 || _text[_position-1] in " .,/?\\<>!@#$%^&*()[]{}|\n\t\b\a\"\';:~`"):
+					if (_position + _length >= _text.length()):
+						_found.append(_position)
+						break
+					elif (_text[_position + _length] in " .,/?\\<>!@#$%^&*()[]{}|\n\t\b\a\"\';:~`"):
+						_found.append(_position)
+				
+				_position += 1
+			
+			var _final = ""
+			var i = 0
+			while i in range(_text.length()):
+				if (i in _found):
+					_final += _forWhat
+					
+					i += _length
+					continue
+				
+				_final += _text[i]
+				i += 1
+			
+			if (_final != _text):
+				_note.setText(_final)
+				_notesChanged += 1
+			
+		else:
+			
+			if (_ignoreCase):
+				_note.setText(_text.replacen(_what, _forWhat).strip_edges())
+			else:
+				_note.setText(_text.replace(_what, _forWhat).strip_edges())
+			
+			if (_text != _note.getText()):
+				_notesChanged += 1
+	
+	return _notesChanged
+
+
 
 ######################################################## CONNECTIONS
 func _____CONNECTIONS():pass

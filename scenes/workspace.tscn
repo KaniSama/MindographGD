@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dowqipayg1sbx"]
+[gd_scene load_steps=10 format=3 uid="uid://dowqipayg1sbx"]
 
 [ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_wvxdq"]
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://pi852642fy8e" path="res://scenes/HUD.tscn" id="6_6cy78"]
 [ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_2kai4"]
 [ext_resource type="PackedScene" uid="uid://c3i7rai8kuhfr" path="res://scenes/AppSettingsWindow.tscn" id="8_nua0u"]
+[ext_resource type="Script" path="res://scripts/ReplaceWindow.gd" id="9_3s0v3"]
 
 [node name="Workspace" type="Control"]
 layout_mode = 3
@@ -67,6 +68,48 @@ script = ExtResource("7_2kai4")
 [node name="AppSettingsWindow" parent="." instance=ExtResource("8_nua0u")]
 visible = false
 
+[node name="ReplaceWindow" type="Window" parent="."]
+initial_position = 2
+title = "Replace Note Text"
+size = Vector2i(358, 232)
+visible = false
+transient = true
+unresizable = true
+script = ExtResource("9_3s0v3")
+
+[node name="ReplacerContainer" type="VBoxContainer" parent="ReplaceWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ReplaceWindow/ReplacerContainer"]
+layout_mode = 2
+text = "Replace what:"
+
+[node name="What" type="LineEdit" parent="ReplaceWindow/ReplacerContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="ReplaceWindow/ReplacerContainer"]
+layout_mode = 2
+text = "Replace with what:"
+
+[node name="ForWhat" type="LineEdit" parent="ReplaceWindow/ReplacerContainer"]
+layout_mode = 2
+
+[node name="FullWords" type="CheckBox" parent="ReplaceWindow/ReplacerContainer"]
+layout_mode = 2
+text = "Replace full word only"
+
+[node name="IgnoreCase" type="CheckBox" parent="ReplaceWindow/ReplacerContainer"]
+layout_mode = 2
+text = "Ignore case"
+
+[node name="OkButton" type="Button" parent="ReplaceWindow/ReplacerContainer"]
+layout_mode = 2
+text = "REPLACE ALL !"
+
 [node name="AutosaveTimer" type="Timer" parent="."]
 wait_time = 300.0
 
@@ -75,4 +118,6 @@ wait_time = 300.0
 [connection signal="rmbNote" from="NoteList" to="." method="_on_note_list_rmb_note"]
 [connection signal="confirmed" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_confirmed"]
 [connection signal="custom_action" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_custom_action"]
+[connection signal="close_requested" from="ReplaceWindow" to="ReplaceWindow" method="_on_close_requested"]
+[connection signal="pressed" from="ReplaceWindow/ReplacerContainer/OkButton" to="ReplaceWindow" method="_on_ok_button_pressed"]
 [connection signal="timeout" from="AutosaveTimer" to="." method="_on_autosave_timer_timeout"]
