@@ -10,6 +10,8 @@ var linkNextTarget : Note = null
 var readOnNextFrame = [false, ""]
 
 
+@onready var selected : Array = []
+
 @onready var connections : Array = []
 @onready var noteResource : Resource
 
@@ -118,7 +120,6 @@ func changeColour(note):
 	note.changeColour(get_parent().getLastColor())
 
 
-## TODO : FIX!!
 func replaceTextInNotes(_what : String, _forWhat : String, _whole : bool, _ignoreCase : bool) -> int:
 	var _notesChanged : int = 0
 	var _notes = get_children()
@@ -193,13 +194,8 @@ func connectionRequest(note : Note):
 
 func removeFromConnections(note):
 	for i in range(connections.size()-1, -1, -1):
-		if (connections[i].has(note)):
+		if (note in connections[i]):
 			connections.remove_at(i)
-#			print("removing connection " + connections[i])
-#	for i in connections:
-#		if (i.has(note)):
-#			connections.erase(i)
-#			print("removing connection " + str(i))
 
 func changeLinkNextTarget(note):
 	linkNextTarget = note
@@ -211,6 +207,25 @@ func untarget(note):
 		linkNextTarget = null
 		emit_signal("linkNextTargetChanged", linkNextTarget)
 		print(linkNextTarget)
+
+
+
+######################################################## SELECTION
+func _____SELECTION():pass
+
+func setSelected(_note : Note, _selected : bool = true):
+	if (is_instance_valid(_note) && _note not in selected):
+		selected.append(_note)
+	elif (!_selected):
+		selected.erase(_note)
+
+func setSelectedMultiple(_notes : Array, _selected : bool = true):
+	for _note in _notes:
+		setSelected(_note, _selected)
+
+func clearSelected():
+	selected = []
+
 
 
 ################################################## NOTE RENDER ORDER

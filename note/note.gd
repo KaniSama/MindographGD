@@ -4,7 +4,9 @@ class_name Note
 signal clicked
 signal hovered(note : Note)
 signal unhovered(note : Note)
-signal RemoveFromConnections
+signal RemoveFromConnections(note : Note)
+signal SelectedClick(note : Note)
+signal SelectedRect(note : Note)
 #signal ColourRequested(note : Note)
 
 var UID : int
@@ -13,6 +15,8 @@ var UID : int
 
 var pinPosition : Vector2 = Vector2.ZERO
 var pinned : bool = false
+
+var selected : bool = false
 
 @onready var dragger = $NoteContainer/Dragger
 @onready var pinIcon = $NoteContainer/PinIcon

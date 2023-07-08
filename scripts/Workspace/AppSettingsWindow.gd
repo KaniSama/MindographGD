@@ -70,7 +70,7 @@ func _on_request_completed(result, response_code, headers, body):
 		0:
 			OS.alert("You are using the latest version! Good job!")
 		1:
-			OS.alert("Somehow you're using an unreleased version! HOW")
+			OS.alert("Somehow you're using an unreleased version! Better be careful! :)")
 		2:
 			OS.alert("Version " + json["name"] + " available! \nOpening browser...")
 			OS.shell_open("https://github.com/KaniSama/MindographGD/releases/latest")

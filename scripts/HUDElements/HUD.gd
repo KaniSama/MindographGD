@@ -34,14 +34,29 @@ var coloring = false
 @onready var parent = get_parent()
 @onready var currentColour = parent.getLastColour()
 
+## Selector
+@onready var selector = $Selector
+enum selectionModes {
+	OFF = 0,
+	SELECTIVE = 1,
+	ADDITIVE = 2,
+	SUBTRACTIVE = 3
+}
+var selectionMode : selectionModes = selectionModes.OFF
+var selecting : bool = false
+var selectionBegin : Vector2 = Vector2.ZERO
+var selectionEnd : Vector2 = Vector2.ZERO
+
 ## Vars
 var target : Note = null
 
 var linkTarget : Note = null
 var drawingLink : bool = false
 
+
 ############################################################# overrides
 func _____OVERRIDES():pass
+
 
 func _ready():
 	refreshProjectList()
@@ -52,6 +67,18 @@ func _process(delta):
 	
 	if (coloring && target != null):
 		target.changeColour(currentColour)
+	
+	if (selectionMode):
+		if (Input.is_action_just_pressed("lmb")):
+			setSelecting()
+		elif (Input.is_action_just_released("lmb")):
+			setSelecting(false)
+		
+		if (selecting):
+			selector.position = get_global_mouse_position()
+			queue_redraw()
+			
+			selectionEnd = selector.position
 
 
 func _input(event):
@@ -63,19 +90,54 @@ func _input(event):
 		if (drawingLink):
 			drawingLink = false
 			queue_redraw()
+	
+	elif (event is InputEventKey && event.keycode == KEY_CTRL):
+		var __changed = false
+		
+		if (event.pressed):
+			if (selectionMode == selectionModes.OFF):
+				setSelectionMode(selectionModes.SELECTIVE)
+				__changed = true
+		else:
+			setSelectionMode(selectionModes.OFF)
+			__changed = true
+		
+		if (__changed):
+			print("Selection mode " + ("on" if selectionMode != selectionModes.OFF else "off"))
 
 
+func _draw():
+	if (selectionMode != selectionModes.OFF && selecting):
+		draw_rect(Rect2(selectionBegin, selectionEnd - selectionBegin), Color(1,1,1,1), false)
+		draw_rect(Rect2(selectionBegin, selectionEnd - selectionBegin), Color(1,1,1,.25), true)
 
 
 ############################################################### get / setters
 func _____GET_SETTERS():pass
 
+
 func getPopupVisible() -> bool :
 	return dialogBackdrop.visible || menuBackdrop.visible
 
 
+func setSelectionMode(_set : selectionModes = selectionModes.SELECTIVE):
+	selectionMode = _set
+	
+	if (_set == selectionModes.OFF):
+		setSelecting(false)
+
+func setSelecting(_set : bool = true):
+	selecting = _set
+	
+	selectionBegin = get_global_mouse_position()
+	
+	queue_redraw()
+
+
+
 ############################################################### helpers
 func _____HELPERS():pass
+
 
 func changeTarget(newTarget : Note = null):
 	target = newTarget
@@ -118,8 +180,10 @@ func setProjectList(projects : Array):
 		projectList.add_item(project, null, true)
 
 
+
 ############################################################### RMB MENU
 func _____RMB_MENU():pass
+
 
 func openRmbMenu():
 	rmbMenu.visible = true
@@ -132,6 +196,7 @@ func closeRmbMenu():
 	rmbMenu.visible = false
 	menuBackdrop.visible = false
 	coloring = false
+
 
 
 ############################################################### LINK
@@ -148,8 +213,36 @@ func finishLink():
 
 
 
+############################################################### SELECTION
+func _____SELECTION():pass
+
+func pointWithin(_point : Vector2, _posStart : Vector2, _posEnd : Vector2) -> bool:
+	return (
+		_point.x >= _posStart.x
+		&& _point.x <= _posEnd.x
+		&& _point.y >= _posStart.y
+		&& _point.y <= _posEnd.y
+	)
+
+func noteWithin(_note : Note, _posStart : Vector2, _posEnd : Vector2) -> bool:
+	var _noteCorners = [
+		_note.position,
+		Vector2(_note.position.x + _note.size.x, _note.position.y),
+		Vector2(_note.position.x, _note.position.y + _note.size.y),
+		_note.position + _note.size
+	]
+	
+	for i in _noteCorners:
+		if (pointWithin(i, _posStart, _posEnd)):
+			return true
+	
+	return false
+
+
+
 ################################################################## signals
 func _____SIGNALS():pass
+
 
 func _on_button_pressed():
 	emit_signal("HudButtonAddPressed")
