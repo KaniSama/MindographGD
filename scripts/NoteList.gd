@@ -53,7 +53,7 @@ func addNote() -> Note:
 	add_child(newNote)
 	connectNoteSignals(newNote)
 	
-	newNote.UID = getNextUID()
+	newNote.setUID(getNextUID())
 	
 	newNote.changeColour(get_parent().getLastColour())
 	
@@ -71,7 +71,8 @@ func addNoteFromContext(_UID:int, _text:String, _position:Vector2, _size:Vector2
 	add_child(newNote)
 	connectNoteSignals(newNote)
 	
-	newNote.UID = _UID
+#	newNote.UID = _UID
+	newNote.setUID(_UID)
 	
 	newNote.changeColour(_color)
 	
@@ -95,7 +96,8 @@ func duplicateNote(note : Note) -> Note:
 	add_child(newNote)
 	connectNoteSignals(newNote)
 	
-	newNote.UID = nextNoteUID
+#	newNote.UID = 
+	newNote.setUID(getNextUID())
 	nextNoteUID += 1
 	
 	newNote.find_child("TextEdit").text = note.find_child("TextEdit").text
@@ -249,6 +251,7 @@ func putNoteOnTop(note):
 
 ################################################## NOTE UIDS
 func _____NOTE_UIDS():pass
+
 func getNoteByUID(_UID : int) -> Note:
 	for _note in get_children():
 		if (is_instance_valid(_note) && _note.UID == _UID):
@@ -267,7 +270,7 @@ func reshuffleUIDs():
 	nextNoteUID = 0
 	
 	for _note in get_children():
-		_note.UID = getNextUID()
+		_note.setUID(getNextUID())
 
 func getNextUID() -> int:
 	while (UIDExists(nextNoteUID)):
@@ -328,6 +331,9 @@ func saveToFile():
 		file.store_64(connection[0].UID)
 		file.store_64(connection[1].UID)
 	
+	# Store a buffer value (may or may not help with connections being broken)
+	file.store_8(0)
+	
 	file.flush()
 	file.close()
 
@@ -360,7 +366,7 @@ func loadFromFile(projectName):
 		var _position = Vector2(file.get_float(), file.get_float())
 		var _size = Vector2(file.get_float(), file.get_float())
 		var _pinned = file.get_8()
-		var _color = file.get_var()
+		var _color : Color = file.get_var()
 		var _note = addNoteFromContext(_UID, _text, _position, _size, _color, _pinned)
 		_note.updatePinPosition()
 	# Connection Size (int)

@@ -2,7 +2,7 @@ extends Control
 class_name Workspace
 
 const AppName = "                 [Mindograph]"
-const CurrentVersion = [0, 0, 1, 0]
+const CurrentVersion = [0, 0, 1, 1]
 
 @onready var Config : Dictionary = {
 	"version" : getCurrentVersion(),
@@ -38,6 +38,8 @@ func _____OVERRIDES():pass
 
 
 func _ready():
+	
+	OS.low_processor_usage_mode = true
 	
 	## Initiates the program's state,
 	## including creating necessary folders if it's being run for the first time

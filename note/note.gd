@@ -10,6 +10,7 @@ signal SelectedRect(note : Note)
 #signal ColourRequested(note : Note)
 
 var UID : int
+@onready var UIDLabel : Label = $NoteContainer/UIDLabel
 @onready var colour : Color
 @onready var noteBg = $NoteContainer/NoteBg
 
@@ -57,6 +58,9 @@ func _process(delta):
 			resize()
 	else:
 		dropShadow.visible = false
+	
+	if (Input.is_action_just_pressed("ctrl_enter")):
+		UIDLabel.visible = !UIDLabel.visible
 
 
 ################################################## SIZE / POSITION CONTROLS
@@ -153,6 +157,9 @@ func setText(_text : String):
 func getEscapedText() -> String:
 	return noteText.text.c_escape()
 
+func setUID(_UID : int):
+	UID = _UID
+	UIDLabel.text = "UID " + str(UID)
 
 
 ################################################### SIGNALS

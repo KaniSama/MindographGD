@@ -33,6 +33,33 @@ func _process(delta):
 		gridPosition.y = round(position.y / GRIDSIZE.y)
 		
 		BG.position = gridPosition * GRIDSIZE - GRIDSIZE - BGPositionCenter
+		
+		
+		if (Input.is_action_pressed("mmb")):
+			# Warp mouse if dragging screen outside of workspace view
+			var _mouse = get_viewport().get_mouse_position()
+			var _size = get_viewport_rect().size
+			
+			var _padding : Vector2 = Vector2(5, 5)
+			var _padding_sm : Vector2 = Vector2(2, 2)
+			var _regrab = false
+			
+			if (_mouse.x > _size.x - _padding_sm.x):
+				_regrab = true
+				get_viewport().warp_mouse(Vector2(_mouse.x - _size.x + _padding.x , _mouse.y))
+			if (_mouse.x < 0 + _padding_sm.x):
+				_regrab = true
+				get_viewport().warp_mouse(Vector2(_mouse.x + _size.x - _padding.x , _mouse.y))
+			if (_mouse.y > _size.y - _padding_sm.y):
+				_regrab = true
+				get_viewport().warp_mouse(Vector2(_mouse.x, _mouse.y - _size.y + _padding.y))
+			if (_mouse.y < 0 + _padding_sm.y):
+				_regrab = true
+				get_viewport().warp_mouse(Vector2(_mouse.x, _mouse.y + _size.y - _padding.y))
+			
+			if (_regrab):
+				grab = get_global_mouse_position()
+	
 	
 	if (Input.is_action_just_released("mmb")):
 		grabbed = false
