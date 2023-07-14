@@ -99,3 +99,8 @@ func _on_open_projects_button_pressed():
 
 func _on_open_config_button_pressed():
 	OS.shell_open(ProjectSettings.globalize_path("user://Config/config.json"))
+
+
+func _on_leave_feedback_button_pressed():
+	OS.alert("Opening browser...")
+	OS.shell_open("https://forms.gle/B3nivEanm7JRiSF89")

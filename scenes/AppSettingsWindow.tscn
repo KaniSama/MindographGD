@@ -104,6 +104,21 @@ layout_mode = 2
 [node name="HSeparator7" type="HSeparator" parent="BG/GridContainer"]
 layout_mode = 2
 
+[node name="LeaveFeedbackLabel" type="Label" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Give me your feedback!"
+horizontal_alignment = 2
+
+[node name="LeaveFeedbackButton" type="Button" parent="BG/GridContainer"]
+layout_mode = 2
+text = "Leave feedback!"
+
+[node name="HSeparator8" type="HSeparator" parent="BG/GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator9" type="HSeparator" parent="BG/GridContainer"]
+layout_mode = 2
+
 [node name="CurrentVersion" type="Label" parent="BG/GridContainer"]
 layout_mode = 2
 text = "Current version: "
@@ -120,4 +135,5 @@ text = "Check for updates"
 [connection signal="color_changed" from="BG/GridContainer/DefaultNoteColour" to="." method="_on_default_note_colour_color_changed"]
 [connection signal="pressed" from="BG/GridContainer/OpenProjectsButton" to="." method="_on_open_projects_button_pressed"]
 [connection signal="pressed" from="BG/GridContainer/OpenConfigButton" to="." method="_on_open_config_button_pressed"]
+[connection signal="pressed" from="BG/GridContainer/LeaveFeedbackButton" to="." method="_on_leave_feedback_button_pressed"]
 [connection signal="pressed" from="BG/GridContainer/UpdateButton" to="." method="_on_update_button_pressed"]
