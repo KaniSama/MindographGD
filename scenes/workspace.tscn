@@ -56,8 +56,8 @@ script = ExtResource("5_0kgjp")
 [node name="ExitConfirmationDialog" type="ConfirmationDialog" parent="."]
 disable_3d = true
 canvas_item_default_texture_filter = 0
-initial_position = 2
 title = "You have unsaved changes!"
+initial_position = 2
 size = Vector2i(359, 100)
 unresizable = true
 always_on_top = true
@@ -69,8 +69,8 @@ script = ExtResource("7_2kai4")
 visible = false
 
 [node name="ReplaceWindow" type="Window" parent="."]
-initial_position = 2
 title = "Replace Note Text"
+initial_position = 2
 size = Vector2i(358, 232)
 visible = false
 transient = true

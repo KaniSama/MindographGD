@@ -4,8 +4,8 @@
 
 [node name="AppSettingsWindow" type="Window"]
 disable_3d = true
-initial_position = 1
 title = "Application Settings"
+initial_position = 1
 size = Vector2i(415, 406)
 wrap_controls = true
 transient = true

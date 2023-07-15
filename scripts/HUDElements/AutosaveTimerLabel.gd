@@ -12,5 +12,5 @@ func _process(_delta: float) -> void:
 
 
 func _input(event):
-	if (event is InputEventKey && event.keycode == KEY_F && event.pressed):
+	if (event is InputEventKey && event.keycode == KEY_F3 && event.pressed):
 		visible = !visible
