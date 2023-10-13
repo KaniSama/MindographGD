@@ -119,6 +119,11 @@ popup_window = false
 [node name="AutosaveTimer" type="Timer" parent="."]
 wait_time = 300.0
 
+[node name="FPSResetTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
 [connection signal="gui_input" from="Background" to="." method="_on_background_gui_input"]
 [connection signal="linkNextTargetChanged" from="NoteList" to="." method="_on_note_list_link_next_target_changed"]
 [connection signal="rmbNote" from="NoteList" to="." method="_on_note_list_rmb_note"]
@@ -127,3 +132,4 @@ wait_time = 300.0
 [connection signal="close_requested" from="ReplaceWindow" to="ReplaceWindow" method="_on_close_requested"]
 [connection signal="pressed" from="ReplaceWindow/ReplacerContainer/OkButton" to="ReplaceWindow" method="_on_ok_button_pressed"]
 [connection signal="timeout" from="AutosaveTimer" to="." method="_on_autosave_timer_timeout"]
+[connection signal="timeout" from="FPSResetTimer" to="." method="_on_fps_reset_timer_timeout"]

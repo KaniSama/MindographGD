@@ -29,6 +29,7 @@ var Modified : bool = false
 @onready var replaceWindow : Window = $ReplaceWindow
 
 @onready var autosaveTimer = $AutosaveTimer
+@onready var fpsResetTimer = $FPSResetTimer
 
 var lastColour: Color = Color.KHAKI
 
@@ -82,6 +83,10 @@ func _notification(what):
 
 
 func _input(event):
+	Engine.max_fps = 0
+	fpsResetTimer.start()
+	
+	
 	if (!hud.getPopupVisible() && (event is InputEventKey || event is InputEventMouseButton)):
 		setModified()
 
@@ -433,3 +438,6 @@ func _on_note_list_link_next_target_changed(note):
 func _on_autosave_timer_timeout():
 	if (getProjectName() != "!!untitled!!"):
 		noteList.saveToFile()
+
+func _on_fps_reset_timer_timeout():
+	Engine.max_fps = 15
