@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://pi852642fy8e"]
+[gd_scene load_steps=22 format=3 uid="uid://pi852642fy8e"]
 
 [ext_resource type="Script" path="res://scripts/HUDElements/HUD.gd" id="1_jaeg1"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_iy3s7"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.gd" id="6_b3ab8"]
 [ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawer.gd" id="7_8123t"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ProjectNameTextBox.gd" id="7_utv7t"]
+[ext_resource type="StyleBox" uid="uid://yewjlrpyduup" path="res://theme/OkButtonStyle.tres" id="10_wehai"]
+[ext_resource type="StyleBox" uid="uid://db8jnt64sdrm2" path="res://theme/OkButtonHoverStyle.tres" id="11_2tmou"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1v5q"]
 bg_color = Color(0, 0, 0, 0.164706)
@@ -215,10 +217,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 344.0
-offset_top = 172.0
-offset_right = 129.0
-offset_bottom = 172.0
+offset_left = 392.0
+offset_top = 196.0
+offset_right = 153.0
+offset_bottom = 196.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
@@ -237,6 +239,40 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_force_pass_scroll_events = false
+
+[node name="NameSetDialog" type="Window" parent="CanvasLayer/DialogBackdrop"]
+title = "Project"
+initial_position = 1
+size = Vector2i(378, 119)
+visible = false
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogBackdrop/NameSetDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProjectNameLineEdit" type="LineEdit" parent="CanvasLayer/DialogBackdrop/NameSetDialog/VBoxContainer"]
+custom_minimum_size = Vector2(0, 47.515)
+layout_mode = 2
+placeholder_text = "Enter the name of the project"
+
+[node name="NameSetButtonOK" type="Button" parent="CanvasLayer/DialogBackdrop/NameSetDialog/VBoxContainer"]
+layout_mode = 2
+mouse_force_pass_scroll_events = false
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("10_wehai")
+theme_override_styles/hover = ExtResource("11_2tmou")
+text = "OK"
+
+[node name="NameSetButtonCancel" type="Button" parent="CanvasLayer/DialogBackdrop/NameSetDialog/VBoxContainer"]
+layout_mode = 2
+text = "Cancel"
 
 [node name="DialogList" type="VBoxContainer" parent="CanvasLayer/DialogBackdrop"]
 visible = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dowqipayg1sbx"]
+[gd_scene load_steps=11 format=3 uid="uid://dowqipayg1sbx"]
 
 [ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_wvxdq"]
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_2kai4"]
 [ext_resource type="PackedScene" uid="uid://c3i7rai8kuhfr" path="res://scenes/AppSettingsWindow.tscn" id="8_nua0u"]
 [ext_resource type="Script" path="res://scripts/ReplaceWindow.gd" id="9_3s0v3"]
+[ext_resource type="PackedScene" uid="uid://wowejr3x4ppj" path="res://scenes/HelpWindow.tscn" id="10_0s3by"]
 
 [node name="Workspace" type="Control"]
 layout_mode = 3
@@ -109,6 +110,11 @@ text = "Ignore case"
 [node name="OkButton" type="Button" parent="ReplaceWindow/ReplacerContainer"]
 layout_mode = 2
 text = "REPLACE ALL !"
+
+[node name="HelpWindow" parent="." instance=ExtResource("10_0s3by")]
+initial_position = 1
+visible = false
+popup_window = false
 
 [node name="AutosaveTimer" type="Timer" parent="."]
 wait_time = 300.0

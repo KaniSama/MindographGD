@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://wowejr3x4ppj"]
+
+[ext_resource type="Script" path="res://scripts/HelpWindow.gd" id="1_m1bel"]
+
+[node name="HelpWindow" type="Window"]
+position = Vector2i(0, 36)
+size = Vector2i(560, 360)
+unresizable = true
+popup_window = true
+script = ExtResource("1_m1bel")
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 330
+dragger_visibility = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Here's how you can use Mindograph:"
+autowrap_mode = 2
+
+[node name="Label2" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "- Controls:
+-- Middle Mouse Button - Pan camera
+-- Scroll Wheel - Zoom
+-- Home - Reset zoom
+-- F3 - Debug display
+
+- Note Controls:
+-- Drag the top of the note to move it
+-- Drag the bottom-right corner to resize the note
+-- Double-click the top to pin the note
+-- Right-click the note to see extra options"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
+layout_mode = 2
+split_offset = 350
+
+[node name="HideForeverCheck" type="CheckBox" parent="VSplitContainer/HSplitContainer"]
+layout_mode = 2
+text = "Don't show this window again"
+
+[node name="OKButton" type="Button" parent="VSplitContainer/HSplitContainer"]
+layout_mode = 2
+text = "Ok, thanks"
+
+[connection signal="pressed" from="VSplitContainer/HSplitContainer/OKButton" to="." method="_on_ok_button_pressed"]

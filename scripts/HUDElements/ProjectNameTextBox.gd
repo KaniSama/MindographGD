@@ -14,9 +14,9 @@ var last_caret = 0
 
 
 func _on_text_changed(new_text : String):
-	if (!new_text.is_valid_filename()):
-		text = last_line
-		caret_column = last_caret
-	else:
+	if (new_text.is_valid_filename() || new_text.is_empty()):
 		last_line = new_text
 		last_caret = caret_column
+	else:
+		text = last_line
+		caret_column = last_caret

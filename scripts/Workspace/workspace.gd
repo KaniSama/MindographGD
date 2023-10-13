@@ -12,6 +12,7 @@ const CurrentVersion = [0, 0, 2, 0]
 	"autosave" : true,
 	"autosavefreqmins" : 5,
 	"defaultcolour" : getLastColour(),
+	"defaultlinkcolour": Color.RED,
 	"defaultfont" : "default"
 }
 const ConfigFileLocation = "user://Config/config.json"
@@ -126,29 +127,36 @@ func initProgram():
 		dir = DirAccess.open("user://Config")
 	
 	# Create config file
-	var configFileName = ConfigFileLocation
-	var configFile : FileAccess
+	var _configFileName = ConfigFileLocation
+	var _configFile : FileAccess
 	
-	if (!dir.file_exists(configFileName)):
-		configFile = FileAccess.open(configFileName, FileAccess.WRITE)
+	if (!dir.file_exists(_configFileName)):
+		_configFile = FileAccess.open(_configFileName, FileAccess.WRITE)
 		
-		configFile.store_line(JSON.stringify(Config,"\t",false,true))
+		_configFile.store_line(JSON.stringify(Config,"\t",false,true))
 		
-		configFile.flush()
-		configFile.close()
+		_configFile.flush()
+		_configFile.close()
 	
-	# Load config file into a dictionary
-	configFile = FileAccess.open(configFileName, FileAccess.READ)
 	
-	var configString = ""
-	while (!configFile.eof_reached()):
-		configString += configFile.get_line().replace("\n", "")
+	# Load config file into a single JSON string
+	_configFile = FileAccess.open(_configFileName, FileAccess.READ)
 	
-	var config : Dictionary = JSON.parse_string(configString)
+	var _configString = ""
+	while (!_configFile.eof_reached()):
+		_configString += _configFile.get_line().replace("\n", "")
 	
-	Config = config
+	# Read config JSON and set variables
+	# ! Does not set variables that aren't in the file !
+	var _config : Dictionary = JSON.parse_string(_configString)
+	
+	for __i in _config.keys():
+		Config[__i] = _config[__i]
+	#Config = _config
 	Config["version"] = getCurrentVersion()
 	
+	
+	# convert a String gotten from the text file into Color
 	var _colourToArray = Config["defaultcolour"].replace("(","").replace(")","").split(",")
 	var _colourArray = []
 	for i in _colourToArray:
@@ -157,11 +165,11 @@ func initProgram():
 	Config["defaultcolour"] = _newDefaultColour
 	
 	# Read the config and set the variables
-	var window = get_tree().root.get_window()
+	var _window = get_tree().root.get_window()
 	if (Config["maximized"]):
-		window.set_mode(Window.MODE_MAXIMIZED)
+		_window.set_mode(Window.MODE_MAXIMIZED)
 	else:
-		window.size = Vector2(Config["windoww"], Config["windowh"])
+		_window.size = Vector2(Config["windoww"], Config["windowh"])
 	
 	appSettingsWindow.setAutosave(Config["autosave"], true)
 	appSettingsWindow.setAutosaveFrequency(Config["autosavefreqmins"], true)
