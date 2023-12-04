@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://wowejr3x4ppj"]
+[gd_scene load_steps=3 format=3 uid="uid://be3gcb0o8yuwh"]
 
 [ext_resource type="Script" path="res://scripts/HelpWindow.gd" id="1_m1bel"]
 [ext_resource type="StyleBox" uid="uid://l8474ad4qmnk" path="res://theme/WindowBackground.tres" id="2_cpslr"]

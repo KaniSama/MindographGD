@@ -2,7 +2,7 @@ extends Control
 class_name Workspace
 
 const AppName = "                 [Mindograph]"
-const CurrentVersion = [0, 0, 2, 0]
+const CurrentVersion = [0, 0, 1, 2]
 
 @onready var Config : Dictionary = {
 	"version" : getCurrentVersion(),

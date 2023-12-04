@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_2kai4"]
 [ext_resource type="PackedScene" uid="uid://c3i7rai8kuhfr" path="res://scenes/AppSettingsWindow.tscn" id="8_nua0u"]
 [ext_resource type="Script" path="res://scripts/ReplaceWindow.gd" id="9_3s0v3"]
-[ext_resource type="PackedScene" uid="uid://wowejr3x4ppj" path="res://scenes/HelpWindow.tscn" id="10_0s3by"]
+[ext_resource type="PackedScene" uid="uid://be3gcb0o8yuwh" path="res://scenes/HelpWindow.tscn" id="10_0s3by"]
 [ext_resource type="StyleBox" uid="uid://l8474ad4qmnk" path="res://theme/WindowBackground.tres" id="10_7cpvk"]
 
 [node name="Workspace" type="Control"]
