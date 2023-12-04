@@ -31,6 +31,9 @@ var Modified : bool = false
 @onready var autosaveTimer = $AutosaveTimer
 @onready var fpsResetTimer = $FPSResetTimer
 
+@onready var UndoStack = UndoRedo.new()
+@onready var UndoStackVersion = UndoStack.get_version()
+
 var lastColour: Color = Color.KHAKI
 
 
@@ -88,7 +91,8 @@ func _input(event):
 	
 	
 	if (!hud.getPopupVisible() && (event is InputEventKey || event is InputEventMouseButton)):
-		setModified()
+		if (UndoStack.get_version() != UndoStackVersion):
+			setModified()
 
 
 
@@ -97,8 +101,10 @@ func _input(event):
 func _____PROJECT_MANAGEMENT():pass
 
 
+# NUKES WORKSPACE & CLEARS UNDO HISTORY !!!
 func clearWorkspace():
 	noteList.clearNotesAndConnections()
+	UndoStack.clear_history(false)
 
 func initProgram():
 	
@@ -236,6 +242,8 @@ func setModified(_modified : bool = true):
 	var _modifiedString = ""
 	if (Modified):
 		_modifiedString = "* "
+	else:
+		UndoStackVersion = UndoStack.get_version()
 	
 	setWindowName(_modifiedString + getWindowName())
 
