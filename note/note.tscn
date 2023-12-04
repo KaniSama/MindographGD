@@ -1,10 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://ddeucfi3rye2c"]
+[gd_scene load_steps=11 format=3 uid="uid://ddeucfi3rye2c"]
 
 [ext_resource type="Script" path="res://note/note.gd" id="1_gr2mf"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_yj778"]
 [ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_gm0tl"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2fyyi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o657l"]
+bg_color = Color(0.152941, 0.105882, 0.160784, 1)
 
 [sub_resource type="InputEventKey" id="InputEventKey_uwyne"]
 command_or_control_autoremap = true
@@ -49,6 +52,21 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="DarkModePanel" type="Panel" parent="NoteContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o657l")
+
 [node name="TextWrapper" type="PanelContainer" parent="NoteContainer"]
 clip_contents = true
 layout_mode = 1
@@ -64,6 +82,7 @@ grow_vertical = 2
 mouse_filter = 1
 
 [node name="NoteText" type="Label" parent="NoteContainer/TextWrapper"]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_vertical = 1
 text = "Double-click to edit text"

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://wowejr3x4ppj"]
+[gd_scene load_steps=3 format=3 uid="uid://wowejr3x4ppj"]
 
 [ext_resource type="Script" path="res://scripts/HelpWindow.gd" id="1_m1bel"]
+[ext_resource type="StyleBox" uid="uid://l8474ad4qmnk" path="res://theme/WindowBackground.tres" id="2_cpslr"]
 
 [node name="HelpWindow" type="Window"]
 position = Vector2i(0, 36)
@@ -9,30 +10,36 @@ unresizable = true
 popup_window = true
 script = ExtResource("1_m1bel")
 
-[node name="VSplitContainer" type="VSplitContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_cpslr")
+
+[node name="VSplitContainer" type="VSplitContainer" parent="PanelContainer"]
+layout_mode = 2
 split_offset = 330
 dragger_visibility = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VSplitContainer"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VSplitContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VSplitContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(256, 32)
 layout_mode = 2
 text = "Here's how you can use Mindograph:"
 autowrap_mode = 2
 
-[node name="Label2" type="Label" parent="VSplitContainer/ScrollContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="PanelContainer/VSplitContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(256, 128)
 layout_mode = 2
 text = "- Controls:
 -- Middle Mouse Button - Pan camera
@@ -45,17 +52,18 @@ text = "- Controls:
 -- Drag the bottom-right corner to resize the note
 -- Double-click the top to pin the note
 -- Right-click the note to see extra options"
+autowrap_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/VSplitContainer"]
 layout_mode = 2
 split_offset = 350
 
-[node name="HideForeverCheck" type="CheckBox" parent="VSplitContainer/HSplitContainer"]
+[node name="HideForeverCheck" type="CheckBox" parent="PanelContainer/VSplitContainer/HSplitContainer"]
 layout_mode = 2
 text = "Don't show this window again"
 
-[node name="OKButton" type="Button" parent="VSplitContainer/HSplitContainer"]
+[node name="OKButton" type="Button" parent="PanelContainer/VSplitContainer/HSplitContainer"]
 layout_mode = 2
 text = "Ok, thanks"
 
-[connection signal="pressed" from="VSplitContainer/HSplitContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VSplitContainer/HSplitContainer/OKButton" to="." method="_on_ok_button_pressed"]

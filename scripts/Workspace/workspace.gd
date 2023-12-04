@@ -11,6 +11,7 @@ const CurrentVersion = [0, 0, 2, 0]
 	"windowh" : 720,
 	"autosave" : true,
 	"autosavefreqmins" : 5,
+	"darkmode" : false,
 	"defaultcolour" : getLastColour(),
 	"defaultlinkcolour": Color.RED,
 	"defaultfont" : "default"
@@ -23,6 +24,8 @@ var Modified : bool = false
 
 @onready var hud : Node = $HUD
 @onready var noteList : Node = $NoteList
+
+@onready var backgroundTexture = $Background
 
 @onready var exitConfirmationDialog : ConfirmationDialog = $ExitConfirmationDialog
 @onready var appSettingsWindow : Window = $AppSettingsWindow
@@ -91,7 +94,8 @@ func _input(event):
 	
 	
 	if (!hud.getPopupVisible() && (event is InputEventKey || event is InputEventMouseButton)):
-		if (UndoStack.get_version() != UndoStackVersion):
+		# TODO: UndoStack things
+		#if (UndoStack.get_version() != UndoStackVersion):
 			setModified()
 
 
@@ -184,6 +188,8 @@ func initProgram():
 	
 	appSettingsWindow.setAutosave(Config["autosave"], true)
 	appSettingsWindow.setAutosaveFrequency(Config["autosavefreqmins"], true)
+	appSettingsWindow.setDarkMode(Config["darkmode"], true)
+	backgroundTexture.visible = !Config["darkmode"]
 	appSettingsWindow.setDefaultColour(Config["defaultcolour"])
 	setLastColour(Config["defaultcolour"])
 	
@@ -372,6 +378,9 @@ func UpdateConfigFromSettings(_key : String, _value : Variant):
 		startAutosaveTimer(Config["autosavefreqmins"] * 60)
 	elif (_key == "autosave" && !_value || _key == "autosavefreqmins" && _value == 0):
 		stopAutosaveTimer()
+	
+	if (_key == "darkmode"):
+		setDarkMode(_value)
 
 func saveConfigToFile(config : Dictionary = Config):
 	var configFile = FileAccess.open(ConfigFileLocation, FileAccess.WRITE)
@@ -388,6 +397,14 @@ func getLastColour() -> Color:
 
 func setLastColour(newColour : Color):
 	lastColour = newColour
+
+
+func setDarkMode(_set) -> void:
+	noteList.setNoteDarkMode(_set)
+	backgroundTexture.visible = !_set
+
+func getDarkMode() -> bool:
+	return Config["darkmode"]
 
 
 func getProjectName() -> String:
@@ -433,9 +450,9 @@ func _on_note_list_rmb_note(note):
 #	hud.changeLinkTarget(note)
 #	hud.startLink()
 
-func _on_background_gui_input(event):
-	if (event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT):
-		hud.changeTarget()
+#func _on_background_gui_input(event):
+	#if (event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT):
+		#hud.changeTarget()
 
 
 func _on_note_list_link_next_target_changed(note):

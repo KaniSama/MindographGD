@@ -60,6 +60,7 @@ func addNote() -> Note:
 	newNote.setUID(getNextUID())
 	
 	newNote.changeColour(get_parent().getLastColour())
+	newNote.setDarkMode(get_parent().getDarkMode())
 	
 	newNote.position = get_global_mouse_position()
 	newNote.dragging = true
@@ -79,6 +80,7 @@ func addNoteFromContext(_UID:int, _text:String, _position:Vector2, _size:Vector2
 	newNote.setUID(_UID)
 	
 	newNote.changeColour(_color)
+	newNote.setDarkMode(get_parent().getDarkMode())
 	
 	newNote.position = _position
 	newNote.dragging = false
@@ -169,6 +171,10 @@ func replaceTextInNotes(_what : String, _forWhat : String, _whole : bool, _ignor
 				_notesChanged += 1
 	
 	return _notesChanged
+
+func setNoteDarkMode(_set : bool = true):
+	for n:Note in get_children():
+		n.setDarkMode(_set)
 
 
 

@@ -1,5 +1,5 @@
 extends Window
-@onready var check = $VSplitContainer/HSplitContainer/HideForeverCheck
+@onready var check = $PanelContainer/VSplitContainer/HSplitContainer/HideForeverCheck
 
 ########################################### OVERRIDES
 func _____OVERRIDES(): pass
