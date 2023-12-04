@@ -2,10 +2,10 @@ extends Window
 
 signal Confirm(_what : String, _forWhat : String, _whole : bool, _ignoreCase : bool)
 
-@onready var what = $ReplacerContainer/What
-@onready var forWhat = $ReplacerContainer/ForWhat
-@onready var whole = $ReplacerContainer/FullWords
-@onready var ignoreCase = $ReplacerContainer/IgnoreCase
+@onready var what = $PanelContainer/ReplacerContainer/What
+@onready var forWhat = $PanelContainer/ReplacerContainer/ForWhat
+@onready var whole = $PanelContainer/ReplacerContainer/FullWords
+@onready var ignoreCase = $PanelContainer/ReplacerContainer/IgnoreCase
 
 
 

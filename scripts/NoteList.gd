@@ -25,6 +25,10 @@ func _ready():
 	noteResource = preload("res://note/note.tscn")
 
 func _process(delta):
+#	if (Input.is_action_just_pressed("debug")):
+#		for n in get_children():
+#			print(n.UID)
+	
 	if (readOnNextFrame[0]):
 		await get_tree().process_frame
 		
@@ -56,6 +60,7 @@ func addNote() -> Note:
 	newNote.setUID(getNextUID())
 	
 	newNote.changeColour(get_parent().getLastColour())
+	newNote.setDarkMode(get_parent().getDarkMode())
 	
 	newNote.position = get_global_mouse_position()
 	newNote.dragging = true
@@ -75,6 +80,7 @@ func addNoteFromContext(_UID:int, _text:String, _position:Vector2, _size:Vector2
 	newNote.setUID(_UID)
 	
 	newNote.changeColour(_color)
+	newNote.setDarkMode(get_parent().getDarkMode())
 	
 	newNote.position = _position
 	newNote.dragging = false
@@ -91,23 +97,14 @@ func addNoteFromContext(_UID:int, _text:String, _position:Vector2, _size:Vector2
 	return newNote
 
 func duplicateNote(note : Note) -> Note:
-	var newNote : Node = noteResource.instantiate()
-	
-	add_child(newNote)
-	connectNoteSignals(newNote)
-	
-#	newNote.UID = 
-	newNote.setUID(getNextUID())
-	nextNoteUID += 1
-	
-	newNote.find_child("TextEdit").text = note.find_child("TextEdit").text
-	newNote.changeColour(note.colour)
-	
-	newNote.position = get_global_mouse_position()
-	newNote.dragging = true
-	newNote.offset = - Vector2(newNote.size.x * .5, 16)
-	
-	newNote.show_behind_parent = true
+	var newNote : Node = addNoteFromContext(
+		note.UID,
+		note.getText(), 
+		note.position, 
+		note.size, 
+		note.colour, 
+		note.pinned
+	)
 	
 	return newNote
 
@@ -174,6 +171,10 @@ func replaceTextInNotes(_what : String, _forWhat : String, _whole : bool, _ignor
 				_notesChanged += 1
 	
 	return _notesChanged
+
+func setNoteDarkMode(_set : bool = true):
+	for n:Note in get_children():
+		n.setDarkMode(_set)
 
 
 
@@ -283,6 +284,8 @@ func getNextUID() -> int:
 func _____SAVE_LOAD():pass
 
 func saveToFile():
+	reshuffleUIDs()
+	
 	var projectName : String = get_parent().getProjectName()
 	
 	var file = FileAccess.open(

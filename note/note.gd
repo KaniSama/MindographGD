@@ -35,6 +35,7 @@ var resizing : bool = false
 var editing = false
 
 @onready var dropShadow = $NoteContainer/DropShadow
+@onready var darkModePanel = $NoteContainer/DarkModePanel
 
 
 ################################################## OVERRIDES
@@ -156,6 +157,15 @@ func getEscapedText() -> String:
 func setUID(_UID : int):
 	UID = _UID
 #	UIDLabel.text = "UID " + str(UID)
+
+
+func setDarkMode(_set : bool = true):
+	darkModePanel.visible = _set
+	
+	if (_set):
+		noteText.add_theme_color_override("font_color", colour)
+	else:
+		noteText.add_theme_color_override("font_color", Color(0,0,0,1))
 
 
 ################################################### SIGNALS

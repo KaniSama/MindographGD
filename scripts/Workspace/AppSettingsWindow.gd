@@ -8,10 +8,13 @@ signal UpdateConfig(key : String, value)
 @onready var autosave = $BG/GridContainer/Autosave
 @onready var autosaveFrequency = $BG/GridContainer/AutosaveFreq
 @onready var defaultColour = $BG/GridContainer/DefaultNoteColour
+@onready var darkMode = $BG/GridContainer/DarkMode
 
 ########################################### OVERRIDES
+func _____OVERRIDES()->void:pass
 
-func _ready():
+
+func _ready() -> void:
 	var currentVersion = get_parent().getCurrentVersion()
 	
 	versionLabel.text += currentVersion
@@ -19,26 +22,36 @@ func _ready():
 
 ########################################### HELPER FUNCTIONS
 ########################################### GET SETTERS
+func _____GET_SETTERS()->void:pass
+
 
 ## If _emit_signal is true, these values will save to the config.json file
-func setAutosave(_value : bool = true, _emit_signal : bool = true):
+func setAutosave(_value : bool = true, _emit_signal : bool = true) -> void:
 	if (_emit_signal):
 		autosave.set_pressed(_value)
 	else:
 		autosave.set_pressed_no_signal(_value)
 
-func setAutosaveFrequency(_value : int, _emit_signal : bool = true):
+func setAutosaveFrequency(_value : int, _emit_signal : bool = true) -> void:
 	if (_emit_signal):
 		autosaveFrequency.set_value(_value)
 	else:
 		autosaveFrequency.set_value_no_signal(_value)
 
-func setDefaultColour(_value : Color):
+func setDarkMode(_value : bool = true, _emit_signal : bool = true) -> void:
+	if (_emit_signal):
+		darkMode.set_pressed(_value)
+	else:
+		darkMode.set_pressed_no_signal(_value)
+
+func setDefaultColour(_value : Color) -> void:
 	defaultColour.color = _value
 
 
 
 ########################################### SIGNALS
+func _____SIGNALS():pass
+
 
 func _on_about_to_popup():
 	#find_child("DefaultNoteColour").color = get_parent().getLastColour()
@@ -81,11 +94,14 @@ func _on_request_completed(result, response_code, headers, body):
 
 
 
-func _on_autosave_toggled(button_pressed):
-	emit_signal("UpdateConfig", "autosave", button_pressed)
+func _on_autosave_toggled(toggled_on):
+	emit_signal("UpdateConfig", "autosave", toggled_on)
 
 func _on_autosave_freq_value_changed(value):
 	emit_signal("UpdateConfig", "autosavefreqmins", value)
+
+func _on_dark_mode_toggled(toggled_on):
+	emit_signal("UpdateConfig", "darkmode", toggled_on)
 
 func _on_default_note_colour_color_changed(color):
 	emit_signal("UpdateConfig", "defaultcolour", color)
@@ -104,3 +120,5 @@ func _on_open_config_button_pressed():
 func _on_leave_feedback_button_pressed():
 	OS.alert("Opening browser...")
 	OS.shell_open("https://forms.gle/B3nivEanm7JRiSF89")
+
+

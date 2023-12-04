@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dowqipayg1sbx"]
+[gd_scene load_steps=12 format=3 uid="uid://dowqipayg1sbx"]
 
 [ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_wvxdq"]
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_2kai4"]
 [ext_resource type="PackedScene" uid="uid://c3i7rai8kuhfr" path="res://scenes/AppSettingsWindow.tscn" id="8_nua0u"]
 [ext_resource type="Script" path="res://scripts/ReplaceWindow.gd" id="9_3s0v3"]
+[ext_resource type="PackedScene" uid="uid://be3gcb0o8yuwh" path="res://scenes/HelpWindow.tscn" id="10_0s3by"]
+[ext_resource type="StyleBox" uid="uid://l8474ad4qmnk" path="res://theme/WindowBackground.tres" id="10_7cpvk"]
 
 [node name="Workspace" type="Control"]
 layout_mode = 3
@@ -56,8 +58,8 @@ script = ExtResource("5_0kgjp")
 [node name="ExitConfirmationDialog" type="ConfirmationDialog" parent="."]
 disable_3d = true
 canvas_item_default_texture_filter = 0
-initial_position = 2
 title = "You have unsaved changes!"
+initial_position = 2
 size = Vector2i(359, 100)
 unresizable = true
 always_on_top = true
@@ -69,55 +71,69 @@ script = ExtResource("7_2kai4")
 visible = false
 
 [node name="ReplaceWindow" type="Window" parent="."]
-initial_position = 2
 title = "Replace Note Text"
+initial_position = 2
 size = Vector2i(358, 232)
 visible = false
 transient = true
 unresizable = true
 script = ExtResource("9_3s0v3")
 
-[node name="ReplacerContainer" type="VBoxContainer" parent="ReplaceWindow"]
+[node name="PanelContainer" type="PanelContainer" parent="ReplaceWindow"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = ExtResource("10_7cpvk")
 
-[node name="Label" type="Label" parent="ReplaceWindow/ReplacerContainer"]
+[node name="ReplacerContainer" type="VBoxContainer" parent="ReplaceWindow/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ReplaceWindow/PanelContainer/ReplacerContainer"]
 layout_mode = 2
 text = "Replace what:"
 
-[node name="What" type="LineEdit" parent="ReplaceWindow/ReplacerContainer"]
+[node name="What" type="LineEdit" parent="ReplaceWindow/PanelContainer/ReplacerContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="ReplaceWindow/ReplacerContainer"]
+[node name="Label2" type="Label" parent="ReplaceWindow/PanelContainer/ReplacerContainer"]
 layout_mode = 2
 text = "Replace with what:"
 
-[node name="ForWhat" type="LineEdit" parent="ReplaceWindow/ReplacerContainer"]
+[node name="ForWhat" type="LineEdit" parent="ReplaceWindow/PanelContainer/ReplacerContainer"]
 layout_mode = 2
 
-[node name="FullWords" type="CheckBox" parent="ReplaceWindow/ReplacerContainer"]
+[node name="FullWords" type="CheckBox" parent="ReplaceWindow/PanelContainer/ReplacerContainer"]
 layout_mode = 2
 text = "Replace full word only"
 
-[node name="IgnoreCase" type="CheckBox" parent="ReplaceWindow/ReplacerContainer"]
+[node name="IgnoreCase" type="CheckBox" parent="ReplaceWindow/PanelContainer/ReplacerContainer"]
 layout_mode = 2
 text = "Ignore case"
 
-[node name="OkButton" type="Button" parent="ReplaceWindow/ReplacerContainer"]
+[node name="OkButton" type="Button" parent="ReplaceWindow/PanelContainer/ReplacerContainer"]
 layout_mode = 2
 text = "REPLACE ALL !"
+
+[node name="HelpWindow" parent="." instance=ExtResource("10_0s3by")]
+initial_position = 1
+visible = false
+popup_window = false
 
 [node name="AutosaveTimer" type="Timer" parent="."]
 wait_time = 300.0
 
-[connection signal="gui_input" from="Background" to="." method="_on_background_gui_input"]
+[node name="FPSResetTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
 [connection signal="linkNextTargetChanged" from="NoteList" to="." method="_on_note_list_link_next_target_changed"]
 [connection signal="rmbNote" from="NoteList" to="." method="_on_note_list_rmb_note"]
 [connection signal="confirmed" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_confirmed"]
 [connection signal="custom_action" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_custom_action"]
 [connection signal="close_requested" from="ReplaceWindow" to="ReplaceWindow" method="_on_close_requested"]
-[connection signal="pressed" from="ReplaceWindow/ReplacerContainer/OkButton" to="ReplaceWindow" method="_on_ok_button_pressed"]
+[connection signal="pressed" from="ReplaceWindow/PanelContainer/ReplacerContainer/OkButton" to="ReplaceWindow" method="_on_ok_button_pressed"]
 [connection signal="timeout" from="AutosaveTimer" to="." method="_on_autosave_timer_timeout"]
+[connection signal="timeout" from="FPSResetTimer" to="." method="_on_fps_reset_timer_timeout"]

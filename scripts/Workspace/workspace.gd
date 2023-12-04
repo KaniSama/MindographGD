@@ -2,7 +2,7 @@ extends Control
 class_name Workspace
 
 const AppName = "                 [Mindograph]"
-const CurrentVersion = [0, 0, 1, 1]
+const CurrentVersion = [0, 0, 1, 2]
 
 @onready var Config : Dictionary = {
 	"version" : getCurrentVersion(),
@@ -11,7 +11,9 @@ const CurrentVersion = [0, 0, 1, 1]
 	"windowh" : 720,
 	"autosave" : true,
 	"autosavefreqmins" : 5,
+	"darkmode" : false,
 	"defaultcolour" : getLastColour(),
+	"defaultlinkcolour": Color.RED,
 	"defaultfont" : "default"
 }
 const ConfigFileLocation = "user://Config/config.json"
@@ -23,11 +25,17 @@ var Modified : bool = false
 @onready var hud : Node = $HUD
 @onready var noteList : Node = $NoteList
 
+@onready var backgroundTexture = $Background
+
 @onready var exitConfirmationDialog : ConfirmationDialog = $ExitConfirmationDialog
 @onready var appSettingsWindow : Window = $AppSettingsWindow
 @onready var replaceWindow : Window = $ReplaceWindow
 
 @onready var autosaveTimer = $AutosaveTimer
+@onready var fpsResetTimer = $FPSResetTimer
+
+@onready var UndoStack = UndoRedo.new()
+@onready var UndoStackVersion = UndoStack.get_version()
 
 var lastColour: Color = Color.KHAKI
 
@@ -81,8 +89,14 @@ func _notification(what):
 
 
 func _input(event):
+	Engine.max_fps = 0
+	fpsResetTimer.start()
+	
+	
 	if (!hud.getPopupVisible() && (event is InputEventKey || event is InputEventMouseButton)):
-		setModified()
+		# TODO: UndoStack things
+		#if (UndoStack.get_version() != UndoStackVersion):
+			setModified()
 
 
 
@@ -91,8 +105,10 @@ func _input(event):
 func _____PROJECT_MANAGEMENT():pass
 
 
+# NUKES WORKSPACE & CLEARS UNDO HISTORY !!!
 func clearWorkspace():
 	noteList.clearNotesAndConnections()
+	UndoStack.clear_history(false)
 
 func initProgram():
 	
@@ -126,29 +142,36 @@ func initProgram():
 		dir = DirAccess.open("user://Config")
 	
 	# Create config file
-	var configFileName = ConfigFileLocation
-	var configFile : FileAccess
+	var _configFileName = ConfigFileLocation
+	var _configFile : FileAccess
 	
-	if (!dir.file_exists(configFileName)):
-		configFile = FileAccess.open(configFileName, FileAccess.WRITE)
+	if (!dir.file_exists(_configFileName)):
+		_configFile = FileAccess.open(_configFileName, FileAccess.WRITE)
 		
-		configFile.store_line(JSON.stringify(Config,"\t",false,true))
+		_configFile.store_line(JSON.stringify(Config,"\t",false,true))
 		
-		configFile.flush()
-		configFile.close()
+		_configFile.flush()
+		_configFile.close()
 	
-	# Load config file into a dictionary
-	configFile = FileAccess.open(configFileName, FileAccess.READ)
 	
-	var configString = ""
-	while (!configFile.eof_reached()):
-		configString += configFile.get_line().replace("\n", "")
+	# Load config file into a single JSON string
+	_configFile = FileAccess.open(_configFileName, FileAccess.READ)
 	
-	var config : Dictionary = JSON.parse_string(configString)
+	var _configString = ""
+	while (!_configFile.eof_reached()):
+		_configString += _configFile.get_line().replace("\n", "")
 	
-	Config = config
+	# Read config JSON and set variables
+	# ! Does not set variables that aren't in the file !
+	var _config : Dictionary = JSON.parse_string(_configString)
+	
+	for __i in _config.keys():
+		Config[__i] = _config[__i]
+	#Config = _config
 	Config["version"] = getCurrentVersion()
 	
+	
+	# convert a String gotten from the text file into Color
 	var _colourToArray = Config["defaultcolour"].replace("(","").replace(")","").split(",")
 	var _colourArray = []
 	for i in _colourToArray:
@@ -157,14 +180,16 @@ func initProgram():
 	Config["defaultcolour"] = _newDefaultColour
 	
 	# Read the config and set the variables
-	var window = get_tree().root.get_window()
+	var _window = get_tree().root.get_window()
 	if (Config["maximized"]):
-		window.set_mode(Window.MODE_MAXIMIZED)
+		_window.set_mode(Window.MODE_MAXIMIZED)
 	else:
-		window.size = Vector2(Config["windoww"], Config["windowh"])
+		_window.size = Vector2(Config["windoww"], Config["windowh"])
 	
 	appSettingsWindow.setAutosave(Config["autosave"], true)
 	appSettingsWindow.setAutosaveFrequency(Config["autosavefreqmins"], true)
+	appSettingsWindow.setDarkMode(Config["darkmode"], true)
+	backgroundTexture.visible = !Config["darkmode"]
 	appSettingsWindow.setDefaultColour(Config["defaultcolour"])
 	setLastColour(Config["defaultcolour"])
 	
@@ -223,6 +248,8 @@ func setModified(_modified : bool = true):
 	var _modifiedString = ""
 	if (Modified):
 		_modifiedString = "* "
+	else:
+		UndoStackVersion = UndoStack.get_version()
 	
 	setWindowName(_modifiedString + getWindowName())
 
@@ -351,6 +378,9 @@ func UpdateConfigFromSettings(_key : String, _value : Variant):
 		startAutosaveTimer(Config["autosavefreqmins"] * 60)
 	elif (_key == "autosave" && !_value || _key == "autosavefreqmins" && _value == 0):
 		stopAutosaveTimer()
+	
+	if (_key == "darkmode"):
+		setDarkMode(_value)
 
 func saveConfigToFile(config : Dictionary = Config):
 	var configFile = FileAccess.open(ConfigFileLocation, FileAccess.WRITE)
@@ -367,6 +397,14 @@ func getLastColour() -> Color:
 
 func setLastColour(newColour : Color):
 	lastColour = newColour
+
+
+func setDarkMode(_set) -> void:
+	noteList.setNoteDarkMode(_set)
+	backgroundTexture.visible = !_set
+
+func getDarkMode() -> bool:
+	return Config["darkmode"]
 
 
 func getProjectName() -> String:
@@ -412,9 +450,9 @@ func _on_note_list_rmb_note(note):
 #	hud.changeLinkTarget(note)
 #	hud.startLink()
 
-func _on_background_gui_input(event):
-	if (event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT):
-		hud.changeTarget()
+#func _on_background_gui_input(event):
+	#if (event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT):
+		#hud.changeTarget()
 
 
 func _on_note_list_link_next_target_changed(note):
@@ -425,3 +463,6 @@ func _on_note_list_link_next_target_changed(note):
 func _on_autosave_timer_timeout():
 	if (getProjectName() != "!!untitled!!"):
 		noteList.saveToFile()
+
+func _on_fps_reset_timer_timeout():
+	Engine.max_fps = 15
