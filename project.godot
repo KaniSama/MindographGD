@@ -29,6 +29,10 @@ window/energy_saving/keep_screen_on=false
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=0
 
+[dotnet]
+
+project/assembly_name="Mindograph"
+
 [input]
 
 lmb={

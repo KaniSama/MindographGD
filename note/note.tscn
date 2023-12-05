@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://ddeucfi3rye2c"]
 
-[ext_resource type="Script" path="res://note/note.gd" id="1_gr2mf"]
+[ext_resource type="Script" path="res://note/note.cs" id="1_m8txc"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_yj778"]
 [ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_gm0tl"]
 
@@ -30,7 +30,7 @@ bg_color = Color(0, 0, 0, 0.176471)
 offset_right = 267.0
 offset_bottom = 261.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2fyyi")
-script = ExtResource("1_gr2mf")
+script = ExtResource("1_m8txc")
 
 [node name="NoteContainer" type="Control" parent="."]
 layout_mode = 1
@@ -200,11 +200,11 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_rxfwm")
 
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="gui_input" from="NoteContainer/NoteBg" to="." method="_on_note_bg_gui_input"]
-[connection signal="gui_input" from="NoteContainer/TextWrapper" to="." method="_on_text_wrapper_gui_input"]
-[connection signal="gui_input" from="NoteContainer/TextWrapper/TextEdit" to="." method="_on_text_edit_gui_input"]
-[connection signal="gui_input" from="NoteContainer/Dragger" to="." method="_on_dragger_gui_input"]
-[connection signal="gui_input" from="NoteContainer/Resizer" to="." method="_on_resizer_gui_input"]
-[connection signal="pressed" from="NoteContainer/OkButton" to="." method="_on_ok_button_pressed"]
-[connection signal="pressed" from="NoteContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="gui_input" from="." to="." method="OnGuiInput"]
+[connection signal="gui_input" from="NoteContainer/NoteBg" to="." method="OnNoteBGGuiInput"]
+[connection signal="gui_input" from="NoteContainer/TextWrapper" to="." method="OnTextWrapperGuiInput"]
+[connection signal="gui_input" from="NoteContainer/TextWrapper/TextEdit" to="." method="OnTextEditGuiInput"]
+[connection signal="gui_input" from="NoteContainer/Dragger" to="." method="OnDraggerGuiInput"]
+[connection signal="gui_input" from="NoteContainer/Resizer" to="." method="OnResizerGuiInput"]
+[connection signal="pressed" from="NoteContainer/OkButton" to="." method="OnOKButtonPressed"]
+[connection signal="pressed" from="NoteContainer/CancelButton" to="." method="OnCancelButtonPressed"]
