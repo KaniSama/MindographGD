@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
 [ext_resource type="Script" path="res://scripts/NoteList.gd" id="3_hmkl8"]
 [ext_resource type="Script" path="res://scripts/Workspace/LinkDrawer.gd" id="4_lxu64"]
-[ext_resource type="Script" path="res://scripts/Workspace/MainCamera.gd" id="5_0kgjp"]
+[ext_resource type="Script" path="res://scripts/Workspace/MainCamera.cs" id="5_wmpfu"]
 [ext_resource type="PackedScene" uid="uid://pi852642fy8e" path="res://scenes/HUD.tscn" id="6_6cy78"]
 [ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_2kai4"]
 [ext_resource type="PackedScene" uid="uid://c3i7rai8kuhfr" path="res://scenes/AppSettingsWindow.tscn" id="8_nua0u"]
@@ -51,7 +51,7 @@ grow_vertical = 2
 script = ExtResource("4_lxu64")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-script = ExtResource("5_0kgjp")
+script = ExtResource("5_wmpfu")
 
 [node name="HUD" parent="." instance=ExtResource("6_6cy78")]
 

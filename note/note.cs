@@ -229,7 +229,8 @@ public partial class Note : Panel
 				else if (@event.IsActionReleased("lmb"))
 					OnDrag(false);
 				
-				InputEventMouseButton e = (InputEventMouseButton)@event; // Explicit cast because only InputEventMouseButton has DoubleClick prop
+				// Explicit cast because only InputEventMouseButton has DoubleClick prop
+				InputEventMouseButton e = (InputEventMouseButton)@event;
 				if (e.DoubleClick)
 					Pin();
 			}
@@ -250,7 +251,8 @@ public partial class Note : Panel
 			if (@event is InputEventMouseButton) {
 				EmitClicked(@event);
 
-				InputEventMouseButton e = (InputEventMouseButton)@event; // Explicit cast because only InputEventMouseButton has DoubleClick prop
+				// Explicit cast because only InputEventMouseButton has DoubleClick prop
+				InputEventMouseButton e = (InputEventMouseButton)@event;
 				if (e.DoubleClick)
 					SetTextEditMode(true);
 			}
