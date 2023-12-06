@@ -56,15 +56,16 @@ public partial class MainCamera : Camera2D
 						_regrab = true;
 						GetViewport().WarpMouse(new Vector2(_mouse.X - _size.X + _padding.X, _mouse.Y));
 					}
-					if (_mouse.X < 0 + _paddingSm.X) {
+					else if (_mouse.X < 0 + _paddingSm.X) {
 						_regrab = true;
 						GetViewport().WarpMouse(new Vector2(_mouse.X + _size.X - _padding.X, _mouse.Y));
 					}
+					
 					if (_mouse.Y > _size.Y - _paddingSm.Y) {
 						_regrab = true;
 						GetViewport().WarpMouse(new Vector2(_mouse.X, _mouse.Y - _size.Y + _padding.Y));
 					}
-					if (_mouse.Y < 0 + _paddingSm.Y) {
+					else if (_mouse.Y < 0 + _paddingSm.Y) {
 						_regrab = true;
 						GetViewport().WarpMouse(new Vector2(_mouse.X, _mouse.Y + _size.Y - _padding.Y));
 					}

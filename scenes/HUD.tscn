@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/HUDElements/HUD.gd" id="1_jaeg1"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_iy3s7"]
+[ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawerStart.cs" id="2_sv2fb"]
 [ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_5jkwq"]
 [ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="3_7s1mp"]
 [ext_resource type="Script" path="res://scripts/HUDElements/AutosaveTimerLabel.gd" id="5_aflcu"]
 [ext_resource type="Script" path="res://scripts/HUDElements/RMBMenu.gd" id="5_orq2i"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.gd" id="6_b3ab8"]
-[ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawer.gd" id="7_8123t"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ProjectNameTextBox.gd" id="7_utv7t"]
 [ext_resource type="StyleBox" uid="uid://yewjlrpyduup" path="res://theme/OkButtonStyle.tres" id="10_wehai"]
 [ext_resource type="StyleBox" uid="uid://db8jnt64sdrm2" path="res://theme/OkButtonHoverStyle.tres" id="11_2tmou"]
@@ -58,7 +58,7 @@ script = ExtResource("1_jaeg1")
 [node name="LinkDrawerStart" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("7_8123t")
+script = ExtResource("2_sv2fb")
 
 [node name="LinkDrawer" type="Control" parent="."]
 visible = false
@@ -373,7 +373,7 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Open Project Directory"
 
-[connection signal="visibility_changed" from="LinkDrawer" to="LinkDrawerStart" method="_on_link_drawer_visibility_changed"]
+[connection signal="visibility_changed" from="LinkDrawer" to="LinkDrawerStart" method="OnLinkDrawerEndVisibilityChanged"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonAdd" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
