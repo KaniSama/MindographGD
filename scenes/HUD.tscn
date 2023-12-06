@@ -7,8 +7,8 @@
 [ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="3_7s1mp"]
 [ext_resource type="Script" path="res://scripts/HUDElements/AutosaveTimerLabel.gd" id="5_aflcu"]
 [ext_resource type="Script" path="res://scripts/HUDElements/RMBMenu.gd" id="5_orq2i"]
-[ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.gd" id="6_b3ab8"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ProjectNameTextBox.gd" id="7_utv7t"]
+[ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.cs" id="8_f4v5j"]
 [ext_resource type="StyleBox" uid="uid://yewjlrpyduup" path="res://theme/OkButtonStyle.tres" id="10_wehai"]
 [ext_resource type="StyleBox" uid="uid://db8jnt64sdrm2" path="res://theme/OkButtonHoverStyle.tres" id="11_2tmou"]
 
@@ -226,7 +226,7 @@ grow_vertical = 2
 mouse_filter = 0
 edit_alpha = false
 picker_shape = 1
-script = ExtResource("6_b3ab8")
+script = ExtResource("8_f4v5j")
 
 [node name="ColorOKButton" type="Button" parent="CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker"]
 layout_mode = 2
