@@ -5,8 +5,8 @@
 [ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawerStart.cs" id="2_sv2fb"]
 [ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_5jkwq"]
 [ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.cs" id="4_gsw2h"]
-[ext_resource type="Script" path="res://scripts/HUDElements/AutosaveTimerLabel.gd" id="5_aflcu"]
-[ext_resource type="Script" path="res://scripts/HUDElements/RMBMenu.gd" id="5_orq2i"]
+[ext_resource type="Script" path="res://scripts/HUDElements/AutosaveTimerLabel.cs" id="5_srhcy"]
+[ext_resource type="Script" path="res://scripts/HUDElements/RMBMenu.cs" id="7_3jcax"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ProjectNameTextBox.gd" id="7_utv7t"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.cs" id="8_f4v5j"]
 [ext_resource type="StyleBox" uid="uid://yewjlrpyduup" path="res://theme/OkButtonStyle.tres" id="10_wehai"]
@@ -173,7 +173,7 @@ offset_bottom = 37.0
 grow_horizontal = 0
 text = "Seconds until autosave: "
 horizontal_alignment = 2
-script = ExtResource("5_aflcu")
+script = ExtResource("5_srhcy")
 
 [node name="MenuBackdrop" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -203,7 +203,7 @@ item_5/text = "Duplicate"
 item_6/text = ""
 item_6/disabled = true
 item_7/text = "Change Colour    >"
-script = ExtResource("5_orq2i")
+script = ExtResource("7_3jcax")
 
 [node name="ColorPickerBackdrop" type="Panel" parent="CanvasLayer/MenuBackdrop"]
 visible = false
