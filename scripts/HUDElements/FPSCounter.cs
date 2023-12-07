@@ -5,20 +5,20 @@ using System.Collections.Generic;
 public partial class FPSCounter : Label
 {
 	// Timestamps of frames rendered in the last second
-	List<int> times = new List<int>();
+	List<ulong> times = new List<ulong>();
 	
-	int fps = 0;
+	ulong fps = 0;
 
 	public override void _Ready()
 	{
-		int _now = Time.GetTicksMsec();
+		ulong _now = Time.GetTicksMsec();
 
 		// Remove frames older than 1 second in the 'times' list
-		while (times.Count() > 0 && times[0] <= _now - 1000)
+		while (times.Count > 0 && times[0] <= _now - 1000)
 			times.RemoveAt(0);
 
 		times.Add(_now);
-		fps = times.Count();
+		fps = (ulong)times.Count;
 
 		// Display FPS in the label
 		Text = "" + fps + " FPS";

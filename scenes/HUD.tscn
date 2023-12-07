@@ -7,10 +7,10 @@
 [ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.cs" id="4_gsw2h"]
 [ext_resource type="Script" path="res://scripts/HUDElements/AutosaveTimerLabel.cs" id="5_srhcy"]
 [ext_resource type="Script" path="res://scripts/HUDElements/RMBMenu.cs" id="7_3jcax"]
-[ext_resource type="Script" path="res://scripts/HUDElements/ProjectNameTextBox.gd" id="7_utv7t"]
 [ext_resource type="Script" path="res://scripts/HUDElements/ColorPicker.cs" id="8_f4v5j"]
 [ext_resource type="StyleBox" uid="uid://yewjlrpyduup" path="res://theme/OkButtonStyle.tres" id="10_wehai"]
 [ext_resource type="StyleBox" uid="uid://db8jnt64sdrm2" path="res://theme/OkButtonHoverStyle.tres" id="11_2tmou"]
+[ext_resource type="Script" path="res://scripts/HUDElements/ProjectNameTextBox.cs" id="11_28dyr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1v5q"]
 bg_color = Color(0, 0, 0, 0.164706)
@@ -303,7 +303,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_3fss0")
 placeholder_text = "ProjectName.mg"
 max_length = 64
 context_menu_enabled = false
-script = ExtResource("7_utv7t")
+script = ExtResource("11_28dyr")
 
 [node name="DialogButtonOK" type="Button" parent="CanvasLayer/DialogBackdrop/DialogList"]
 layout_mode = 2
@@ -382,7 +382,7 @@ text = "Open Project Directory"
 [connection signal="gui_input" from="CanvasLayer/MenuBackdrop" to="." method="_on_menu_backdrop_gui_input"]
 [connection signal="item_clicked" from="CanvasLayer/MenuBackdrop/RMBMenu" to="." method="_on_rmb_menu_item_clicked"]
 [connection signal="color_changed" from="CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker" to="." method="_on_color_picker_color_changed"]
-[connection signal="text_changed" from="CanvasLayer/DialogBackdrop/DialogList/ProjectNameTextBox" to="CanvasLayer/DialogBackdrop/DialogList/ProjectNameTextBox" method="_on_text_changed"]
+[connection signal="text_changed" from="CanvasLayer/DialogBackdrop/DialogList/ProjectNameTextBox" to="CanvasLayer/DialogBackdrop/DialogList/ProjectNameTextBox" method="OnTextChanged"]
 [connection signal="pressed" from="CanvasLayer/DialogBackdrop/DialogList/DialogButtonOK" to="." method="_on_dialog_button_ok_pressed"]
 [connection signal="pressed" from="CanvasLayer/DialogBackdrop/DialogList/DialogButtonCancel" to="." method="_on_dialog_button_cancel_pressed"]
 [connection signal="item_activated" from="CanvasLayer/DialogBackdrop/ProjectListBackground/ProjectListContainer" to="." method="_on_project_list_container_item_activated"]
