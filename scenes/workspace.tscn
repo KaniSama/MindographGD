@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_wvxdq"]
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
 [ext_resource type="Script" path="res://scripts/NoteList.gd" id="3_hmkl8"]
-[ext_resource type="Script" path="res://scripts/Workspace/LinkDrawer.gd" id="4_lxu64"]
+[ext_resource type="Script" path="res://scripts/Workspace/LinkDrawer.cs" id="4_t28o5"]
 [ext_resource type="Script" path="res://scripts/Workspace/MainCamera.cs" id="5_wmpfu"]
 [ext_resource type="PackedScene" uid="uid://pi852642fy8e" path="res://scenes/HUD.tscn" id="6_6cy78"]
 [ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_2kai4"]
@@ -48,7 +48,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("4_lxu64")
+script = ExtResource("4_t28o5")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("5_wmpfu")
@@ -129,8 +129,6 @@ wait_time = 3.0
 one_shot = true
 autostart = true
 
-[connection signal="linkNextTargetChanged" from="NoteList" to="." method="_on_note_list_link_next_target_changed"]
-[connection signal="rmbNote" from="NoteList" to="." method="_on_note_list_rmb_note"]
 [connection signal="confirmed" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_confirmed"]
 [connection signal="custom_action" from="ExitConfirmationDialog" to="ExitConfirmationDialog" method="_on_custom_action"]
 [connection signal="close_requested" from="ReplaceWindow" to="ReplaceWindow" method="_on_close_requested"]
