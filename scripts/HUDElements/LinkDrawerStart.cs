@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class LinkDrawer : Control
+public partial class LinkDrawerStart : Control
 {
 	// Class Variables
 	HUD parent; // onready -- $..

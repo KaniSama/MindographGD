@@ -2,8 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-using Workspace;
-
 public partial class HUD : Control
 {
 	#region CustomSignals
@@ -29,7 +27,7 @@ public partial class HUD : Control
 	#region ClassVariables
 	// RMB menus
 		CanvasLayer canvas; // onready -- $CanvasLayer
-		ItemList rmbMenu; // onready -- $CanvasLayer/MenuBackdrop/RMBMenu
+		RMBMenu rmbMenu; // onready -- $CanvasLayer/MenuBackdrop/RMBMenu
 		Panel menuBackdrop; // onready -- $CanvasLayer/MenuBackdrop
 		Control linkDrawer; // onready -- $LinkDrawer
 		Control linkDrawerStart; // onready -- $LinkDrawerStart
@@ -77,7 +75,7 @@ public partial class HUD : Control
 		{
 			// Set onready variables
 			canvas = GetNode<CanvasLayer>("CanvasLayer");
-			rmbMenu = GetNode<ItemList>("CanvasLayer/MenuBackdrop/RMBMenu");
+			rmbMenu = GetNode<RMBMenu>("CanvasLayer/MenuBackdrop/RMBMenu");
 			menuBackdrop = GetNode<Panel>("CanvasLayer/MenuBackdrop");
 			linkDrawer = GetNode<Control>("LinkDrawer");
 			linkDrawerStart = GetNode<Control>("LinkDrawerStart");
@@ -115,7 +113,7 @@ public partial class HUD : Control
 
 			if (drawingLink)
 				if (@event.IsActionPressed("lmb")) {
-					FinishLink();
+					SetLinkStatus(false);
 				} else if (@event.IsActionPressed("rmb")) {
 					drawingLink = false;
 					QueueRedraw();
@@ -186,6 +184,13 @@ public partial class HUD : Control
 		public void SetLinkTarget(Note _newTarget = null) {
 			linkTarget = _newTarget;
 		}
+		
+		public Note GetTarget() {
+			return target;
+		}
+		public Note GetLinkTarget() {
+			return linkTarget;
+		}
 	#endregion
 
 
@@ -214,7 +219,7 @@ public partial class HUD : Control
 		}
 		public void SetProjectList(List<string> _projects) {
 			projectList.Clear();
-			projectList.AddItem("+ New Project!", ResourceLoader.Load("res://sprites/sPin.png") as Texture, true);
+			projectList.AddItem("+ New Project!", ResourceLoader.Load("res://sprites/sPin.png") as Texture2D, true);
 			projectList.AddItem("", null, false);
 
 			foreach (string __project in _projects)
@@ -313,45 +318,46 @@ public partial class HUD : Control
 
 		private void OnRMBMenuItemClicked(long _index, Vector2 _atPosition, long _mouseButtonIndex)
 		{
-			if (_mouseButtonIndex == MouseButton.Left) {
+			if (_mouseButtonIndex == 1) { // 1 is for LMB (as stated the docs)
 				bool __closeMenu = true;
 
 				rmbMenu.DeselectAll();
 
 				switch (_index) {
-					case rmbMenu.RmbIDs.PIN:
+					case RMBMenu.PIN:
 						target.Pin();
 						break;
 					
-					case rmbMenu.RmbIDs.LINK:
+					case RMBMenu.LINK:
 						SetLinkTarget(target);
 						SetLinkStatus(true);
 						break;
 					
-					case rmbMenu.RmbIDs.NEW:
+					case RMBMenu.NEW:
 						EmitSignal(SignalName.NewNote, target);
 						break;
 					
-					case rmbMenu.RmbIDs.DELETE:
+					case RMBMenu.DELETE:
 						target.QueueFree();
 						break;
 					
-					case rmbMenu.RmbIDs.UNLINK:
-						target.RemoveFromConnections();
+					case RMBMenu.UNLINK:
+						target.EmitRemoveFromConnections();
 						break;
 
-					case rmbMenu.RmbIDs.COLOR:
+					case RMBMenu.COLOR:
 						__closeMenu = false;
 
 						Vector2 __mousePos = rmbMenu.Position + _atPosition;
 
-						currentColor = target.color;
-						colorPicker.FindChild("ColorPicker", false).Color = target.color;
+						currentColor = target.GetColor();
+						colorPicker.GetNode<ColorPicker>("ColorPicker").Color = target.GetColor();
 						colorPicker.Position = new Vector2(
 							Mathf.Clamp(__mousePos.X, 0, GetViewportRect().End.X - colorPicker.Size.X),
 							Mathf.Clamp(__mousePos.Y, 0, GetViewportRect().End.Y - colorPicker.Size.Y)
 						);
 						coloring = true;
+						break;
 				}
 
 				if (__closeMenu)
@@ -380,13 +386,13 @@ public partial class HUD : Control
 
 		private void OnProjectListContainerItemActivated(long _index)
 		{
-			if (_index == 0) {
+			if (_index == 0L) {
 				ShowProjectList(false);
 				ShowProjectNameChangeDialogWindow();
 				return;
 			}
 
-			string _projectName = projectList.GetItemText(_index);
+			string _projectName = projectList.GetItemText((int)_index);
 			EmitSignal(SignalName.OpenProjectRequested, _projectName);
 			ShowProjectList(false);
 		}

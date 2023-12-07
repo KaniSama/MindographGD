@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://dowqipayg1sbx"]
 
-[ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_wvxdq"]
+[ext_resource type="Script" path="res://scripts/Workspace/Workspace.cs" id="1_wt0rd"]
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
-[ext_resource type="Script" path="res://scripts/NoteList.gd" id="3_hmkl8"]
+[ext_resource type="Script" path="res://scripts/Workspace/NoteList.cs" id="3_h4s1y"]
 [ext_resource type="Script" path="res://scripts/Workspace/LinkDrawer.cs" id="4_t28o5"]
 [ext_resource type="Script" path="res://scripts/Workspace/MainCamera.cs" id="5_wmpfu"]
 [ext_resource type="PackedScene" uid="uid://pi852642fy8e" path="res://scenes/HUD.tscn" id="6_6cy78"]
@@ -15,7 +15,7 @@
 [node name="Workspace" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_wvxdq")
+script = ExtResource("1_wt0rd")
 
 [node name="Background" type="TextureRect" parent="."]
 texture_filter = 1
@@ -39,7 +39,7 @@ stretch_mode = 1
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
-script = ExtResource("3_hmkl8")
+script = ExtResource("3_h4s1y")
 
 [node name="LinkDrawer" type="Control" parent="."]
 layout_mode = 1

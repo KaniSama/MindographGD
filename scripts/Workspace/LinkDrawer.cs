@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 public partial class LinkDrawer : Control
 {
-	Control noteList; // onready -- $../NoteList
+	NoteList noteList; // onready -- $../NoteList
 	Camera2D camera; // onready -- $../Camera2D
 	
 	public override void _Ready()
 	{
-		noteList = GetNode<Control>("../NoteList");
+		noteList = GetNode<NoteList>("../NoteList");
 		camera = GetNode<Camera2D>("../Camera2D");
 	}
 
 	public override void _Draw() {
 		List<Note[]> _connections = noteList.GetConnections();
 
-		if (_connections.Length <= 0)
+		if (_connections.Count <= 0)
 			return;
 		
 		foreach (Note[] __i in _connections) {
@@ -30,7 +30,7 @@ public partial class LinkDrawer : Control
 					DrawLine(
 						__note1.GetPinPosition() - Position,
 						__note2.GetPinPosition() - Position,
-						Color(1, 0, 0, .7),
+						new Color(1, 0, 0, .7f),
 						3,
 						false
 					);
@@ -51,8 +51,8 @@ public partial class LinkDrawer : Control
 	// Helper functions
 	public bool IntersectsViewport(Rect2 _rect) {
 		Transform2D _transform = GetCanvasTransform();
-		Vector2 _scale = transform.GetScale();
+		Vector2 _scale = _transform.Scale;
 
-		return new Rect2(-transform.Origin / _scale, GetViewportRect().Size / _scale).Intersects(_rect);
+		return new Rect2(-_transform.Origin / _scale, GetViewportRect().Size / _scale).Intersects(_rect);
 	}
 }

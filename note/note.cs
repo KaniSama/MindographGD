@@ -126,7 +126,7 @@ public partial class Note : Panel
 		}
 
 
-		private void Pin() {
+		public void Pin() {
 			pinned = !pinned;
 			dragger.Modulate = pinned ? new Color(0f,0f,0f,0f) : new Color(1f,1f,1f,.3882352f);
 
@@ -147,7 +147,7 @@ public partial class Note : Panel
 
 
 	#region Modes
-		private void SetTextEditMode(bool _set = true, bool _saveText = false) {
+		public void SetTextEditMode(bool _set = true, bool _saveText = false) {
 			textEdit.Visible = _set;
 			okButton.Visible = _set;
 			cancelButton.Visible = _set;
@@ -168,13 +168,18 @@ public partial class Note : Panel
 
 
 	#region GetSetters
-		private void SetColor(Color _newColor) {
+		public Vector2 GetPinPosition() {
+			return pinPosition;
+		}
+
+
+		public void SetColor(Color _newColor) {
 			noteBG.Modulate = _newColor;
 			color = _newColor;
 		}
 
 
-		private string GetText(bool _escaped = false) {
+		public string GetText(bool _escaped = false) {
 			if (_escaped) {
 				return noteText.Text.CEscape();
 			}
@@ -182,18 +187,23 @@ public partial class Note : Panel
 			return noteText.Text;
 		}
 
-		private void SetText(string _text) {
+		public void SetText(string _text) {
 			noteText.Text = _text;
 			textEdit.Text = _text;
 		}
+		
+		
+		public Color GetColor() {
+			return color;
+		}
 
 		
-		private void SetUID(int _UID) {
+		public void SetUID(int _UID) {
 			UID = _UID;
 		}
 
 
-		private void SetDarkMode(bool _set = true) {
+		public void SetDarkMode(bool _set = true) {
 			darkModePanel.Visible = _set;
 
 			noteText.AddThemeColorOverride("font_color", _set ? color : new Color(0f,0f,0f,1f));
@@ -202,19 +212,19 @@ public partial class Note : Panel
 
 
 	#region SignalEmitters
-		private void EmitRemoveFromConnections() {
+		public void EmitRemoveFromConnections() {
 			EmitSignal(SignalName.RemoveFromConnections, this);
 		}
 
-		private void EmitClicked(InputEvent e = null) {
+		public void EmitClicked(InputEvent e = null) {
 			EmitSignal(SignalName.Clicked, e);
 		}
 
-		private void EmitHovered(Note _note = null) {
+		public void EmitHovered(Note _note = null) {
 			EmitSignal(SignalName.Hovered, _note);
 		}
 
-		private void EmitUnhovered(Note _note = null) {
+		public void EmitUnhovered(Note _note = null) {
 			EmitSignal(SignalName.Unhovered, _note);
 		}
 	#endregion

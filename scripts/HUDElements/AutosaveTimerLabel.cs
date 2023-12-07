@@ -12,7 +12,7 @@ public partial class AutosaveTimerLabel : Label
 
 	public override void _Process(double delta)
 	{
-		int _time = FindParent("Workspace").GetTimeTillAutosave();
+		int _time = (FindParent("Workspace") as Workspace).GetTimeTillAutosave();
 
 		Text = initText + _time;
 	}
