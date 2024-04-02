@@ -181,6 +181,13 @@ func setNoteDarkMode(_set : bool = true):
 ######################################################## CONNECTIONS
 func _____CONNECTIONS():pass
 
+func getAllNoteConnections(note : Note) -> Array[ Note ]:
+	var _con = connections.filter(func(x): return note in x)
+	var _output : Array [ Note ]
+	for __i in _con:
+		_output.append(__i[1] if __i[0]==note else __i[0])
+	return _output
+
 func addConnection(note1, note2):
 	if (note1 != note2 && !connections.has( [note1, note2] ) && !connections.has( [note2, note1] )):
 		connections.append( [note1, note2] )

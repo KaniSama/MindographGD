@@ -59,6 +59,8 @@ func _ready():
 #	hud.HudButtonLoadPressed.connect(ButtonLoadPressed)
 	hud.CreateLink.connect(CreateLink)
 	hud.NewNote.connect(Duplicate)
+	hud.NewChild.connect(CreateChild)
+	hud.NewSibling.connect(CreateSibling)
 	hud.OpenProjectRequested.connect(loadProject)
 	hud.CreateProjectRequested.connect(createProject)
 	hud.OpenSettingsRequested.connect(OpenSettings)
@@ -305,6 +307,9 @@ func ClearFocus():
 func CreateLink(note):
 	noteList.connectionRequest(note)
 
+func ForceCreateLink(note1: Note, note2 : Note):
+	noteList.addConnection(note1, note2)
+
 func Duplicate(note : Note):
 	var _note = noteList.addNoteFromContext(
 		noteList.nextNoteUID, note.getText(), note.position, note.size, note.colour, false
@@ -312,6 +317,20 @@ func Duplicate(note : Note):
 	
 	_note.dragging = true
 	_note.offset = -Vector2(_note.size.x * .5, 8)
+	
+	return _note
+
+func CreateChild(note : Note):
+	var _new : Note = Duplicate(note)
+	ForceCreateLink(note, _new)
+
+func CreateSibling(note : Note):
+	var _new : Note = Duplicate(note)
+	# Get all connections the 'note' Node has
+	var _connections = noteList.getAllNoteConnections(note)
+	# Force Create Connection with _new and the received list
+	for __i in _connections:
+		ForceCreateLink(__i, _new)
 
 func ReplaceTextInNotes(_what : String, _forWhat : String, _whole : bool, _ignoreCase : bool):
 	_what = _what.strip_edges()

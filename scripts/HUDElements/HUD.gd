@@ -4,11 +4,14 @@ signal HudButtonAddPressed
 signal HudButtonSavePressed
 #signal HudButtonLoadPressed
 signal NewNote(note : Note)
+signal NewChild(note : Note)
+signal NewSibling(note : Note)
 signal CreateLink(note1 : Note)
 signal OpenProjectRequested(projectName : String)
 signal CreateProjectRequested(projectName : String)
 signal OpenSettingsRequested
 signal OpenReplaceRequested
+signal SelectionFinished(positionOffset : Vector2, selectionRect : Rect2)
 
 ## RMB Menus
 @onready var canvas = $CanvasLayer
@@ -108,8 +111,9 @@ func _input(event):
 
 func _draw():
 	if (selectionMode != selectionModes.OFF && selecting):
-		draw_rect(Rect2(selectionBegin, selectionEnd - selectionBegin), Color(1,1,1,1), false)
-		draw_rect(Rect2(selectionBegin, selectionEnd - selectionBegin), Color(1,1,1,.25), true)
+		selector.draw_selection(true, selectionBegin, selectionEnd)
+	else:
+		selector.draw_selection(false)
 
 
 ############################################################### get / setters
@@ -132,6 +136,9 @@ func setSelecting(_set : bool = true):
 	selectionBegin = get_global_mouse_position()
 	
 	queue_redraw()
+	
+	if (!_set):
+		emit_signal("SelectionFinished", get_global_position(), Rect2(selectionBegin, selectionEnd))
 
 
 
@@ -274,28 +281,28 @@ func _on_rmb_menu_item_clicked(index, at_position, mouse_button_index):
 		match (index):
 			
 			rmbMenu.RmbIds.PIN:
-				print("pin")
+				#print("pin")
 				target.pin()
 				
 			rmbMenu.RmbIds.LINK:
-				print("link")
+				#print("link")
 				changeLinkTarget(target)
 				startLink()
 				
 			rmbMenu.RmbIds.NEW:
-				print("new")
+				#print("new")
 				emit_signal("NewNote", target)
 				
 			rmbMenu.RmbIds.DELETE:
-				print("deleb")
+				#print("deleb")
 				target.queue_free()
 				
 			rmbMenu.RmbIds.UNLINK:
-				print("unlink")
+				#print("unlink")
 				target.removeFromConnections()
 				
 			rmbMenu.RmbIds.COLOUR:
-				print("colore")
+				#print("colore")
 				closeMenu = false
 				
 				var mouseP = rmbMenu.position + at_position
@@ -305,6 +312,14 @@ func _on_rmb_menu_item_clicked(index, at_position, mouse_button_index):
 				colorPicker.position.x = clamp(mouseP.x, 0, get_viewport_rect().end.x-colorPicker.size.x)
 				colorPicker.position.y = clamp(mouseP.y, 0, get_viewport_rect().end.y-colorPicker.size.y)
 				coloring = true
+				
+			rmbMenu.RmbIds.NEWCHILD:
+				print("child")
+				emit_signal("NewChild", target)
+				
+			rmbMenu.RmbIds.NEWSIBLING:
+				print("sibling")
+				emit_signal("NewSibling", target)
 		
 		if (closeMenu):
 			closeRmbMenu()
