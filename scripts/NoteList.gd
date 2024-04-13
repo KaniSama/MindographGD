@@ -337,9 +337,16 @@ func saveToFile():
 	for connection in connections:
 		## Connection[0].UID (int)
 		## Connection[1].UID (int)
-		printt(connection[0].UID, connection[1].UID)
+		#printt(connection[0].UID, connection[1].UID)
 		file.store_64(connection[0].UID)
 		file.store_64(connection[1].UID)
+	
+	# Store colour picker presets per save file
+	var _colorPickerPresets : PackedColorArray = \
+		get_parent().getColorPickerPresets()
+	file.store_64(_colorPickerPresets.size())
+	for __color in _colorPickerPresets:
+		file.store_var(__color)
 	
 	# Store a buffer value (may or may not help with connections being broken)
 	file.store_8(0)
@@ -391,6 +398,15 @@ func loadFromFile(projectName):
 		
 		addConnection(getNoteByUID(_UID1), getNoteByUID(_UID2))
 		#print(connections[connectionHalf])
+	
+	# Read colour presets per save file
+	var _colorPresetsArraySize = file.get_64()
+	var _colorPresets : Array[Color] = []
+	if _colorPresetsArraySize > 0:
+		for __i in range(_colorPresetsArraySize):
+			_colorPresets.append(file.get_var())
+	get_parent().setColorPickerPresets(_colorPresets)
+	
 	queue_redraw()
 	
 	file.close()

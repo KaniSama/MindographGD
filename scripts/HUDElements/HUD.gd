@@ -19,7 +19,8 @@ signal SelectionFinished(positionOffset : Vector2, selectionRect : Rect2)
 @onready var menuBackdrop = $CanvasLayer/MenuBackdrop
 @onready var linkDrawer = $LinkDrawer
 @onready var linkDrawerStart = $LinkDrawerStart
-@onready var colorPicker = $CanvasLayer/MenuBackdrop/ColorPickerBackdrop
+@onready var colorPickerBackdrop = $CanvasLayer/MenuBackdrop/ColorPickerBackdrop
+@onready var colorPicker = $CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker
 
 ## Modal Dialogs
 @onready var dialogBackdrop = $CanvasLayer/DialogBackdrop
@@ -63,10 +64,12 @@ func _____OVERRIDES():pass
 
 func _ready():
 	refreshProjectList()
+	# Set swatches to only have the default note colour
+	setColorPickerPresets([currentColour])
 
 func _process(delta):
 	linkDrawer.visible = drawingLink
-	colorPicker.visible = coloring
+	colorPickerBackdrop.visible = coloring
 	
 	if (coloring && target != null):
 		target.changeColour(currentColour)
@@ -141,6 +144,18 @@ func setSelecting(_set : bool = true):
 		emit_signal("SelectionFinished", get_global_position(), Rect2(selectionBegin, selectionEnd))
 
 
+func getColorPickerPresets() -> PackedColorArray:
+	return colorPicker.get_presets()
+
+func setColorPickerPresets(_colors : Array [Color] ) -> void:
+	var _presets = colorPicker.get_presets()
+	for __i in _presets:
+		colorPicker.erase_preset(__i)
+	for __i in _colors:
+		colorPicker.add_preset(__i)
+
+
+
 
 ############################################################### helpers
 func _____HELPERS():pass
@@ -185,6 +200,7 @@ func setProjectList(projects : Array):
 	
 	for project in projects:
 		projectList.add_item(project, null, true)
+
 
 
 
@@ -308,9 +324,9 @@ func _on_rmb_menu_item_clicked(index, at_position, mouse_button_index):
 				var mouseP = rmbMenu.position + at_position
 				
 				currentColour = target.colour
-				colorPicker.find_child("ColorPicker", false).color = target.colour
-				colorPicker.position.x = clamp(mouseP.x, 0, get_viewport_rect().end.x-colorPicker.size.x)
-				colorPicker.position.y = clamp(mouseP.y, 0, get_viewport_rect().end.y-colorPicker.size.y)
+				colorPicker.color = target.colour
+				colorPickerBackdrop.position.x = clamp(mouseP.x, 0, get_viewport_rect().end.x-colorPickerBackdrop.size.x)
+				colorPickerBackdrop.position.y = clamp(mouseP.y, 0, get_viewport_rect().end.y-colorPickerBackdrop.size.y)
 				coloring = true
 				
 			rmbMenu.RmbIds.NEWCHILD:

@@ -2,7 +2,7 @@ extends Control
 class_name Workspace
 
 const AppName = "                 [Mindograph]"
-const CurrentVersion = [0, 0, 1, 2]
+const CurrentVersion = [0, 0, 1, 4]
 
 @onready var Config : Dictionary = {
 	"version" : getCurrentVersion(),
@@ -456,6 +456,13 @@ func setConfigKey(key : String, value : Variant):
 	
 	## Save the config file
 	saveConfigToFile(Config)
+
+
+func getColorPickerPresets() -> PackedColorArray:
+	return hud.getColorPickerPresets()
+
+func setColorPickerPresets(_presets : Array [Color]) -> void:
+	hud.setColorPickerPresets(_presets)
 
 
 ########################################################## SIGNALS
