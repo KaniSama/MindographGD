@@ -13,6 +13,8 @@ signal OpenSettingsRequested
 signal OpenReplaceRequested
 signal SelectionFinished(positionOffset : Vector2, selectionRect : Rect2)
 
+signal CreateBookmarkRequested
+
 ## RMB Menus
 @onready var canvas = $CanvasLayer
 @onready var rmbMenu = $CanvasLayer/MenuBackdrop/RMBMenu
@@ -277,6 +279,9 @@ func _on_button_load_pressed():
 #	emit_signal("HudButtonLoadPressed")
 	showProjectList()
 
+func _on_button_add_bookmark_pressed():
+	emit_signal("CreateBookmarkRequested")
+
 
 
 func _on_menu_backdrop_gui_input(event):
@@ -388,3 +393,6 @@ func _on_button_settings_pressed():
 
 func _on_button_replace_pressed():
 	emit_signal("OpenReplaceRequested")
+
+
+

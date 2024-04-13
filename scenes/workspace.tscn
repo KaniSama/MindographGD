@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://dowqipayg1sbx"]
+[gd_scene load_steps=13 format=3 uid="uid://dowqipayg1sbx"]
 
 [ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_wvxdq"]
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
 [ext_resource type="Script" path="res://scripts/NoteList.gd" id="3_hmkl8"]
 [ext_resource type="Script" path="res://scripts/Workspace/LinkDrawer.gd" id="4_lxu64"]
+[ext_resource type="Script" path="res://scripts/Workspace/Modules/Bookmarks.gd" id="4_ykar6"]
 [ext_resource type="Script" path="res://scripts/Workspace/MainCamera.gd" id="5_0kgjp"]
 [ext_resource type="PackedScene" uid="uid://pi852642fy8e" path="res://scenes/HUD.tscn" id="6_6cy78"]
 [ext_resource type="Script" path="res://scripts/Workspace/ExitConfirmationDialog.gd" id="7_2kai4"]
@@ -40,6 +41,12 @@ layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("3_hmkl8")
+
+[node name="Bookmarks" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_ykar6")
 
 [node name="LinkDrawer" type="Control" parent="."]
 layout_mode = 1

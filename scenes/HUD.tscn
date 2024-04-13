@@ -83,7 +83,6 @@ script = ExtResource("3_2xkyr")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ButtonContainer" type="Panel" parent="CanvasLayer"]
-visible = false
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 47.0
@@ -98,6 +97,10 @@ offset_top = 4.0
 offset_right = 44.0
 offset_bottom = 43.0
 tooltip_text = "Create an empty note"
+focus_neighbor_left = NodePath("../ButtonSettings")
+focus_neighbor_right = NodePath("../ButtonSave")
+focus_next = NodePath("../ButtonSave")
+focus_previous = NodePath("../ButtonSettings")
 theme = ExtResource("2_iy3s7")
 theme_override_font_sizes/font_size = 22
 shortcut = SubResource("Shortcut_m5ktq")
@@ -110,6 +113,10 @@ offset_top = 4.0
 offset_right = 87.0
 offset_bottom = 43.0
 tooltip_text = "Save the project (<ProjectName>)"
+focus_neighbor_left = NodePath("../ButtonAdd")
+focus_neighbor_right = NodePath("../ButtonLoad")
+focus_next = NodePath("../ButtonLoad")
+focus_previous = NodePath("../ButtonAdd")
 theme = ExtResource("2_iy3s7")
 theme_override_font_sizes/font_size = 22
 shortcut = SubResource("Shortcut_cptha")
@@ -122,18 +129,42 @@ offset_top = 4.0
 offset_right = 130.0
 offset_bottom = 43.0
 tooltip_text = "Load a Project"
+focus_neighbor_left = NodePath("../ButtonSave")
+focus_neighbor_right = NodePath("../ButtonAddBookmark")
+focus_next = NodePath("../ButtonAddBookmark")
+focus_previous = NodePath("../ButtonSave")
 theme = ExtResource("2_iy3s7")
 theme_override_font_sizes/font_size = 22
 shortcut = SubResource("Shortcut_x01ce")
 text = "📁"
 
-[node name="ButtonReplace" type="Button" parent="CanvasLayer/ButtonContainer"]
+[node name="ButtonAddBookmark" type="Button" parent="CanvasLayer/ButtonContainer"]
 layout_mode = 0
 offset_left = 136.0
 offset_top = 4.0
-offset_right = 174.0
+offset_right = 173.0
+offset_bottom = 43.0
+tooltip_text = "Create Bookmark"
+focus_neighbor_left = NodePath("../ButtonLoad")
+focus_neighbor_right = NodePath("../ButtonReplace")
+focus_next = NodePath("../ButtonReplace")
+focus_previous = NodePath("../ButtonLoad")
+theme = ExtResource("2_iy3s7")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_x01ce")
+text = "🏷"
+
+[node name="ButtonReplace" type="Button" parent="CanvasLayer/ButtonContainer"]
+layout_mode = 0
+offset_left = 181.0
+offset_top = 4.0
+offset_right = 219.0
 offset_bottom = 43.0
 tooltip_text = "Find and Replace"
+focus_neighbor_left = NodePath("../ButtonAddBookmark")
+focus_neighbor_right = NodePath("../ButtonSettings")
+focus_next = NodePath("../ButtonSettings")
+focus_previous = NodePath("../ButtonAddBookmark")
 theme = ExtResource("2_iy3s7")
 theme_override_font_sizes/font_size = 22
 text = "🔍"
@@ -149,6 +180,10 @@ offset_right = -5.0
 offset_bottom = 43.0
 grow_horizontal = 0
 tooltip_text = "Settings"
+focus_neighbor_left = NodePath("../ButtonReplace")
+focus_neighbor_right = NodePath("../ButtonAdd")
+focus_next = NodePath("../ButtonAdd")
+focus_previous = NodePath("../ButtonReplace")
 theme = ExtResource("2_iy3s7")
 theme_override_font_sizes/font_size = 22
 text = "⚙️"
@@ -244,6 +279,7 @@ layout_mode = 2
 text = "OK"
 
 [node name="DialogBackdrop" type="Panel" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -398,6 +434,7 @@ mouse_filter = 2
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonAdd" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonSave" to="." method="_on_button_save_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonLoad" to="." method="_on_button_load_pressed"]
+[connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonAddBookmark" to="." method="_on_button_add_bookmark_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonReplace" to="." method="_on_button_replace_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonSettings" to="." method="_on_button_settings_pressed"]
 [connection signal="gui_input" from="CanvasLayer/MenuBackdrop" to="." method="_on_menu_backdrop_gui_input"]

@@ -37,6 +37,10 @@ var Modified : bool = false
 @onready var UndoStack = UndoRedo.new()
 @onready var UndoStackVersion = UndoStack.get_version()
 
+@onready var bookmarks = $Bookmarks
+#@onready var BookmarkResource : PackedScene = preload("res://scenes/bookmark.tscn")
+@onready var Bookmarks : Array [ Bookmark ]
+
 var lastColour: Color = Color.KHAKI
 
 
@@ -65,6 +69,7 @@ func _ready():
 	hud.CreateProjectRequested.connect(createProject)
 	hud.OpenSettingsRequested.connect(OpenSettings)
 	hud.OpenReplaceRequested.connect(OpenReplace)
+	hud.CreateBookmarkRequested.connect(CreateBookmark)
 	
 	## Connect to the subwindow objects's signals
 	appSettingsWindow.UpdateConfig.connect(UpdateConfigFromSettings)
@@ -385,6 +390,15 @@ func compareVersions(_v1, _v2) -> int:
 			break
 	
 	return _result
+
+
+func CreateBookmark() -> Bookmark:
+	var _bookmark = bookmarks.createBookmark()
+	_bookmark.tree_exiting.connect(DestroyBookmark.bind(_bookmark))
+	Bookmarks.append(_bookmark)
+	return _bookmark
+func DestroyBookmark(_bookmark : Bookmark) -> void:
+	Bookmarks.erase(_bookmark)
 
 
 func UpdateConfigFromSettings(_key : String, _value : Variant):
