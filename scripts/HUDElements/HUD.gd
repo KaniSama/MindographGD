@@ -53,6 +53,9 @@ var selecting : bool = false
 var selectionBegin : Vector2 = Vector2.ZERO
 var selectionEnd : Vector2 = Vector2.ZERO
 
+## Bookmark List
+@onready var bookmarkList : ItemList = $CanvasLayer/BookmarkList/BookmarkScroll/BookmarkItemList
+
 ## Vars
 var target : Note = null
 
@@ -202,6 +205,13 @@ func setProjectList(projects : Array):
 	
 	for project in projects:
 		projectList.add_item(project, null, true)
+
+
+func setBookmarkList(_bookmarks : Array ) -> void:
+	bookmarkList.clear()
+	for __i in _bookmarks:
+		bookmarkList.add_item(__i.bm_name)
+		printt(__i.bm_name)
 
 
 

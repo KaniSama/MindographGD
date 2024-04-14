@@ -1,6 +1,8 @@
 class_name Bookmark
 extends TextureRect
 
+signal NameChanged(_old_name : String, _new_name : String)
+
 @onready var bm_name_panel = $PanelContainer
 @onready var bm_name_label = $PanelContainer/BookmarkNameLabel
 
@@ -10,15 +12,14 @@ var dragging : bool = false
 	get:
 		return bm_name
 	set(_value):
+		emit_signal("NameChanged", bm_name, _value)
 		bm_name = _value
 		bm_name_label.text = _value
+
 
 ########################################### OVERRIDES
 func _____OVERRIDES(): pass
 
-
-func _ready():
-	pass
 
 func _process(_delta):
 	if dragging:
@@ -30,17 +31,9 @@ func _process(_delta):
 func _____HELPERS(): pass
 
 
-func help():
-	pass
-
-
 
 ########################################### SIGNALS
 func _____SIGNALS(): pass
-
-
-func _on_child_key_pressed():
-	pass
 
 
 func _on_gui_input(event):	

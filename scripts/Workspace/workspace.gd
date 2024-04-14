@@ -39,7 +39,7 @@ var Modified : bool = false
 
 @onready var bookmarks = $Bookmarks
 #@onready var BookmarkResource : PackedScene = preload("res://scenes/bookmark.tscn")
-@onready var Bookmarks : Array [ Bookmark ]
+#@onready var Bookmarks : Array [ Bookmark ]
 
 var lastColour: Color = Color.KHAKI
 
@@ -395,10 +395,16 @@ func compareVersions(_v1, _v2) -> int:
 func CreateBookmark() -> Bookmark:
 	var _bookmark = bookmarks.createBookmark()
 	_bookmark.tree_exiting.connect(DestroyBookmark.bind(_bookmark))
-	Bookmarks.append(_bookmark)
+	_bookmark.NameChanged.connect(UpdateBookmarkList)
+	#Bookmarks.append(_bookmark)
+	UpdateBookmarkList()
 	return _bookmark
 func DestroyBookmark(_bookmark : Bookmark) -> void:
-	Bookmarks.erase(_bookmark)
+	#Bookmarks.erase(_bookmark)
+	pass
+func UpdateBookmarkList() -> void:
+	var __bookmarkList = bookmarks.get_children()
+	hud.setBookmarkList(__bookmarkList)
 
 
 func UpdateConfigFromSettings(_key : String, _value : Variant):
