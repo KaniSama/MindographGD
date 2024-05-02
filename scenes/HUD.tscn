@@ -478,6 +478,7 @@ mouse_filter = 2
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonReplace" to="." method="_on_button_replace_pressed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonSettings" to="." method="_on_button_settings_pressed"]
 [connection signal="pressed" from="CanvasLayer/BookmarkList/BookmarkListButton" to="CanvasLayer/BookmarkList" method="_on_bookmark_list_button_pressed"]
+[connection signal="item_activated" from="CanvasLayer/BookmarkList/BookmarkScroll/BookmarkItemList" to="." method="_on_bookmark_item_list_item_activated"]
 [connection signal="gui_input" from="CanvasLayer/MenuBackdrop" to="." method="_on_menu_backdrop_gui_input"]
 [connection signal="item_clicked" from="CanvasLayer/MenuBackdrop/RMBMenu" to="." method="_on_rmb_menu_item_clicked"]
 [connection signal="color_changed" from="CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker" to="." method="_on_color_picker_color_changed"]

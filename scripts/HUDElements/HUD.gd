@@ -14,6 +14,7 @@ signal OpenReplaceRequested
 signal SelectionFinished(positionOffset : Vector2, selectionRect : Rect2)
 
 signal CreateBookmarkRequested
+signal BookmarkFocusRequested(bookmarkName : String)
 
 ## RMB Menus
 @onready var canvas = $CanvasLayer
@@ -213,6 +214,12 @@ func setBookmarkList(_bookmarks : Array ) -> void:
 		bookmarkList.add_item(__i.bm_name)
 		#DELETE printt(__i.bm_name)
 
+func getBookmarkList() -> Array [ String ]:
+	var _output : Array [ String ] = []
+	for __i in range(bookmarkList.item_count):
+		_output.append(bookmarkList.get_item_text(__i))
+	return _output
+
 
 
 
@@ -406,3 +413,6 @@ func _on_button_replace_pressed():
 
 
 
+
+func _on_bookmark_item_list_item_activated(index):
+	emit_signal("BookmarkFocusRequested", bookmarkList.get_item_text(index))

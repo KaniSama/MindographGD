@@ -28,6 +28,7 @@ var lineEditWindowResource : PackedScene = preload("res://scenes/LineEditWindow.
 @onready var noteList : Node = $NoteList
 
 @onready var backgroundTexture = $Background
+@onready var camera : Camera2D = $Camera2D
 
 @onready var exitConfirmationDialog : ConfirmationDialog = $ExitConfirmationDialog
 @onready var appSettingsWindow : Window = $AppSettingsWindow
@@ -50,7 +51,6 @@ var lastColour: Color = Color.KHAKI
 ##################################################### OVERRIDES
 func _____OVERRIDES():pass
 
-
 func _ready():
 	
 	OS.low_processor_usage_mode = true
@@ -72,6 +72,7 @@ func _ready():
 	hud.OpenSettingsRequested.connect(OpenSettings)
 	hud.OpenReplaceRequested.connect(OpenReplace)
 	hud.CreateBookmarkRequested.connect(CreateBookmark)
+	hud.BookmarkFocusRequested.connect(BookmarkFocus)
 	
 	## Connect to the subwindow objects's signals
 	appSettingsWindow.UpdateConfig.connect(UpdateConfigFromSettings)
@@ -109,10 +110,8 @@ func _input(event):
 
 
 
-
 ##################################################### PROJECT MANAGEMENT
 func _____PROJECT_MANAGEMENT():pass
-
 
 # NUKES WORKSPACE & CLEARS UNDO HISTORY !!!
 func clearWorkspace():
@@ -305,6 +304,7 @@ func ButtonSavePressed():
 #	noteList.loadFromFile()
 
 
+
 ###################################################### NOTE INTERACTIONS
 func _____NOTE_INTERACTIONS():pass
 
@@ -349,7 +349,6 @@ func ReplaceTextInNotes(_what : String, _forWhat : String, _whole : bool, _ignor
 
 
 
-
 ######################################################## TIMER INTERACTIONS
 func _____TIMER_INTERACTIONS():pass
 
@@ -358,6 +357,7 @@ func startAutosaveTimer(_seconds : int = 60):
 
 func stopAutosaveTimer():
 	autosaveTimer.stop()
+
 
 
 ######################################################## HELPERS
@@ -394,7 +394,7 @@ func compareVersions(_v1, _v2) -> int:
 	return _result
 
 
-func UpdateConfigFromSettings(_key : String, _value : Variant):
+func UpdateConfigFromSettings(_key : String, _value : Variant) -> void:
 	setConfigKey(_key, _value)
 	
 	if (_key == "defaultcolour" && _value is Color):
@@ -419,7 +419,6 @@ func saveConfigToFile(config : Dictionary = Config):
 ######################################################## BOOKMARKS
 func _____BOOKMARKS()->void:pass
 
-
 func CreateBookmark() -> Bookmark:
 	var _bookmark = bookmarks.createBookmark()
 	_bookmark.tree_exited.connect(DestroyBookmark)#MAYBE .bind(_bookmark))
@@ -429,7 +428,7 @@ func CreateBookmark() -> Bookmark:
 	UpdateBookmarkList()
 	return _bookmark
 
-func DestroyBookmark():#MAYBE _bookmark : Bookmark) -> void:
+func DestroyBookmark() -> void:#MAYBE _bookmark : Bookmark) -> void:
 	UpdateBookmarkList()
 
 func UpdateBookmarkList() -> void:
@@ -447,14 +446,24 @@ func RenameBookmark(_bookmark : Bookmark) -> void:
 	_rename_window.popup()
 	_rename_window.confirmed.connect(
 		func():
-			_bookmark.bm_name = __lineEdit.text
+			var __new_name = __lineEdit.text
+			while (__new_name in hud.getBookmarkList()):
+				__new_name += "_"
+			_bookmark.bm_name = __new_name
 			_rename_window.queue_free()
 	)
-	#TODO: Restrict the new name to names which don't exist yet
 
 func BookmarkFocus(_bm_name : String) -> void:
-	#TODO: focus camera on the selected bookmark based on 
-	pass
+	var _bookmark : Bookmark = null
+	for __i : Bookmark in bookmarks.get_children():
+		if __i.bm_name == _bm_name:
+			_bookmark = __i
+			camera.zoom = Vector2(.9, .9)
+			camera.unzooming = true
+			camera.unzoomPosition = _bookmark.position
+			return
+
+#TODO: Make bookmarks saveable
 
 
 
@@ -464,7 +473,7 @@ func _____GET_SETTERS():pass
 func getLastColour() -> Color:
 	return lastColour
 
-func setLastColour(newColour : Color):
+func setLastColour(newColour : Color) -> void:
 	lastColour = newColour
 
 
@@ -515,6 +524,7 @@ func setColorPickerPresets(_presets : Array [Color]) -> void:
 	hud.setColorPickerPresets(_presets)
 
 
+
 ########################################################## SIGNALS
 func _____SIGNALS():pass
 
@@ -522,11 +532,11 @@ func _on_note_list_rmb_note(note):
 	hud.changeTarget(note)
 	hud.openRmbMenu()
 
-#func _on_note_list_start_link(note):
+#DELETE func _on_note_list_start_link(note):
 #	hud.changeLinkTarget(note)
 #	hud.startLink()
 
-#func _on_background_gui_input(event):
+#DELETE func _on_background_gui_input(event):
 	#if (event is InputEventMouseButton && event.pressed && event.button_index == MOUSE_BUTTON_LEFT):
 		#hud.changeTarget()
 
