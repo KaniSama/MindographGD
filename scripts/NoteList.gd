@@ -22,9 +22,9 @@ var nextNoteUID : int = 0
 func _____OVERRIDES():pass
 
 func _ready():
-	noteResource = preload("res://note/note.tscn")
+	noteResource = preload("res://scenes/note/note.tscn")
 
-func _process(delta):
+func _process(_delta):
 #	if (Input.is_action_just_pressed("debug")):
 #		for n in get_children():
 #			print(n.UID)
@@ -183,7 +183,7 @@ func _____CONNECTIONS():pass
 
 func getAllNoteConnections(note : Note) -> Array[ Note ]:
 	var _con = connections.filter(func(x): return note in x)
-	var _output : Array [ Note ]
+	var _output : Array [ Note ] = []
 	for __i in _con:
 		_output.append(__i[1] if __i[0]==note else __i[0])
 	return _output

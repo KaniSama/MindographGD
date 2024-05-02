@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=7 format=3 uid="uid://bia5m7q7lf4el"]
 
-[ext_resource type="FontFile" uid="uid://nx0bsdvw0qx8" path="res://note/Sticky Notes.ttf" id="1_g67jn"]
+[ext_resource type="FontFile" uid="uid://nx0bsdvw0qx8" path="res://scenes/note/Sticky Notes.ttf" id="1_g67jn"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mc2b2"]
 

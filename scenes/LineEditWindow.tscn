@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c43wlqiiv8xw3"]
+
+[node name="LineEditWindow" type="AcceptDialog"]
+title = "Name"
+initial_position = 2
+size = Vector2i(458, 88)
+visible = true
+
+[node name="LineEdit" type="LineEdit" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 450.0
+offset_bottom = 39.0
+grow_horizontal = 2

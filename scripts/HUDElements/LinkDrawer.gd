@@ -11,7 +11,7 @@ func _draw():
 			3, 5, false
 		)
 
-func _process(delta):
+func _process(_delta):
 		if (linkDrawer.visible):
 			position = find_parent("Workspace").find_child("Camera2D").position
 			

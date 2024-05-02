@@ -22,6 +22,8 @@ var ProjectName : String = "!!untitled!!"
 var ProjectList : Array = []
 var Modified : bool = false
 
+var lineEditWindowResource : PackedScene = preload("res://scenes/LineEditWindow.tscn")
+
 @onready var hud : Node = $HUD
 @onready var noteList : Node = $NoteList
 
@@ -392,21 +394,6 @@ func compareVersions(_v1, _v2) -> int:
 	return _result
 
 
-func CreateBookmark() -> Bookmark:
-	var _bookmark = bookmarks.createBookmark()
-	_bookmark.tree_exiting.connect(DestroyBookmark.bind(_bookmark))
-	_bookmark.NameChanged.connect(UpdateBookmarkList)
-	#Bookmarks.append(_bookmark)
-	UpdateBookmarkList()
-	return _bookmark
-func DestroyBookmark(_bookmark : Bookmark) -> void:
-	#Bookmarks.erase(_bookmark)
-	pass
-func UpdateBookmarkList() -> void:
-	var __bookmarkList = bookmarks.get_children()
-	hud.setBookmarkList(__bookmarkList)
-
-
 func UpdateConfigFromSettings(_key : String, _value : Variant):
 	setConfigKey(_key, _value)
 	
@@ -426,6 +413,49 @@ func saveConfigToFile(config : Dictionary = Config):
 	configFile.store_line(JSON.stringify(config,"\t",false,true))
 	configFile.flush()
 	configFile.close()
+
+
+
+######################################################## BOOKMARKS
+func _____BOOKMARKS()->void:pass
+
+
+func CreateBookmark() -> Bookmark:
+	var _bookmark = bookmarks.createBookmark()
+	_bookmark.tree_exited.connect(DestroyBookmark)#MAYBE .bind(_bookmark))
+	_bookmark.NameChangeRequested.connect(RenameBookmark.bind(_bookmark))
+	_bookmark.NameChanged.connect(UpdateBookmarkList)
+	#DELETE Bookmarks.append(_bookmark)
+	UpdateBookmarkList()
+	return _bookmark
+
+func DestroyBookmark():#MAYBE _bookmark : Bookmark) -> void:
+	UpdateBookmarkList()
+
+func UpdateBookmarkList() -> void:
+	var __bookmarkList = bookmarks.get_children()
+	hud.setBookmarkList(__bookmarkList)
+
+func RenameBookmark(_bookmark : Bookmark) -> void:
+	var _rename_window : AcceptDialog = lineEditWindowResource.instantiate()
+	add_child(_rename_window)
+	_rename_window.title = "Bookmark " + _rename_window.title
+	
+	var __lineEdit : LineEdit = _rename_window.get_child(0)
+	__lineEdit.text = _bookmark.bm_name
+	
+	_rename_window.popup()
+	_rename_window.confirmed.connect(
+		func():
+			_bookmark.bm_name = __lineEdit.text
+			_rename_window.queue_free()
+	)
+	#TODO: Restrict the new name to names which don't exist yet
+
+func BookmarkFocus(_bm_name : String) -> void:
+	#TODO: focus camera on the selected bookmark based on 
+	pass
+
 
 
 ######################################################## GET / SETTERS

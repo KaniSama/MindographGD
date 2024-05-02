@@ -71,7 +71,7 @@ func _on_update_button_pressed():
 	
 	HTTPrequester.request("https://api.github.com/repos/KaniSama/MindographGD/releases/latest")
 
-func _on_request_completed(result, response_code, headers, body):
+func _on_request_completed(result, response_code, _headers, body):
 	
 	if (result != OK || response_code != 200):
 		return

@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://nx0bsdvw0qx8"
-path="res://.godot/imported/Sticky Notes.ttf-9b8c1f6c2d28c944bb413916f64789b4.fontdata"
+path="res://.godot/imported/Sticky Notes.ttf-35c040b0b75657e460e63946aefad74e.fontdata"
 
 [deps]
 
-source_file="res://note/Sticky Notes.ttf"
-dest_files=["res://.godot/imported/Sticky Notes.ttf-9b8c1f6c2d28c944bb413916f64789b4.fontdata"]
+source_file="res://scenes/note/Sticky Notes.ttf"
+dest_files=["res://.godot/imported/Sticky Notes.ttf-35c040b0b75657e460e63946aefad74e.fontdata"]
 
 [params]
 

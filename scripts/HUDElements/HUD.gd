@@ -72,7 +72,7 @@ func _ready():
 	# Set swatches to only have the default note colour
 	setColorPickerPresets([currentColour])
 
-func _process(delta):
+func _process(_delta):
 	linkDrawer.visible = drawingLink
 	colorPickerBackdrop.visible = coloring
 	
@@ -211,7 +211,7 @@ func setBookmarkList(_bookmarks : Array ) -> void:
 	bookmarkList.clear()
 	for __i in _bookmarks:
 		bookmarkList.add_item(__i.bm_name)
-		printt(__i.bm_name)
+		#DELETE printt(__i.bm_name)
 
 
 
@@ -376,7 +376,7 @@ func _on_project_list_container_item_activated(index):
 	emit_signal("OpenProjectRequested", projectName)
 	showProjectList(false)
 
-func _on_project_list_container_item_clicked(index, at_position, mouse_button_index):
+func _on_project_list_container_item_clicked(index, _at_position, _mouse_button_index):
 	if (index == 0):
 		showProjectList(false)
 		showProjectNameChangeDialogWindow()

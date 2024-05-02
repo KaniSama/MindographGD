@@ -1,8 +1,8 @@
 [gd_scene load_steps=11 format=3 uid="uid://ddeucfi3rye2c"]
 
-[ext_resource type="Script" path="res://note/note.gd" id="1_gr2mf"]
-[ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_yj778"]
-[ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_gm0tl"]
+[ext_resource type="Script" path="res://scenes/note/note.gd" id="1_gt1lb"]
+[ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_aiym7"]
+[ext_resource type="Texture2D" uid="uid://derhk0nr7e4rj" path="res://sprites/sPin.png" id="3_0bu4t"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2fyyi"]
 
@@ -30,7 +30,7 @@ bg_color = Color(0, 0, 0, 0.176471)
 offset_right = 267.0
 offset_bottom = 261.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2fyyi")
-script = ExtResource("1_gr2mf")
+script = ExtResource("1_gt1lb")
 
 [node name="NoteContainer" type="Control" parent="."]
 layout_mode = 1
@@ -40,7 +40,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("2_yj778")
+theme = ExtResource("2_aiym7")
 
 [node name="NoteBg" type="Panel" parent="NoteContainer"]
 modulate = Color(1, 0.945098, 0.694118, 1)
@@ -150,6 +150,7 @@ text = "❌"
 flat = true
 
 [node name="PinIcon2" type="TextureRect" parent="NoteContainer"]
+visible = false
 modulate = Color(0, 0, 0, 0.47451)
 texture_filter = 1
 layout_mode = 1
@@ -163,11 +164,12 @@ offset_bottom = 52.0
 grow_horizontal = 2
 rotation = -1.71391
 mouse_filter = 2
-texture = ExtResource("3_gm0tl")
+texture = ExtResource("3_0bu4t")
 expand_mode = 1
 stretch_mode = 2
 
 [node name="PinIcon" type="TextureRect" parent="NoteContainer"]
+visible = false
 y_sort_enabled = true
 texture_filter = 1
 layout_mode = 1
@@ -180,11 +182,12 @@ offset_right = 0.5
 offset_bottom = 16.0
 grow_horizontal = 2
 mouse_filter = 2
-texture = ExtResource("3_gm0tl")
+texture = ExtResource("3_0bu4t")
 expand_mode = 1
 stretch_mode = 2
 
 [node name="DropShadow" type="Panel" parent="NoteContainer"]
+visible = false
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15

@@ -46,7 +46,7 @@ func _ready():
 	exitTextEditMode(false)
 	#requestLastColour(self)
 
-func _process(delta):
+func _process(_delta):
 	if (!pinned):
 		if (dragging):
 			drag()

@@ -22,7 +22,7 @@ func _draw():
 			# delete connection from array
 			noteList.connections.erase(i)
 
-func _process(delta):
+func _process(_delta):
 	position = camera.position
 	queue_redraw()
 
