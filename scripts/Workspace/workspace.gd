@@ -113,9 +113,11 @@ func _input(event):
 ##################################################### PROJECT MANAGEMENT
 func _____PROJECT_MANAGEMENT():pass
 
-# NUKES WORKSPACE & CLEARS UNDO HISTORY !!!
+## NUKES WORKSPACE & CLEARS UNDO HISTORY !!!
 func clearWorkspace():
 	noteList.clearNotesAndConnections()
+	bookmarks.clearBookmarks()
+	hud.setBookmarkList()
 	UndoStack.clear_history(false)
 
 func initProgram():
@@ -296,9 +298,11 @@ func ButtonAddPressed():
 	noteList.addNote()
 
 func ButtonSavePressed():
-	noteList.saveToFile()
+	#TODO: Create a dictionary with an Array of Bookmarks, pass it into saveProject
+	saveProject()
 	setModified(false)
 
+#MAYBE:
 #func ButtonLoadPressed():
 #	noteList.readOnNextFrame = [true, ProjectName]
 #	noteList.loadFromFile()
@@ -397,30 +401,55 @@ func compareVersions(_v1, _v2) -> int:
 func UpdateConfigFromSettings(_key : String, _value : Variant) -> void:
 	setConfigKey(_key, _value)
 	
-	if (_key == "defaultcolour" && _value is Color):
-		setLastColour(_value)
+	match _key:
+		"defaultcolour":
+			if _value is Color:
+				setLastColour(_value)
+		"autosave":
+			if _value:
+				startAutosaveTimer(Config["autosavefreqmins"] * 60)
+			else:
+				stopAutosaveTimer()
+		"autosavefreqmins":
+			if _value != 0 && Config["autosave"]:
+				startAutosaveTimer(Config["autosavefreqmins"] * 60)
+			elif _value == 0:
+				stopAutosaveTimer()
+		"darkmode":
+			setDarkMode(_value)
 	
-	if (_key == "autosave" && _value || _key == "autosavefreqmins" && _value != 0 && Config["autosave"]):
-		startAutosaveTimer(Config["autosavefreqmins"] * 60)
-	elif (_key == "autosave" && !_value || _key == "autosavefreqmins" && _value == 0):
-		stopAutosaveTimer()
-	
-	if (_key == "darkmode"):
-		setDarkMode(_value)
+	#MAYBE:
+	#if (_key == "defaultcolour" && _value is Color):
+		#setLastColour(_value)
+	#
+	#if (_key == "autosave" && _value || _key == "autosavefreqmins" && _value != 0 && Config["autosave"]):
+		#startAutosaveTimer(Config["autosavefreqmins"] * 60)
+	#elif (_key == "autosave" && !_value || _key == "autosavefreqmins" && _value == 0):
+		#stopAutosaveTimer()
+	#
+	#if (_key == "darkmode"):
+		#setDarkMode(_value)
 
 func saveConfigToFile(config : Dictionary = Config):
 	var configFile = FileAccess.open(ConfigFileLocation, FileAccess.WRITE)
 	configFile.store_line(JSON.stringify(config,"\t",false,true))
-	configFile.flush()
+	#MAYBE: configFile.flush()
 	configFile.close()
+
+
+func saveProject():
+	var _additionalData : Dictionary = {}
+	for __bm : Bookmark in bookmarks.get_children():
+		_additionalData[__bm.bm_name] = __bm.position
+	noteList.saveToFile(_additionalData)
 
 
 
 ######################################################## BOOKMARKS
 func _____BOOKMARKS()->void:pass
 
-func CreateBookmark() -> Bookmark:
-	var _bookmark = bookmarks.createBookmark()
+func CreateBookmark(_position : Vector2 = Vector2.ZERO) -> Bookmark:
+	var _bookmark = bookmarks.createBookmark("Bookmark", _position)
 	_bookmark.tree_exited.connect(DestroyBookmark)#MAYBE .bind(_bookmark))
 	_bookmark.NameChangeRequested.connect(RenameBookmark.bind(_bookmark))
 	_bookmark.NameChanged.connect(UpdateBookmarkList)
@@ -463,7 +492,11 @@ func BookmarkFocus(_bm_name : String) -> void:
 			camera.unzoomPosition = _bookmark.position
 			return
 
-#TODO: Make bookmarks saveable
+func loadBookmarks(_bookmarks: Dictionary) -> void:
+	for __key in _bookmarks.keys():
+		var __bm = CreateBookmark(_bookmarks[__key])
+		__bm.bm_name = __key
+		#__bm.position = _bookmarks[__key]
 
 
 
@@ -548,7 +581,11 @@ func _on_note_list_link_next_target_changed(note):
 
 func _on_autosave_timer_timeout():
 	if (getProjectName() != "!!untitled!!"):
-		noteList.saveToFile()
+		saveProject()
 
 func _on_fps_reset_timer_timeout():
 	Engine.max_fps = 15
+
+
+func _on_note_list_project_loaded(loadResult : Dictionary) -> void:
+	loadBookmarks(loadResult)

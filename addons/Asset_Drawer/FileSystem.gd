@@ -38,7 +38,7 @@ func _input(event: InputEvent) -> void:
 					make_bottom_panel_item_visible(FileDock)
 					showing = true
 				true:
-					print("hide")
+					#print("hide")
 					hide_bottom_panel()
 					showing = false
 #endregion

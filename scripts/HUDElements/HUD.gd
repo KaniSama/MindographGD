@@ -208,7 +208,7 @@ func setProjectList(projects : Array):
 		projectList.add_item(project, null, true)
 
 
-func setBookmarkList(_bookmarks : Array ) -> void:
+func setBookmarkList(_bookmarks : Array = [] ) -> void:
 	bookmarkList.clear()
 	for __i in _bookmarks:
 		bookmarkList.add_item(__i.bm_name)

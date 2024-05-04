@@ -1,6 +1,7 @@
 extends Control
 
 signal rmbNote(note : Note)
+signal ProjectLoaded(loadResult : Dictionary)
 #signal startLink(note: Note)
 
 signal linkNextTargetChanged(note : Note)
@@ -32,7 +33,9 @@ func _process(_delta):
 	if (readOnNextFrame[0]):
 		await get_tree().process_frame
 		
-		loadFromFile(readOnNextFrame[1])
+		var _loadResult = loadFromFile(readOnNextFrame[1])
+		emit_signal("ProjectLoaded", _loadResult)
+		
 		readOnNextFrame = [false, ""]
 
 
@@ -290,7 +293,10 @@ func getNextUID() -> int:
 ################################################ SAVE / LOAD SYSTEM
 func _____SAVE_LOAD():pass
 
-func saveToFile():
+## Saves the current project to a file.[br]
+## [b]_additionalInfo[/b] Dictionary's values are of type Variant and are encoded as full objects.
+func saveToFile(_additionalInfo : Dictionary = {}) -> void:
+	
 	reshuffleUIDs()
 	
 	var projectName : String = get_parent().getProjectName()
@@ -348,13 +354,21 @@ func saveToFile():
 	for __color in _colorPickerPresets:
 		file.store_var(__color)
 	
+	#Store any optional/additional info passed from other objects
+	file.store_64(_additionalInfo.size())
+	for __key:String in _additionalInfo.keys():
+		file.store_var(__key)
+		file.store_var(_additionalInfo[__key])
+	
 	# Store a buffer value (may or may not help with connections being broken)
 	file.store_8(0)
 	
-	file.flush()
+	#MAYBE file.flush()
 	file.close()
 
-func loadFromFile(projectName):
+## Reads the current project's save file and adds notes and stuff.[br]
+## Returns: Dictionary with values of type [b]Variant[/b], each Variant encoded as full object.
+func loadFromFile(projectName) -> Dictionary:
 #	var projectName : String = get_parent().getProjectName()
 	
 	var file = FileAccess.open(
@@ -364,7 +378,7 @@ func loadFromFile(projectName):
 	
 	if (file == null):
 		OS.alert("Unable to open file " + ProjectSettings.globalize_path("user://Projects/" + projectName.replacen(".mg", "") + ".mg"))
-		return
+		return {}
 	
 	## Save Parameters
 	# Project Name (string)
@@ -407,9 +421,19 @@ func loadFromFile(projectName):
 			_colorPresets.append(file.get_var())
 	get_parent().setColorPickerPresets(_colorPresets)
 	
+	# Read any optional/additional info previously passed from other objects
+	var _returnInfo : Dictionary = {}
+	var _returnInfoSize : int = file.get_64()
+	for __i:int in range(_returnInfoSize):
+		var __key = file.get_var()
+		var __value = file.get_var()
+		_returnInfo[__key] = __value
+	
 	queue_redraw()
 	
 	file.close()
 	
 	reshuffleUIDs()
+	
+	return _returnInfo
 
