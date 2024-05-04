@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dowqipayg1sbx"]
+[gd_scene load_steps=14 format=3 uid="uid://dowqipayg1sbx"]
 
 [ext_resource type="Script" path="res://scripts/Workspace/workspace.gd" id="1_wvxdq"]
 [ext_resource type="Texture2D" uid="uid://bog6jv228vyid" path="res://sprites/BGCork.png" id="2_owwm3"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/ReplaceWindow.gd" id="9_3s0v3"]
 [ext_resource type="PackedScene" uid="uid://be3gcb0o8yuwh" path="res://scenes/HelpWindow.tscn" id="10_0s3by"]
 [ext_resource type="StyleBox" uid="uid://l8474ad4qmnk" path="res://theme/WindowBackground.tres" id="10_7cpvk"]
+[ext_resource type="Script" path="res://scripts/Workspace/Modules/SaveLoadSystem.gd" id="13_ux4gd"]
 
 [node name="Workspace" type="Control"]
 layout_mode = 3
@@ -137,6 +138,7 @@ one_shot = true
 autostart = true
 
 [node name="SaveLoadSystem" type="Node" parent="."]
+script = ExtResource("13_ux4gd")
 
 [connection signal="ProjectLoaded" from="NoteList" to="." method="_on_note_list_project_loaded"]
 [connection signal="linkNextTargetChanged" from="NoteList" to="." method="_on_note_list_link_next_target_changed"]
