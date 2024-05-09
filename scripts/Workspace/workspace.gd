@@ -24,6 +24,8 @@ var Modified : bool = false
 
 var lineEditWindowResource : PackedScene = preload("res://scenes/LineEditWindow.tscn")
 
+@onready var saveLoadSystem : SaveLoadSystem = $SaveLoadSystem
+
 @onready var hud : Node = $HUD
 @onready var noteList : Node = $NoteList
 
@@ -107,6 +109,9 @@ func _input(event):
 		# TODO: UndoStack things
 		#if (UndoStack.get_version() != UndoStackVersion):
 			setModified()
+	
+	if event.is_action_pressed("load_test"):
+		load_project(ProjectName)
 
 
 
@@ -211,6 +216,7 @@ func loadProject(_project_name : String):
 	setProjectName(_project_name)
 	
 	noteList.readOnNextFrame = [true, _project_name]
+	#load_project(_project_name)
 
 
 
@@ -299,13 +305,17 @@ func ButtonAddPressed():
 
 func ButtonSavePressed():
 	#TODO: Create a dictionary with an Array of Bookmarks, pass it into saveProject
-	saveProject()
+	#saveProject()
+	saveProjectNew()
 	setModified(false)
 
 #MAYBE:
 #func ButtonLoadPressed():
 #	noteList.readOnNextFrame = [true, ProjectName]
 #	noteList.loadFromFile()
+
+func load_project(_project_name : String) -> void:
+	saveLoadSystem.load_project(_project_name)
 
 
 
@@ -442,6 +452,23 @@ func saveProject():
 	for __bm : Bookmark in bookmarks.get_children():
 		_additionalData[__bm.bm_name] = __bm.position
 	noteList.saveToFile(_additionalData)
+
+#TODO: SAVE / LOAD
+func saveProjectNew():
+	var noteListSaveData : Dictionary = noteList.get_notes_as_dict()
+	var _connnections : Array = noteList.connections
+	var bookmarkSaveData : Dictionary = bookmarks.get_bookmarks_as_dict()
+	var colorPickerPresets : PackedColorArray = getColorPickerPresets()
+	
+	var project_data : Dictionary = {
+		"project_name" = getProjectName(),
+		"notes" = noteListSaveData,
+		"connections" = _connnections,
+		"color_picker_presets" = colorPickerPresets,
+		"bookmarks" = bookmarkSaveData,
+	}
+	
+	saveLoadSystem.save_project(project_data)
 
 
 

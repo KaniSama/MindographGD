@@ -40,8 +40,17 @@ func clearBookmarks():
 
 
 ########################################### SIGNALS
-func _____SIGNALS(): pass
+func _____GET_SETTERS(): pass
 
 
-func _on_child_key_pressed():
-	pass
+func get_bookmarks_as_dict() -> Dictionary:
+	var output : Dictionary = {
+		"name" = [],
+		"position" = []
+	}
+	
+	for __bm : Bookmark in get_children():
+		output.name.append(__bm.bm_name)
+		output.position.append(__bm.position)
+	
+	return output

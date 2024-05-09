@@ -293,6 +293,26 @@ func getNextUID() -> int:
 ################################################ SAVE / LOAD SYSTEM
 func _____SAVE_LOAD():pass
 
+func get_notes_as_dict() -> Dictionary:
+	var output : Dictionary = {
+		"uid" = [],
+		"text" = [],
+		"position" = [],
+		"size" = [],
+		"pinned" = [],
+		"color" = []
+	}
+	
+	for __note : Note in get_children():
+		output.uid.append(__note.UID)
+		output.text.append(__note.noteText)
+		output.position.append(__note.position)
+		output.size.append(__note.size)
+		output.pinned.append(__note.pinned)
+		output.color.append(__note.colour)
+	
+	return output
+
 ## Saves the current project to a file.[br]
 ## [b]_additionalInfo[/b] Dictionary's values are of type Variant and are encoded as full objects.
 func saveToFile(_additionalInfo : Dictionary = {}) -> void:
