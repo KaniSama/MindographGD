@@ -153,7 +153,7 @@ func setSelecting(_set : bool = true):
 func getColorPickerPresets() -> PackedColorArray:
 	return colorPicker.get_presets()
 
-func setColorPickerPresets(_colors : Array [Color] ) -> void:
+func setColorPickerPresets(_colors : Array ) -> void:
 	var _presets = colorPicker.get_presets()
 	for __i in _presets:
 		colorPicker.erase_preset(__i)

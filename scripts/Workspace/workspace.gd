@@ -69,7 +69,7 @@ func _ready():
 	hud.NewNote.connect(Duplicate)
 	hud.NewChild.connect(CreateChild)
 	hud.NewSibling.connect(CreateSibling)
-	hud.OpenProjectRequested.connect(loadProject)
+	hud.OpenProjectRequested.connect(load_project)
 	hud.CreateProjectRequested.connect(createProject)
 	hud.OpenSettingsRequested.connect(OpenSettings)
 	hud.OpenReplaceRequested.connect(OpenReplace)
@@ -210,14 +210,6 @@ func initProgram():
 	
 	UpdateConfigFromSettings("autosave", Config["autosave"])
 
-func loadProject(_project_name : String):
-	clearWorkspace()
-	
-	setProjectName(_project_name)
-	
-	noteList.readOnNextFrame = [true, _project_name]
-	#load_project(_project_name)
-
 
 
 func createProject(_project_name : String):
@@ -304,18 +296,13 @@ func ButtonAddPressed():
 	noteList.addNote()
 
 func ButtonSavePressed():
-	#TODO: Create a dictionary with an Array of Bookmarks, pass it into saveProject
 	#saveProject()
-	saveProjectNew()
-	setModified(false)
+	save_project()
 
 #MAYBE:
 #func ButtonLoadPressed():
 #	noteList.readOnNextFrame = [true, ProjectName]
 #	noteList.loadFromFile()
-
-func load_project(_project_name : String) -> void:
-	saveLoadSystem.load_project(_project_name)
 
 
 
@@ -454,13 +441,15 @@ func saveProject():
 	noteList.saveToFile(_additionalData)
 
 #TODO: SAVE / LOAD
-func saveProjectNew():
+func save_project() -> void:
+	var _version : Array = CurrentVersion
 	var noteListSaveData : Dictionary = noteList.get_notes_as_dict()
-	var _connnections : Array = noteList.connections
+	var _connnections : Array = noteList.get_connections_as_UIDs()
 	var bookmarkSaveData : Dictionary = bookmarks.get_bookmarks_as_dict()
 	var colorPickerPresets : PackedColorArray = getColorPickerPresets()
 	
 	var project_data : Dictionary = {
+		"version" = _version,
 		"project_name" = getProjectName(),
 		"notes" = noteListSaveData,
 		"connections" = _connnections,
@@ -468,7 +457,62 @@ func saveProjectNew():
 		"bookmarks" = bookmarkSaveData,
 	}
 	
+	noteList.reshuffleUIDs()
 	saveLoadSystem.save_project(project_data)
+	
+	setModified(false)
+
+func loadProject(_project_name : String):
+	clearWorkspace()
+	
+	setProjectName(_project_name)
+	
+	noteList.readOnNextFrame = [true, _project_name]
+	#load_project(_project_name)
+
+func load_project(_project_name : String) -> void:
+	clearWorkspace()
+	
+	var _project_data : Dictionary = saveLoadSystem.load_project(_project_name)
+	
+	#var _projver : Array = _project_data["version"]
+	#var _projname : String = _project_data["project_name"]
+	#var _notes : Dictionary = _project_data["notes"]
+	#var _conn : Array = _project_data["connections"]
+	#var _color_picker_presets : PackedColorArray = _project_data["color_picker_presets"]
+	#var _bookmarks : Dictionary = _project_data["bookmarks"]
+	#
+	#if _projname:
+		#setProjectName(_projname)
+	#else:
+		#return
+	#if _notes:
+		#noteList.set_notes_from_dict(_notes)
+	#if _conn:
+		#noteList.connections = _conn
+	#if _color_picker_presets:
+		#setColorPickerPresets(_color_picker_presets)
+	#if _bookmarks:
+		#bookmarks.set_bookmarks_from_dict(_bookmarks)
+	
+	for __key in _project_data:
+		match __key:
+			"version":
+				pass
+			"project_name":
+				setProjectName(_project_data[__key])
+			"notes":
+				noteList.set_notes_from_dict(_project_data[__key])
+			"connections":
+				noteList.set_connections_from_UIDs(_project_data[__key])
+			"color_picker_presets":
+				setColorPickerPresets(_project_data[__key])
+			"bookmarks":
+				bookmarks.set_bookmarks_from_dict(_project_data[__key])
+	
+	queue_redraw()
+	noteList.queue_redraw()
+	$LinkDrawer.queue_redraw()
 
 
 
@@ -580,7 +624,7 @@ func setConfigKey(key : String, value : Variant):
 func getColorPickerPresets() -> PackedColorArray:
 	return hud.getColorPickerPresets()
 
-func setColorPickerPresets(_presets : Array [Color]) -> void:
+func setColorPickerPresets(_presets : Array) -> void:
 	hud.setColorPickerPresets(_presets)
 
 

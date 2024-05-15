@@ -13,7 +13,12 @@ var readOnNextFrame = [false, ""]
 
 @onready var selected : Array = []
 
-@onready var connections : Array = []
+@onready var connections : Array = [] :
+	get:
+		return connections
+	set(_value):
+		connections = _value
+		queue_redraw()
 @onready var noteResource : Resource
 
 var nextNoteUID : int = 0
@@ -74,7 +79,7 @@ func addNote() -> Note:
 	return newNote
 
 func addNoteFromContext(_UID:int, _text:String, _position:Vector2, _size:Vector2, _color:Color, _pinned:bool) -> Note:
-	var newNote : Node = noteResource.instantiate()
+	var newNote : Note = noteResource.instantiate()
 	
 	add_child(newNote)
 	connectNoteSignals(newNote)
@@ -92,6 +97,7 @@ func addNoteFromContext(_UID:int, _text:String, _position:Vector2, _size:Vector2
 	newNote.pin()
 	
 	newNote.size = _size
+	newNote.updatePinPosition()
 	
 	newNote.show_behind_parent = true
 	
@@ -305,13 +311,38 @@ func get_notes_as_dict() -> Dictionary:
 	
 	for __note : Note in get_children():
 		output.uid.append(__note.UID)
-		output.text.append(__note.noteText)
+		output.text.append(__note.noteText.text)
 		output.position.append(__note.position)
 		output.size.append(__note.size)
 		output.pinned.append(__note.pinned)
 		output.color.append(__note.colour)
 	
 	return output
+
+func set_notes_from_dict(_notes : Dictionary) -> void:
+	var _uid : Array = _notes["uid"]
+	var _text : Array = _notes["text"]
+	var _position : Array = _notes["position"]
+	var _size : Array = _notes["size"]
+	var _pinned : Array = _notes["pinned"]
+	var _color : Array = _notes["color"]
+	
+	for __i in range(_uid.size()):
+		addNoteFromContext(_uid[__i], _text[__i], _position[__i], _size[__i], _color[__i], _pinned[__i])
+
+func get_connections_as_UIDs() -> Array:
+	var _output = []
+	
+	for __conn in connections:
+		_output.append([__conn[0].UID, __conn[1].UID])
+	
+	return _output
+
+func set_connections_from_UIDs(_connections : Array) -> void:
+	for __conn in _connections:
+		addConnection(getNoteByUID(__conn[0]), getNoteByUID(__conn[1]))
+
+
 
 ## Saves the current project to a file.[br]
 ## [b]_additionalInfo[/b] Dictionary's values are of type Variant and are encoded as full objects.

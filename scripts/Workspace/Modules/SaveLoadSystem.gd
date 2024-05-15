@@ -27,6 +27,7 @@ func save_project(project_data : Dictionary) -> void:
 	## Save Parameters
 	
 	## Project data
+	#MAYBE:
 	#for __i in project_data.keys():
 		#if project_data[__i] is Callable:
 			#project_data[__i].call()
@@ -55,6 +56,7 @@ func load_project(project_name : String) -> Dictionary:
 		OS.alert("Unable to open file " + ProjectSettings.globalize_path(file_name))
 		return {}
 	
+	#MAYBE:
 	#while not file.eof_reached():
 		#var __key = file.get_var()
 		#var __value = file.get_var()

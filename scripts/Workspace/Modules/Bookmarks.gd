@@ -54,3 +54,12 @@ func get_bookmarks_as_dict() -> Dictionary:
 		output.position.append(__bm.position)
 	
 	return output
+
+func set_bookmarks_from_dict(_bms : Dictionary) -> void:
+	var _bm_name = _bms["name"]
+	var _bm_pos = _bms["position"]
+	
+	for __i in range(_bm_name.size()):
+		createBookmark(_bm_name[__i], _bm_pos[__i])
+
+
