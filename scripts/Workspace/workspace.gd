@@ -475,26 +475,6 @@ func load_project(_project_name : String) -> void:
 	
 	var _project_data : Dictionary = saveLoadSystem.load_project(_project_name)
 	
-	#var _projver : Array = _project_data["version"]
-	#var _projname : String = _project_data["project_name"]
-	#var _notes : Dictionary = _project_data["notes"]
-	#var _conn : Array = _project_data["connections"]
-	#var _color_picker_presets : PackedColorArray = _project_data["color_picker_presets"]
-	#var _bookmarks : Dictionary = _project_data["bookmarks"]
-	#
-	#if _projname:
-		#setProjectName(_projname)
-	#else:
-		#return
-	#if _notes:
-		#noteList.set_notes_from_dict(_notes)
-	#if _conn:
-		#noteList.connections = _conn
-	#if _color_picker_presets:
-		#setColorPickerPresets(_color_picker_presets)
-	#if _bookmarks:
-		#bookmarks.set_bookmarks_from_dict(_bookmarks)
-	
 	for __key in _project_data:
 		match __key:
 			"version":
@@ -509,10 +489,7 @@ func load_project(_project_name : String) -> void:
 				setColorPickerPresets(_project_data[__key])
 			"bookmarks":
 				bookmarks.set_bookmarks_from_dict(_project_data[__key])
-	
-	queue_redraw()
-	noteList.queue_redraw()
-	$LinkDrawer.queue_redraw()
+				UpdateBookmarkList()
 
 
 
