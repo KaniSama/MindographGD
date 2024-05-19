@@ -16,14 +16,31 @@ signal SelectionFinished(positionOffset : Vector2, selectionRect : Rect2)
 signal CreateBookmarkRequested
 signal BookmarkFocusRequested(bookmarkName : String)
 
+## Window Resources
+@onready var line_edit_window_resource : PackedScene = preload("res://scenes/HUD_New/LineEditWindow.tscn")
+@onready var file_dialog_window_resource : PackedScene = preload("res://scenes/HUD_New/FileDialog.tscn")
+@onready var popup_menu_resource : PackedScene = preload("res://scenes/HUD_New/PopupMenu.tscn")
+
 ## RMB Menus
 @onready var canvas = $CanvasLayer
-@onready var rmbMenu = $CanvasLayer/MenuBackdrop/RMBMenu
+#@onready var rmbMenu = $CanvasLayer/MenuBackdrop/RMBMenu
 @onready var menuBackdrop = $CanvasLayer/MenuBackdrop
 @onready var linkDrawer = $LinkDrawer
 @onready var linkDrawerStart = $LinkDrawerStart
 @onready var colorPickerBackdrop = $CanvasLayer/MenuBackdrop/ColorPickerBackdrop
 @onready var colorPicker = $CanvasLayer/MenuBackdrop/ColorPickerBackdrop/ColorPicker
+## IDs for the RMB-menu actions
+## MUST CORELLATE WITH THE IDS IN THE WINDOW NODE ITSELF !!!
+enum RmbIds {
+	PIN = 0,
+	LINK = 1,
+	UNLINK = 3,
+	DELETE = 4,
+	NEW = 6,
+	NEWCHILD = 7,
+	NEWSIBLING = 8,
+	COLOR = 10
+}
 
 ## Modal Dialogs
 @onready var dialogBackdrop = $CanvasLayer/DialogBackdrop
@@ -38,8 +55,8 @@ signal BookmarkFocusRequested(bookmarkName : String)
 
 ## Color
 var coloring = false
-@onready var parent = get_parent()
-@onready var currentColor = parent.getLastColor()
+@onready var workspace = find_parent("Workspace")
+@onready var currentColor = workspace.getLastColor()
 
 ## Selector
 @onready var selector = $Selector
@@ -197,7 +214,7 @@ func showProjectList(_show : bool = true):
 
 
 func refreshProjectList():
-	setProjectList(parent.getProjectList())
+	setProjectList(workspace.getProjectList())
 
 func setProjectList(projects : Array):
 	projectList.clear()
@@ -228,16 +245,65 @@ func _____RMB_MENU():pass
 
 
 func openRmbMenu():
-	rmbMenu.visible = true
-	var mpos = get_viewport().get_mouse_position()
-	rmbMenu.position.x = clamp(mpos.x, 0, get_viewport_rect().size.x - rmbMenu.size.x)
-	rmbMenu.position.y = clamp(mpos.y, 0, get_viewport_rect().size.y - rmbMenu.size.y)
-	menuBackdrop.visible = true
+	#DELETE: rmbMenu.visible = true
+	#var mpos = get_viewport().get_mouse_position()
+	#rmbMenu.position.x = clamp(mpos.x, 0, get_viewport_rect().size.x - rmbMenu.size.x)
+	#rmbMenu.position.y = clamp(mpos.y, 0, get_viewport_rect().size.y - rmbMenu.size.y)
+	#menuBackdrop.visible = true
+	# TODO: RMB menu
+	var _menu : PopupMenu = popup_menu_resource.instantiate()
+	_menu.id_pressed.connect(process_rmb_menu)
+
+func process_rmb_menu(command_id : int):
+	var closeMenu : bool = true
+	
+	#DELETE: rmbMenu.deselect_all()
+	match (command_id):
+		
+		RmbIds.PIN:
+			target.pin()
+			
+		RmbIds.LINK:
+			changeLinkTarget(target)
+			startLink()
+			
+		RmbIds.NEW:
+			emit_signal("NewNote", target)
+			
+		RmbIds.DELETE:
+			target.queue_free()
+			
+		RmbIds.UNLINK:
+			target.removeFromConnections()
+			
+		RmbIds.COLOR:
+			closeMenu = false
+			
+			var mouseP = get_viewport().get_mouse_position()
+			
+			currentColor = target.color
+			colorPicker.color = target.color
+			colorPickerBackdrop.position.x = clamp(mouseP.x, 0, get_viewport_rect().end.x-colorPickerBackdrop.size.x)
+			colorPickerBackdrop.position.y = clamp(mouseP.y, 0, get_viewport_rect().end.y-colorPickerBackdrop.size.y)
+			coloring = true
+			
+		RmbIds.NEWCHILD:
+			print("child")
+			emit_signal("NewChild", target)
+			
+		RmbIds.NEWSIBLING:
+			print("sibling")
+			emit_signal("NewSibling", target)
+	
+	if (closeMenu):
+		closeRmbMenu()
 
 func closeRmbMenu():
-	rmbMenu.visible = false
-	menuBackdrop.visible = false
-	coloring = false
+	#DELETE: rmbMenu.visible = false
+	#menuBackdrop.visible = false
+	#coloring = false
+	# TODO: also that
+	pass
 
 
 
@@ -307,7 +373,7 @@ func _on_menu_backdrop_gui_input(event):
 
 func _on_color_picker_color_changed(color):
 	currentColor = color
-	parent.setLastColor(color)
+	workspace.setLastColor(color)
 
 
 
@@ -315,35 +381,36 @@ func _on_rmb_menu_item_clicked(index, at_position, mouse_button_index):
 	if (mouse_button_index == MOUSE_BUTTON_LEFT):
 		var closeMenu : bool = true
 		
-		rmbMenu.deselect_all()
+		#DELETE: rmbMenu.deselect_all()
 		match (index):
 			
-			rmbMenu.RmbIds.PIN:
+			RmbIds.PIN:
 				#print("pin")
 				target.pin()
 				
-			rmbMenu.RmbIds.LINK:
+			RmbIds.LINK:
 				#print("link")
 				changeLinkTarget(target)
 				startLink()
 				
-			rmbMenu.RmbIds.NEW:
+			RmbIds.NEW:
 				#print("new")
 				emit_signal("NewNote", target)
 				
-			rmbMenu.RmbIds.DELETE:
+			RmbIds.DELETE:
 				#print("deleb")
 				target.queue_free()
 				
-			rmbMenu.RmbIds.UNLINK:
+			RmbIds.UNLINK:
 				#print("unlink")
 				target.removeFromConnections()
 				
-			rmbMenu.RmbIds.COLOUR:
+			RmbIds.COLOR:
 				#print("colore")
 				closeMenu = false
 				
-				var mouseP = rmbMenu.position + at_position
+				#var mouseP = rmbMenu.position + at_position
+				var mouseP = get_global_mouse_position()
 				
 				currentColor = target.color
 				colorPicker.color = target.color
@@ -351,11 +418,11 @@ func _on_rmb_menu_item_clicked(index, at_position, mouse_button_index):
 				colorPickerBackdrop.position.y = clamp(mouseP.y, 0, get_viewport_rect().end.y-colorPickerBackdrop.size.y)
 				coloring = true
 				
-			rmbMenu.RmbIds.NEWCHILD:
+			RmbIds.NEWCHILD:
 				print("child")
 				emit_signal("NewChild", target)
 				
-			rmbMenu.RmbIds.NEWSIBLING:
+			RmbIds.NEWSIBLING:
 				print("sibling")
 				emit_signal("NewSibling", target)
 		
@@ -366,7 +433,7 @@ func _on_rmb_menu_item_clicked(index, at_position, mouse_button_index):
 
 
 func _on_project_list_button_open_dir_pressed():
-	setProjectList(parent.getProjectList())
+	setProjectList(workspace.getProjectList())
 	OS.shell_open(ProjectSettings.globalize_path("user://Projects"))
 
 func _on_project_list_button_cancel_pressed():

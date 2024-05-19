@@ -1,0 +1,237 @@
+[gd_scene load_steps=15 format=3 uid="uid://dacw13u4hrkyp"]
+
+[ext_resource type="Script" path="res://scenes/HUD_New/HUD_New.gd" id="1_jdci1"]
+[ext_resource type="Theme" uid="uid://jkuo5ldmlvtl" path="res://theme/godot_minimal_by_passivestar (for 4.2).tres" id="1_lmnnt"]
+[ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_dbprg"]
+[ext_resource type="Texture2D" uid="uid://dgwxht26s1xxy" path="res://sprites/sBookmark.png" id="3_qmkkn"]
+[ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="4_8brjy"]
+[ext_resource type="Script" path="res://scripts/HUDElements/BookmarkList.gd" id="6_ll34h"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_pmifv"]
+command_or_control_autoremap = true
+keycode = 78
+
+[sub_resource type="Shortcut" id="Shortcut_saoxj"]
+events = [SubResource("InputEventKey_pmifv")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_pfi0t"]
+device = -1
+command_or_control_autoremap = true
+keycode = 79
+unicode = 111
+
+[sub_resource type="Shortcut" id="Shortcut_0134t"]
+events = [SubResource("InputEventKey_pfi0t")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_apk2l"]
+device = -1
+command_or_control_autoremap = true
+keycode = 83
+unicode = 115
+
+[sub_resource type="Shortcut" id="Shortcut_eh4xw"]
+events = [SubResource("InputEventKey_apk2l")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_bjwxe"]
+command_or_control_autoremap = true
+alt_pressed = true
+keycode = 66
+
+[sub_resource type="Shortcut" id="Shortcut_8t7ip"]
+events = [SubResource("InputEventKey_bjwxe")]
+
+[node name="HUD 2" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jdci1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUDHolder" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_lmnnt")
+
+[node name="ButtonContainerBackdrop" type="PanelContainer" parent="CanvasLayer/HUDHolder"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 2.0
+offset_top = 6.0
+offset_right = -2.0
+offset_bottom = 45.0
+grow_horizontal = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop"]
+layout_mode = 2
+
+[node name="VSeparator4" type="VSeparator" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+
+[node name="ButtonAdd" type="Button" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+tooltip_text = "Create an empty note"
+focus_neighbor_left = NodePath("../ButtonSettings")
+focus_neighbor_right = NodePath("../ButtonAddBookmark")
+focus_next = NodePath("../ButtonAddBookmark")
+focus_previous = NodePath("../ButtonSettings")
+theme = ExtResource("2_dbprg")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_saoxj")
+text = "➕"
+
+[node name="ButtonAddBookmark" type="Button" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+tooltip_text = "Create Bookmark"
+focus_neighbor_left = NodePath("../ButtonAdd")
+focus_neighbor_right = NodePath("../ButtonSave")
+focus_next = NodePath("../ButtonSave")
+focus_previous = NodePath("../ButtonAdd")
+theme = ExtResource("2_dbprg")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_0134t")
+icon = ExtResource("3_qmkkn")
+
+[node name="VSeparator" type="VSeparator" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+
+[node name="ButtonNew" type="Button" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+tooltip_text = "Create a new Project"
+focus_neighbor_left = NodePath("../ButtonAddBookmark")
+focus_neighbor_right = NodePath("../ButtonSave")
+focus_next = NodePath("../ButtonSave")
+focus_previous = NodePath("../ButtonAddBookmark")
+theme = ExtResource("2_dbprg")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_0134t")
+text = "📄"
+
+[node name="ButtonSave" type="Button" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+tooltip_text = "Save the project (<ProjectName>)"
+focus_neighbor_left = NodePath("../ButtonAddBookmark")
+focus_neighbor_right = NodePath("../ButtonLoad")
+focus_next = NodePath("../ButtonLoad")
+focus_previous = NodePath("../ButtonAddBookmark")
+theme = ExtResource("2_dbprg")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_eh4xw")
+text = "💾"
+
+[node name="ButtonLoad" type="Button" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+tooltip_text = "Load a Project"
+focus_neighbor_left = NodePath("../ButtonSave")
+focus_neighbor_right = NodePath("../ButtonReplace")
+focus_next = NodePath("../ButtonReplace")
+focus_previous = NodePath("../ButtonSave")
+theme = ExtResource("2_dbprg")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_0134t")
+text = "📁"
+
+[node name="VSeparator2" type="VSeparator" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+
+[node name="ButtonReplace" type="Button" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+tooltip_text = "Find and Replace"
+focus_neighbor_left = NodePath("../ButtonLoad")
+focus_neighbor_right = NodePath("../ButtonSettings")
+focus_next = NodePath("../ButtonSettings")
+focus_previous = NodePath("../ButtonLoad")
+theme = ExtResource("2_dbprg")
+theme_override_font_sizes/font_size = 22
+text = "🔍"
+
+[node name="VSeparator3" type="VSeparator" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+
+[node name="FPSCounter" type="Label" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+text = "FPS: "
+horizontal_alignment = 2
+script = ExtResource("4_8brjy")
+
+[node name="TimerCounter" type="Label" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Seconds until autosave: "
+horizontal_alignment = 2
+
+[node name="VSeparator5" type="VSeparator" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="ButtonSettings" type="Button" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Settings"
+focus_neighbor_left = NodePath("../ButtonReplace")
+focus_neighbor_right = NodePath("../ButtonAdd")
+focus_next = NodePath("../ButtonAdd")
+focus_previous = NodePath("../ButtonReplace")
+theme = ExtResource("2_dbprg")
+theme_override_font_sizes/font_size = 22
+text = "⚙️"
+
+[node name="VSeparator6" type="VSeparator" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="BookmarkList" type="Panel" parent="CanvasLayer/HUDHolder"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -299.0
+offset_top = 84.0
+offset_bottom = -84.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("6_ll34h")
+
+[node name="BookmarkListButton" type="Button" parent="CanvasLayer/HUDHolder/BookmarkList"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -61.23
+offset_top = -31.0
+offset_right = -3.23
+offset_bottom = 32.0
+grow_vertical = 2
+tooltip_text = "Bookmarks"
+shortcut = SubResource("Shortcut_8t7ip")
+text = "<"
+icon = ExtResource("3_qmkkn")
+icon_alignment = 2
+
+[node name="BookmarkScroll" type="ScrollContainer" parent="CanvasLayer/HUDHolder/BookmarkList"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="BookmarkItemList" type="ItemList" parent="CanvasLayer/HUDHolder/BookmarkList/BookmarkScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="CanvasLayer/HUDHolder/BookmarkList/BookmarkListButton" to="CanvasLayer/HUDHolder/BookmarkList" method="_on_bookmark_list_button_pressed"]

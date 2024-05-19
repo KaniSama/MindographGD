@@ -7,10 +7,10 @@ signal unhovered(note : Note)
 signal RemoveFromConnections(note : Note)
 signal SelectedClick(note : Note)
 signal SelectedRect(note : Note)
-#signal ColourRequested(note : Note)
+#signal ColorRequested(note : Note)
 
 var UID : int
-@onready var colour : Color
+@onready var color : Color
 @onready var noteBg = $NoteContainer/NoteBg
 
 var pinPosition : Vector2 = Vector2.ZERO
@@ -44,7 +44,7 @@ func _____OVERRIDES():pass
 func _ready():
 	# Disable Text Edit elements
 	exitTextEditMode(false)
-	#requestLastColour(self)
+	#requestLastColor(self)
 
 func _process(_delta):
 	if (!pinned):
@@ -139,9 +139,9 @@ func exitTextEditMode(saveText: bool):
 #################################################### GET/SETTERS
 func _____GET_SETTERS():pass
 
-func changeColour(newColour : Color):
-	noteBg.set_modulate(newColour)
-	colour = newColour
+func changeColor(newColor : Color):
+	noteBg.set_modulate(newColor)
+	color = newColor
 
 
 func getText() -> String:
@@ -163,7 +163,7 @@ func setDarkMode(_set : bool = true):
 	darkModePanel.visible = _set
 	
 	if (_set):
-		noteText.add_theme_color_override("font_color", colour)
+		noteText.add_theme_color_override("font_color", color)
 	else:
 		noteText.add_theme_color_override("font_color", Color(0,0,0,1))
 
@@ -183,8 +183,8 @@ func emitHovered(note = self):
 func emitUnhovered(note = self):
 	emit_signal("hovered", note)
 
-#func requestLastColour(note: Note):
-#	emit_signal("ColourRequested", note)
+#func requestLastColor(note: Note):
+#	emit_signal("ColorRequested", note)
 
 func _____TRUE_SIGNALS():pass
 

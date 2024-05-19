@@ -67,7 +67,7 @@ func addNote() -> Note:
 	
 	newNote.setUID(getNextUID())
 	
-	newNote.changeColour(get_parent().getLastColour())
+	newNote.changeColor(get_parent().getLastColor())
 	newNote.setDarkMode(get_parent().getDarkMode())
 	
 	newNote.position = get_global_mouse_position()
@@ -87,7 +87,7 @@ func addNoteFromContext(_UID:int, _text:String, _position:Vector2, _size:Vector2
 #	newNote.UID = _UID
 	newNote.setUID(_UID)
 	
-	newNote.changeColour(_color)
+	newNote.changeColor(_color)
 	newNote.setDarkMode(get_parent().getDarkMode())
 	
 	newNote.position = _position
@@ -111,7 +111,7 @@ func duplicateNote(note : Note) -> Note:
 		note.getText(), 
 		note.position, 
 		note.size, 
-		note.colour, 
+		note.color, 
 		note.pinned
 	)
 	
@@ -122,10 +122,10 @@ func connectNoteSignals(note: Note):
 	note.connect("RemoveFromConnections", removeFromConnections)
 	note.connect("hovered", changeLinkNextTarget)
 	note.connect("unhovered", untarget)
-	#newNote.connect("ColourRequested", changeColour)
+	#newNote.connect("ColorRequested", changeColor)
 
-func changeColour(note):
-	note.changeColour(get_parent().getLastColor())
+func changeColor(note):
+	note.changeColor(get_parent().getLastColor())
 
 
 func replaceTextInNotes(_what : String, _forWhat : String, _whole : bool, _ignoreCase : bool) -> int:
@@ -315,7 +315,7 @@ func get_notes_as_dict() -> Dictionary:
 		output.position.append(__note.position)
 		output.size.append(__note.size)
 		output.pinned.append(__note.pinned)
-		output.color.append(__note.colour)
+		output.color.append(__note.color)
 	
 	return output
 
@@ -387,7 +387,7 @@ func saveToFile(_additionalInfo : Dictionary = {}) -> void:
 		## Pinned (bool)
 		file.store_8(note.pinned)
 		## Color
-		file.store_var(note.colour)
+		file.store_var(note.color)
 	# Connection Size (int)
 	file.store_64(connections.size())
 	# Foreach Connection:
@@ -398,7 +398,7 @@ func saveToFile(_additionalInfo : Dictionary = {}) -> void:
 		file.store_64(connection[0].UID)
 		file.store_64(connection[1].UID)
 	
-	# Store colour picker presets per save file
+	# Store color picker presets per save file
 	var _colorPickerPresets : PackedColorArray = \
 		get_parent().getColorPickerPresets()
 	file.store_64(_colorPickerPresets.size())
@@ -464,7 +464,7 @@ func loadFromFile(projectName) -> Dictionary:
 		addConnection(getNoteByUID(_UID1), getNoteByUID(_UID2))
 		#print(connections[connectionHalf])
 	
-	# Read colour presets per save file
+	# Read color presets per save file
 	var _colorPresetsArraySize = file.get_64()
 	var _colorPresets : Array[Color] = []
 	if _colorPresetsArraySize > 0:

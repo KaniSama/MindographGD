@@ -67,12 +67,12 @@ layout_mode = 2
 [node name="HSeparator10" type="HSeparator" parent="BG/GridContainer"]
 layout_mode = 2
 
-[node name="DefaultNoteColourLabel" type="Label" parent="BG/GridContainer"]
+[node name="DefaultNoteColorLabel" type="Label" parent="BG/GridContainer"]
 layout_mode = 2
-text = "Default note colour"
+text = "Default note color"
 horizontal_alignment = 2
 
-[node name="DefaultNoteColour" type="ColorPickerButton" parent="BG/GridContainer"]
+[node name="DefaultNoteColor" type="ColorPickerButton" parent="BG/GridContainer"]
 layout_mode = 2
 text = "DefColor"
 
@@ -149,7 +149,7 @@ text = "Check for updates"
 [connection signal="toggled" from="BG/GridContainer/Autosave" to="." method="_on_autosave_toggled"]
 [connection signal="value_changed" from="BG/GridContainer/AutosaveFreq" to="." method="_on_autosave_freq_value_changed"]
 [connection signal="toggled" from="BG/GridContainer/DarkMode" to="." method="_on_dark_mode_toggled"]
-[connection signal="color_changed" from="BG/GridContainer/DefaultNoteColour" to="." method="_on_default_note_colour_color_changed"]
+[connection signal="color_changed" from="BG/GridContainer/DefaultNoteColor" to="." method="_on_default_note_colour_color_changed"]
 [connection signal="pressed" from="BG/GridContainer/OpenProjectsButton" to="." method="_on_open_projects_button_pressed"]
 [connection signal="pressed" from="BG/GridContainer/OpenConfigButton" to="." method="_on_open_config_button_pressed"]
 [connection signal="pressed" from="BG/GridContainer/LeaveFeedbackButton" to="." method="_on_leave_feedback_button_pressed"]

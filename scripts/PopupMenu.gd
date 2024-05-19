@@ -1,7 +1,7 @@
 extends PopupMenu
 
 func _ready():
-	add_submenu_item("Change colour", "PopupPanel")
+	add_submenu_item("Change color", "PopupPanel")
 	
 	set_item_disabled(0, true)
 	set_item_disabled(1, true)

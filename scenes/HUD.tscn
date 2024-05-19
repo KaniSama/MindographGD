@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://pi852642fy8e"]
+[gd_scene load_steps=27 format=3 uid="uid://pi852642fy8e"]
 
 [ext_resource type="Script" path="res://scripts/HUDElements/HUD.gd" id="1_jaeg1"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_iy3s7"]
@@ -14,6 +14,7 @@
 [ext_resource type="StyleBox" uid="uid://db8jnt64sdrm2" path="res://theme/OkButtonHoverStyle.tres" id="11_2tmou"]
 [ext_resource type="Shader" path="res://shaders/Bulge.gdshader" id="13_dsimq"]
 [ext_resource type="Script" path="res://scripts/HUDElements/BookmarkList.gd" id="14_itixv"]
+[ext_resource type="PackedScene" uid="uid://clkhcubcp6gf7" path="res://scenes/HUD_New/FileDialog.tscn" id="15_vq8ss"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1v5q"]
 bg_color = Color(0, 0, 0, 0.164706)
@@ -469,6 +470,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="FileDialog" parent="." instance=ExtResource("15_vq8ss")]
 
 [connection signal="visibility_changed" from="LinkDrawer" to="LinkDrawerStart" method="_on_link_drawer_visibility_changed"]
 [connection signal="pressed" from="CanvasLayer/ButtonContainer/ButtonAdd" to="." method="_on_button_pressed"]

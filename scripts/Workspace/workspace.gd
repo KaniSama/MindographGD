@@ -12,8 +12,8 @@ const CurrentVersion = [0, 0, 1, 4]
 	"autosave" : true,
 	"autosavefreqmins" : 5,
 	"darkmode" : false,
-	"defaultcolour" : getLastColour(),
-	"defaultlinkcolour": Color.RED,
+	"defaultcolor" : getLastColor(),
+	"defaultlinkcolor": Color.RED,
 	"defaultfont" : "default"
 }
 const ConfigFileLocation = "user://Config/config.json"
@@ -22,7 +22,7 @@ var ProjectName : String = "!!untitled!!"
 var ProjectList : Array = []
 var Modified : bool = false
 
-var lineEditWindowResource : PackedScene = preload("res://scenes/LineEditWindow.tscn")
+var lineEditWindowResource : PackedScene = preload("res://scenes/HUD_New/LineEditWindow.tscn")
 
 @onready var saveLoadSystem : SaveLoadSystem = $SaveLoadSystem
 
@@ -46,7 +46,7 @@ var lineEditWindowResource : PackedScene = preload("res://scenes/LineEditWindow.
 #@onready var BookmarkResource : PackedScene = preload("res://scenes/bookmark.tscn")
 #@onready var Bookmarks : Array [ Bookmark ]
 
-var lastColour: Color = Color.KHAKI
+var lastColor: Color = Color.KHAKI
 
 
 
@@ -187,12 +187,13 @@ func initProgram():
 	
 	
 	# convert a String gotten from the text file into Color
-	var _colourToArray = Config["defaultcolour"].replace("(","").replace(")","").split(",")
-	var _colourArray = []
-	for i in _colourToArray:
-		_colourArray.append(float(i))
-	var _newDefaultColour = Color(_colourArray[0], _colourArray[1], _colourArray[2], _colourArray[3])
-	Config["defaultcolour"] = _newDefaultColour
+	if Config["defaultcolor"] is String:
+		var _colorToArray = Config["defaultcolor"].replace("(","").replace(")","").split(",")
+		var _colorArray = []
+		for i in _colorToArray:
+			_colorArray.append(float(i))
+		var _newDefaultColor = Color(_colorArray[0], _colorArray[1], _colorArray[2], _colorArray[3])
+		Config["defaultcolor"] = _newDefaultColor
 	
 	# Read the config and set the variables
 	var _window = get_tree().root.get_window()
@@ -205,8 +206,8 @@ func initProgram():
 	appSettingsWindow.setAutosaveFrequency(Config["autosavefreqmins"], true)
 	appSettingsWindow.setDarkMode(Config["darkmode"], true)
 	backgroundTexture.visible = !Config["darkmode"]
-	appSettingsWindow.setDefaultColour(Config["defaultcolour"])
-	setLastColour(Config["defaultcolour"])
+	appSettingsWindow.setDefaultColor(Config["defaultcolor"])
+	setLastColor(Config["defaultcolor"])
 	
 	UpdateConfigFromSettings("autosave", Config["autosave"])
 
@@ -320,7 +321,7 @@ func ForceCreateLink(note1: Note, note2 : Note):
 
 func Duplicate(note : Note):
 	var _note = noteList.addNoteFromContext(
-		noteList.nextNoteUID, note.getText(), note.position, note.size, note.colour, false
+		noteList.nextNoteUID, note.getText(), note.position, note.size, note.color, false
 	)
 	
 	_note.dragging = true
@@ -399,9 +400,9 @@ func UpdateConfigFromSettings(_key : String, _value : Variant) -> void:
 	setConfigKey(_key, _value)
 	
 	match _key:
-		"defaultcolour":
+		"defaultcolor":
 			if _value is Color:
-				setLastColour(_value)
+				setLastColor(_value)
 		"autosave":
 			if _value:
 				startAutosaveTimer(Config["autosavefreqmins"] * 60)
@@ -416,8 +417,8 @@ func UpdateConfigFromSettings(_key : String, _value : Variant) -> void:
 			setDarkMode(_value)
 	
 	#MAYBE:
-	#if (_key == "defaultcolour" && _value is Color):
-		#setLastColour(_value)
+	#if (_key == "defaultcolor" && _value is Color):
+		#setLastColor(_value)
 	#
 	#if (_key == "autosave" && _value || _key == "autosavefreqmins" && _value != 0 && Config["autosave"]):
 		#startAutosaveTimer(Config["autosavefreqmins"] * 60)
@@ -430,17 +431,17 @@ func UpdateConfigFromSettings(_key : String, _value : Variant) -> void:
 func saveConfigToFile(config : Dictionary = Config):
 	var configFile = FileAccess.open(ConfigFileLocation, FileAccess.WRITE)
 	configFile.store_line(JSON.stringify(config,"\t",false,true))
-	#MAYBE: configFile.flush()
+	#DELETE: configFile.flush()
 	configFile.close()
 
 
+# DEPRECATED:
 func saveProject():
 	var _additionalData : Dictionary = {}
 	for __bm : Bookmark in bookmarks.get_children():
 		_additionalData[__bm.bm_name] = __bm.position
 	noteList.saveToFile(_additionalData)
 
-#TODO: SAVE / LOAD
 func save_project() -> void:
 	var _version : Array = CurrentVersion
 	var noteListSaveData : Dictionary = noteList.get_notes_as_dict()
@@ -462,6 +463,7 @@ func save_project() -> void:
 	
 	setModified(false)
 
+# DEPRECATED:
 func loadProject(_project_name : String):
 	clearWorkspace()
 	
@@ -551,11 +553,11 @@ func loadBookmarks(_bookmarks: Dictionary) -> void:
 ######################################################## GET / SETTERS
 func _____GET_SETTERS():pass
 
-func getLastColour() -> Color:
-	return lastColour
+func getLastColor() -> Color:
+	return lastColor
 
-func setLastColour(newColour : Color) -> void:
-	lastColour = newColour
+func setLastColor(newColor : Color) -> void:
+	lastColor = newColor
 
 
 func setDarkMode(_set) -> void:

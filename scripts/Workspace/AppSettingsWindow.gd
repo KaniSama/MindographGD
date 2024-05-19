@@ -7,7 +7,7 @@ signal UpdateConfig(key : String, value)
 @onready var versionLabel = $BG/GridContainer/CurrentVersion
 @onready var autosave = $BG/GridContainer/Autosave
 @onready var autosaveFrequency = $BG/GridContainer/AutosaveFreq
-@onready var defaultColour = $BG/GridContainer/DefaultNoteColour
+@onready var defaultColor = $BG/GridContainer/DefaultNoteColor
 @onready var darkMode = $BG/GridContainer/DarkMode
 
 ########################################### OVERRIDES
@@ -44,8 +44,8 @@ func setDarkMode(_value : bool = true, _emit_signal : bool = true) -> void:
 	else:
 		darkMode.set_pressed_no_signal(_value)
 
-func setDefaultColour(_value : Color) -> void:
-	defaultColour.color = _value
+func setDefaultColor(_value : Color) -> void:
+	defaultColor.color = _value
 
 
 
@@ -54,7 +54,7 @@ func _____SIGNALS():pass
 
 
 func _on_about_to_popup():
-	#find_child("DefaultNoteColour").color = get_parent().getLastColour()
+	#find_child("DefaultNoteColor").color = get_parent().getLastColor()
 	pass
 
 func _on_close_requested():
@@ -103,8 +103,8 @@ func _on_autosave_freq_value_changed(value):
 func _on_dark_mode_toggled(toggled_on):
 	emit_signal("UpdateConfig", "darkmode", toggled_on)
 
-func _on_default_note_colour_color_changed(color):
-	emit_signal("UpdateConfig", "defaultcolour", color)
+func _on_default_note_color_color_changed(color):
+	emit_signal("UpdateConfig", "defaultcolor", color)
 
 
 
