@@ -52,7 +52,7 @@ func _____NOTE_CONTROL():pass
 func clearNotesAndConnections():
 	nextNoteUID = 0
 	
-	connections = []
+	connections.clear()
 	
 	for note in get_children():
 		note.queue_free()
@@ -339,6 +339,9 @@ func get_connections_as_UIDs() -> Array:
 	return _output
 
 func set_connections_from_UIDs(_connections : Array) -> void:
+	await get_tree().process_frame
+	
+	connections.clear()
 	for __conn in _connections:
 		addConnection(getNoteByUID(__conn[0]), getNoteByUID(__conn[1]))
 

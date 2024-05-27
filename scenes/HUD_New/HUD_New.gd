@@ -24,7 +24,7 @@ signal BookmarkFocusRequested(bookmarkName : String)
 ## RMB Menus
 @onready var canvas = $CanvasLayer
 #@onready var rmbMenu = $CanvasLayer/MenuBackdrop/RMBMenu
-@onready var menuBackdrop = $CanvasLayer/MenuBackdrop
+#@onready var menuBackdrop = $CanvasLayer/MenuBackdrop
 @onready var linkDrawer = $LinkDrawer
 @onready var linkDrawerStart = $LinkDrawerStart
 @onready var colorPickerBackdrop = $CanvasLayer/MenuBackdrop/ColorPickerBackdrop
@@ -146,8 +146,8 @@ func _draw():
 func _____GET_SETTERS():pass
 
 
-func getPopupVisible() -> bool :
-	return dialogBackdrop.visible || menuBackdrop.visible
+#func getPopupVisible() -> bool :
+	#return dialogBackdrop.visible || menuBackdrop.visible
 
 
 func setSelectionMode(_set : selectionModes = selectionModes.SELECTIVE):
@@ -255,7 +255,7 @@ func openRmbMenu():
 	_menu.id_pressed.connect(process_rmb_menu)
 
 func process_rmb_menu(command_id : int):
-	var closeMenu : bool = true
+	#DELETE: var closeMenu : bool = true
 	
 	#DELETE: rmbMenu.deselect_all()
 	match (command_id):
@@ -277,7 +277,7 @@ func process_rmb_menu(command_id : int):
 			target.removeFromConnections()
 			
 		RmbIds.COLOR:
-			closeMenu = false
+			#DELETE: closeMenu = false
 			
 			var mouseP = get_viewport().get_mouse_position()
 			
@@ -295,8 +295,9 @@ func process_rmb_menu(command_id : int):
 			print("sibling")
 			emit_signal("NewSibling", target)
 	
-	if (closeMenu):
-		closeRmbMenu()
+	#DELETE:
+	#if (closeMenu):
+		#closeRmbMenu()
 
 func closeRmbMenu():
 	#DELETE: rmbMenu.visible = false

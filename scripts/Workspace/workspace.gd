@@ -24,7 +24,7 @@ var Modified : bool = false
 
 var lineEditWindowResource : PackedScene = preload("res://scenes/HUD_New/LineEditWindow.tscn")
 
-@onready var saveLoadSystem : SaveLoadSystem = $SaveLoadSystem
+#@onready var saveLoadSystem : SaveLoadSystem = $SaveLoadSystem
 
 @onready var hud : Node = $HUD
 @onready var noteList : Node = $NoteList
@@ -459,7 +459,7 @@ func save_project() -> void:
 	}
 	
 	noteList.reshuffleUIDs()
-	saveLoadSystem.save_project(project_data)
+	SaveLoadSystem.save_project(project_data)
 	
 	setModified(false)
 
@@ -475,7 +475,7 @@ func loadProject(_project_name : String):
 func load_project(_project_name : String) -> void:
 	clearWorkspace()
 	
-	var _project_data : Dictionary = saveLoadSystem.load_project(_project_name)
+	var _project_data : Dictionary = SaveLoadSystem.load_project(_project_name)
 	
 	for __key in _project_data:
 		match __key:

@@ -24,6 +24,10 @@ boot_splash/use_filter=false
 config/icon="res://sprites/sPin.png"
 config/windows_native_icon="res://sprites/sPin.ico"
 
+[autoload]
+
+SaveLoadSystem="*res://scripts/Workspace/Modules/SaveLoadSystem.gd"
+
 [display]
 
 window/size/viewport_width=1280

@@ -1,8 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://dacw13u4hrkyp"]
+[gd_scene load_steps=17 format=3 uid="uid://dacw13u4hrkyp"]
 
 [ext_resource type="Script" path="res://scenes/HUD_New/HUD_New.gd" id="1_jdci1"]
 [ext_resource type="Theme" uid="uid://jkuo5ldmlvtl" path="res://theme/godot_minimal_by_passivestar (for 4.2).tres" id="1_lmnnt"]
 [ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_dbprg"]
+[ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawer.gd" id="2_gqb3u"]
+[ext_resource type="Script" path="res://scripts/HUDElements/Selector.gd" id="3_mw182"]
 [ext_resource type="Texture2D" uid="uid://dgwxht26s1xxy" path="res://sprites/sBookmark.png" id="3_qmkkn"]
 [ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="4_8brjy"]
 [ext_resource type="Script" path="res://scripts/HUDElements/BookmarkList.gd" id="6_ll34h"]
@@ -48,6 +50,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jdci1")
+
+[node name="LinkDrawerStart" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_gqb3u")
+
+[node name="LinkDrawer" type="Control" parent="."]
+visible = false
+top_level = true
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Selector" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("3_mw182")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -234,4 +255,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[connection signal="visibility_changed" from="LinkDrawer" to="LinkDrawerStart" method="_on_link_drawer_visibility_changed"]
 [connection signal="pressed" from="CanvasLayer/HUDHolder/BookmarkList/BookmarkListButton" to="CanvasLayer/HUDHolder/BookmarkList" method="_on_bookmark_list_button_pressed"]
