@@ -1,3 +1,5 @@
+@icon("res://sprites/script_icons/note.svg")
+
 extends Panel
 class_name Note
 

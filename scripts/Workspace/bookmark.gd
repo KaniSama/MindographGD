@@ -1,3 +1,5 @@
+@icon("res://sprites/script_icons/bookmark.svg")
+
 class_name Bookmark
 extends TextureRect
 

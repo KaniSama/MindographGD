@@ -1,3 +1,5 @@
+@icon("res://sprites/script_icons/list.svg")
+
 extends Panel
 
 @onready var tp : Vector2

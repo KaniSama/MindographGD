@@ -1,13 +1,13 @@
 [gd_scene load_steps=17 format=3 uid="uid://dacw13u4hrkyp"]
 
-[ext_resource type="Script" path="res://scenes/HUD_New/HUD_New.gd" id="1_jdci1"]
-[ext_resource type="Theme" uid="uid://jkuo5ldmlvtl" path="res://theme/godot_minimal_by_passivestar (for 4.2).tres" id="1_lmnnt"]
-[ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="2_dbprg"]
-[ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawer.gd" id="2_gqb3u"]
-[ext_resource type="Script" path="res://scripts/HUDElements/Selector.gd" id="3_mw182"]
-[ext_resource type="Texture2D" uid="uid://dgwxht26s1xxy" path="res://sprites/sBookmark.png" id="3_qmkkn"]
-[ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="4_8brjy"]
-[ext_resource type="Script" path="res://scripts/HUDElements/BookmarkList.gd" id="6_ll34h"]
+[ext_resource type="Script" path="res://scenes/HUD_New/UI.gd" id="1_4t64b"]
+[ext_resource type="Script" path="res://scripts/HUDElements/LinkDrawer.gd" id="2_hpweq"]
+[ext_resource type="Script" path="res://scripts/HUDElements/Selector.gd" id="3_48u06"]
+[ext_resource type="Theme" uid="uid://jkuo5ldmlvtl" path="res://theme/godot_minimal_by_passivestar (for 4.2).tres" id="4_ytnai"]
+[ext_resource type="Theme" uid="uid://bia5m7q7lf4el" path="res://theme/NotePanels.tres" id="5_xerry"]
+[ext_resource type="Texture2D" uid="uid://dgwxht26s1xxy" path="res://sprites/sBookmark.png" id="6_yp5v5"]
+[ext_resource type="Script" path="res://scripts/HUDElements/FPSCounter.gd" id="7_bjkk0"]
+[ext_resource type="Script" path="res://scripts/HUDElements/BookmarkList.gd" id="8_efb63"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_pmifv"]
 command_or_control_autoremap = true
@@ -42,19 +42,19 @@ keycode = 66
 [sub_resource type="Shortcut" id="Shortcut_8t7ip"]
 events = [SubResource("InputEventKey_bjwxe")]
 
-[node name="HUD 2" type="Control"]
+[node name="UI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_jdci1")
+script = ExtResource("1_4t64b")
 
 [node name="LinkDrawerStart" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("2_gqb3u")
+script = ExtResource("2_hpweq")
 
 [node name="LinkDrawer" type="Control" parent="."]
 visible = false
@@ -68,7 +68,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
-script = ExtResource("3_mw182")
+script = ExtResource("3_48u06")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -79,7 +79,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_lmnnt")
+theme = ExtResource("4_ytnai")
 
 [node name="ButtonContainerBackdrop" type="PanelContainer" parent="CanvasLayer/HUDHolder"]
 layout_mode = 1
@@ -104,7 +104,7 @@ focus_neighbor_left = NodePath("../ButtonSettings")
 focus_neighbor_right = NodePath("../ButtonAddBookmark")
 focus_next = NodePath("../ButtonAddBookmark")
 focus_previous = NodePath("../ButtonSettings")
-theme = ExtResource("2_dbprg")
+theme = ExtResource("5_xerry")
 theme_override_font_sizes/font_size = 22
 shortcut = SubResource("Shortcut_saoxj")
 text = "➕"
@@ -116,10 +116,10 @@ focus_neighbor_left = NodePath("../ButtonAdd")
 focus_neighbor_right = NodePath("../ButtonSave")
 focus_next = NodePath("../ButtonSave")
 focus_previous = NodePath("../ButtonAdd")
-theme = ExtResource("2_dbprg")
+theme = ExtResource("5_xerry")
 theme_override_font_sizes/font_size = 22
 shortcut = SubResource("Shortcut_0134t")
-icon = ExtResource("3_qmkkn")
+icon = ExtResource("6_yp5v5")
 
 [node name="VSeparator" type="VSeparator" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
 layout_mode = 2
@@ -131,7 +131,7 @@ focus_neighbor_left = NodePath("../ButtonAddBookmark")
 focus_neighbor_right = NodePath("../ButtonSave")
 focus_next = NodePath("../ButtonSave")
 focus_previous = NodePath("../ButtonAddBookmark")
-theme = ExtResource("2_dbprg")
+theme = ExtResource("5_xerry")
 theme_override_font_sizes/font_size = 22
 shortcut = SubResource("Shortcut_0134t")
 text = "📄"
@@ -143,7 +143,7 @@ focus_neighbor_left = NodePath("../ButtonAddBookmark")
 focus_neighbor_right = NodePath("../ButtonLoad")
 focus_next = NodePath("../ButtonLoad")
 focus_previous = NodePath("../ButtonAddBookmark")
-theme = ExtResource("2_dbprg")
+theme = ExtResource("5_xerry")
 theme_override_font_sizes/font_size = 22
 shortcut = SubResource("Shortcut_eh4xw")
 text = "💾"
@@ -155,7 +155,7 @@ focus_neighbor_left = NodePath("../ButtonSave")
 focus_neighbor_right = NodePath("../ButtonReplace")
 focus_next = NodePath("../ButtonReplace")
 focus_previous = NodePath("../ButtonSave")
-theme = ExtResource("2_dbprg")
+theme = ExtResource("5_xerry")
 theme_override_font_sizes/font_size = 22
 shortcut = SubResource("Shortcut_0134t")
 text = "📁"
@@ -170,7 +170,7 @@ focus_neighbor_left = NodePath("../ButtonLoad")
 focus_neighbor_right = NodePath("../ButtonSettings")
 focus_next = NodePath("../ButtonSettings")
 focus_previous = NodePath("../ButtonLoad")
-theme = ExtResource("2_dbprg")
+theme = ExtResource("5_xerry")
 theme_override_font_sizes/font_size = 22
 text = "🔍"
 
@@ -183,7 +183,7 @@ layout_mode = 2
 size_flags_horizontal = 10
 text = "FPS: "
 horizontal_alignment = 2
-script = ExtResource("4_8brjy")
+script = ExtResource("7_bjkk0")
 
 [node name="TimerCounter" type="Label" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
 visible = false
@@ -204,13 +204,44 @@ focus_neighbor_left = NodePath("../ButtonReplace")
 focus_neighbor_right = NodePath("../ButtonAdd")
 focus_next = NodePath("../ButtonAdd")
 focus_previous = NodePath("../ButtonReplace")
-theme = ExtResource("2_dbprg")
+theme = ExtResource("5_xerry")
 theme_override_font_sizes/font_size = 22
 text = "⚙️"
 
 [node name="VSeparator6" type="VSeparator" parent="CanvasLayer/HUDHolder/ButtonContainerBackdrop/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
+
+[node name="ToolbarContainerBackdrop" type="PanelContainer" parent="CanvasLayer/HUDHolder"]
+visible = false
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 53.0
+offset_right = 48.0
+grow_vertical = 2
+
+[node name="ToolbarContainer" type="VBoxContainer" parent="CanvasLayer/HUDHolder/ToolbarContainerBackdrop"]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/HUDHolder/ToolbarContainerBackdrop/ToolbarContainer"]
+layout_mode = 2
+
+[node name="ButtonAdd" type="Button" parent="CanvasLayer/HUDHolder/ToolbarContainerBackdrop/ToolbarContainer"]
+layout_mode = 2
+tooltip_text = "Create an empty note"
+focus_neighbor_left = NodePath("../ButtonSettings")
+focus_neighbor_right = NodePath("../ButtonAddBookmark")
+focus_next = NodePath("../ButtonAddBookmark")
+focus_previous = NodePath("../ButtonSettings")
+theme = ExtResource("5_xerry")
+theme_override_font_sizes/font_size = 22
+shortcut = SubResource("Shortcut_saoxj")
+text = "➕"
+
+[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/HUDHolder/ToolbarContainerBackdrop/ToolbarContainer"]
+layout_mode = 2
 
 [node name="BookmarkList" type="Panel" parent="CanvasLayer/HUDHolder"]
 layout_mode = 1
@@ -223,7 +254,7 @@ offset_top = 84.0
 offset_bottom = -84.0
 grow_horizontal = 0
 grow_vertical = 2
-script = ExtResource("6_ll34h")
+script = ExtResource("8_efb63")
 
 [node name="BookmarkListButton" type="Button" parent="CanvasLayer/HUDHolder/BookmarkList"]
 layout_mode = 1
@@ -238,7 +269,7 @@ grow_vertical = 2
 tooltip_text = "Bookmarks"
 shortcut = SubResource("Shortcut_8t7ip")
 text = "<"
-icon = ExtResource("3_qmkkn")
+icon = ExtResource("6_yp5v5")
 icon_alignment = 2
 
 [node name="BookmarkScroll" type="ScrollContainer" parent="CanvasLayer/HUDHolder/BookmarkList"]

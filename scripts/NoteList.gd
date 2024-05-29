@@ -1,3 +1,5 @@
+@icon("res://sprites/script_icons/list.svg")
+
 extends Control
 
 signal rmbNote(note : Note)

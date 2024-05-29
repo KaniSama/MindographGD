@@ -1,3 +1,5 @@
+@icon("res://sprites/script_icons/ui.svg")
+
 extends Control
 
 signal HudButtonAddPressed
@@ -15,6 +17,32 @@ signal SelectionFinished(positionOffset : Vector2, selectionRect : Rect2)
 
 signal CreateBookmarkRequested
 signal BookmarkFocusRequested(bookmarkName : String)
+
+
+## Signal sent to the parent when UI requests something.[br]
+## [b]_request_type[/b] must be a key from request_types.[br]
+## [b]context[/b] must be the value from request_types corresponding to that key.[br]
+## [b]context[/b] is a Dictionary that should be .duplicate()d and filled before emitting the signal.
+signal ui_request(_request_type : String, context : Dictionary)
+## Types of requests for the ui_request signal.
+## Keys contain types of requests, values contain the required data templates that must be filled before emitting the signal.
+@onready var request_types : Dictionary = {
+	"create_note" = {},
+	"create_bookmark" = {"bookmark_name" = ""},
+	"focus_on_bookmark" = {"bookmark_name" = ""},
+	"new_project" = {"file_path" = ""},
+	"save_project" = {"file_path" = ""},
+	"load_project" = {"file_path" = ""},
+	"find_replace" = {},
+	"settings" = {},
+	
+	"rmb_duplicate" = {"note" = Note},
+	"rmb_create_link" = {"note" = Note},
+	"rmb_create_child" = {"note" = Note},
+	"rmb_create_sibling" = {"note" = Note},
+	
+	"selection_finished" = {"position_offset" = Vector2(), "selection_rect" = Rect2()},
+}
 
 ## Window Resources
 @onready var line_edit_window_resource : PackedScene = preload("res://scenes/HUD_New/LineEditWindow.tscn")
@@ -268,7 +296,12 @@ func process_rmb_menu(command_id : int):
 			startLink()
 			
 		RmbIds.NEW:
-			emit_signal("NewNote", target)
+			#emit_signal("NewNote", target)
+			
+			var _request_type = "rmb_duplicate"
+			var _context : Dictionary = request_types[_request_type].duplicate()
+			_context.note = target
+			emit_signal("ui_request", _request_type, _context)
 			
 		RmbIds.DELETE:
 			target.queue_free()
@@ -288,12 +321,22 @@ func process_rmb_menu(command_id : int):
 			coloring = true
 			
 		RmbIds.NEWCHILD:
-			print("child")
-			emit_signal("NewChild", target)
+			#DELETE print("child")
+			#emit_signal("NewChild", target)
+			
+			var _request_type = "rmb_create_child"
+			var _context : Dictionary = request_types[_request_type].duplicate()
+			_context.note = target
+			emit_signal("ui_request", _request_type, _context)
 			
 		RmbIds.NEWSIBLING:
-			print("sibling")
-			emit_signal("NewSibling", target)
+			#DELETE print("sibling")
+			#emit_signal("NewSibling", target)
+			
+			var _request_type = "rmb_create_sibling"
+			var _context : Dictionary = request_types[_request_type].duplicate()
+			_context.note = target
+			emit_signal("ui_request", _request_type, _context)
 	
 	#DELETE:
 	#if (closeMenu):

@@ -1,3 +1,5 @@
+@icon("res://sprites/script_icons/world.svg")
+
 extends Control
 class_name Workspace
 
@@ -464,13 +466,13 @@ func save_project() -> void:
 	setModified(false)
 
 # DEPRECATED:
-func loadProject(_project_name : String):
-	clearWorkspace()
-	
-	setProjectName(_project_name)
-	
-	noteList.readOnNextFrame = [true, _project_name]
-	#load_project(_project_name)
+#func loadProject(_project_name : String):
+	#clearWorkspace()
+	#
+	#setProjectName(_project_name)
+	#
+	#noteList.readOnNextFrame = [true, _project_name]
+	##load_project(_project_name)
 
 func load_project(_project_name : String) -> void:
 	clearWorkspace()
@@ -631,7 +633,8 @@ func _on_note_list_link_next_target_changed(note):
 
 func _on_autosave_timer_timeout():
 	if (getProjectName() != "!!untitled!!"):
-		saveProject()
+		#saveProject()
+		save_project()
 
 func _on_fps_reset_timer_timeout():
 	Engine.max_fps = 15

@@ -1,3 +1,5 @@
+@icon("res://sprites/script_icons/list.svg")
+
 extends Control
 
 @onready var BookmarkResource : PackedScene = preload("res://scenes/bookmark.tscn")
