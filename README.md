@@ -1,4 +1,6 @@
 # MindographGodot
+Download the latest release [here](https://github.com/KaniSama/MindographGD/releases/latest).
+
 ![Banner](/demo/mindograph_splash.png)
 
 Mindograph is a tool for visually organizing ideas.  
