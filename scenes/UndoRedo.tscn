@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw0lacd78cf3o"]
+
+[ext_resource type="Script" path="res://scripts/Workspace/Modules/UndoRedo.gd" id="1_o0aqo"]
+
+[node name="UndoRedo" type="Node"]
+script = ExtResource("1_o0aqo")

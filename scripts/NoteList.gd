@@ -61,22 +61,26 @@ func clearNotesAndConnections():
 	
 	queue_redraw()
 
-func addNote() -> Note:
-	var newNote : Node = noteResource.instantiate()
+func addNote(note : Note = null, register_undo : bool = true) -> Note:
+	var newNote : Note = note if note != null else noteResource.instantiate()
 	
-	add_child(newNote)
-	connectNoteSignals(newNote)
-	
-	newNote.setUID(getNextUID())
-	
-	newNote.changeColor(get_parent().getLastColor())
-	newNote.setDarkMode(get_parent().getDarkMode())
-	
-	newNote.position = get_global_mouse_position()
-	newNote.dragging = true
-	newNote.offset = - Vector2(newNote.size.x * .5, 16)
-	
-	newNote.show_behind_parent = true
+	if register_undo:
+		UndoStack.register_action([addNote.bind(newNote, false)], [], "AddNote")
+	else:
+		
+		add_child(newNote)
+		connectNoteSignals(newNote)
+		
+		newNote.setUID(getNextUID())
+		
+		newNote.changeColor(get_parent().getLastColor())
+		newNote.setDarkMode(get_parent().getDarkMode())
+		
+		newNote.position = get_global_mouse_position()
+		newNote.dragging = true
+		newNote.offset = - Vector2(newNote.size.x * .5, 16)
+		
+		newNote.show_behind_parent = true
 	
 	return newNote
 
@@ -124,6 +128,7 @@ func connectNoteSignals(note: Note):
 	note.connect("RemoveFromConnections", removeFromConnections)
 	note.connect("hovered", changeLinkNextTarget)
 	note.connect("unhovered", untarget)
+	note.connect("tree_exiting", removeFromConnections.bind(note))
 	#newNote.connect("ColorRequested", changeColor)
 
 func changeColor(note):
@@ -199,9 +204,12 @@ func getAllNoteConnections(note : Note) -> Array[ Note ]:
 		_output.append(__i[1] if __i[0]==note else __i[0])
 	return _output
 
-func addConnection(note1, note2):
-	if (note1 != note2 && !connections.has( [note1, note2] ) && !connections.has( [note2, note1] )):
-		connections.append( [note1, note2] )
+func addConnection(note1 : Note, note2 : Note, register_undo : bool = true):
+	if register_undo:
+		UndoStack.register_action([addConnection.bind(note1, note2, false)], [deleteConnection.bind(note1, note2, false)], "AddConnection")
+	else:
+		if (note1 != note2 && !connections.has( [note1, note2] ) && !connections.has( [note2, note1] )):
+			connections.append( [note1, note2] )
 
 func connectionRequest(note : Note):
 	# iterate across all child notes
@@ -212,6 +220,13 @@ func connectionRequest(note : Note):
 			# create connection with that note
 			addConnection(note, children[i])
 			break
+
+func deleteConnection(note1 : Note, note2 : Note, register_undo : bool = true):
+	if register_undo:
+		UndoStack.register_action([deleteConnection.bind(note1, note2, false)], [addConnection.bind(note1, note2, false)], "DeleteConnection")
+	else:
+		connections.erase([note1, note2])
+		connections.erase([note2, note1])
 
 func removeFromConnections(note):
 	for i in range(connections.size()-1, -1, -1):
@@ -345,7 +360,7 @@ func set_connections_from_UIDs(_connections : Array) -> void:
 	
 	connections.clear()
 	for __conn in _connections:
-		addConnection(getNoteByUID(__conn[0]), getNoteByUID(__conn[1]))
+		addConnection(getNoteByUID(__conn[0]), getNoteByUID(__conn[1]), false)
 
 
 

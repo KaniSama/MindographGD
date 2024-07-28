@@ -2,6 +2,8 @@
 
 extends Control
 
+signal CreateBookmarkRequested(bm_name : String, bm_pos : Vector2)
+
 @onready var BookmarkResource : PackedScene = preload("res://scenes/bookmark.tscn")
 
 
@@ -58,10 +60,13 @@ func get_bookmarks_as_dict() -> Dictionary:
 	return output
 
 func set_bookmarks_from_dict(_bms : Dictionary) -> void:
+	clearBookmarks()
+	
 	var _bm_name = _bms["name"]
 	var _bm_pos = _bms["position"]
 	
 	for __i in range(_bm_name.size()):
-		createBookmark(_bm_name[__i], _bm_pos[__i])
+		emit_signal("CreateBookmarkRequested", _bm_name[__i], _bm_pos[__i])
+		#createBookmark(_bm_name[__i], _bm_pos[__i])
 
 

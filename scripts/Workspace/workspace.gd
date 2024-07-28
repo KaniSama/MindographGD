@@ -41,9 +41,6 @@ var lineEditWindowResource : PackedScene = preload("res://scenes/HUD_New/LineEdi
 @onready var autosaveTimer = $AutosaveTimer
 @onready var fpsResetTimer = $FPSResetTimer
 
-@onready var UndoStack = UndoRedo.new()
-@onready var UndoStackVersion = UndoStack.get_version()
-
 @onready var bookmarks = $Bookmarks
 #@onready var BookmarkResource : PackedScene = preload("res://scenes/bookmark.tscn")
 #@onready var Bookmarks : Array [ Bookmark ]
@@ -77,6 +74,9 @@ func _ready():
 	hud.OpenReplaceRequested.connect(OpenReplace)
 	hud.CreateBookmarkRequested.connect(CreateBookmark)
 	hud.BookmarkFocusRequested.connect(BookmarkFocus)
+	
+	## Connect to the Bookmarks signals
+	bookmarks.CreateBookmarkRequested.connect(CreateBookmark)
 	
 	## Connect to the subwindow objects's signals
 	appSettingsWindow.UpdateConfig.connect(UpdateConfigFromSettings)
@@ -259,8 +259,6 @@ func setModified(_modified : bool = true):
 	var _modifiedString = ""
 	if (Modified):
 		_modifiedString = "* "
-	else:
-		UndoStackVersion = UndoStack.get_version()
 	
 	setWindowName(_modifiedString + getWindowName())
 
@@ -320,6 +318,9 @@ func CreateLink(note):
 
 func ForceCreateLink(note1: Note, note2 : Note):
 	noteList.addConnection(note1, note2)
+
+func DeleteLink(note1 : Note, note2 : Note):
+	noteList.deleteConnection(note1, note2)
 
 func Duplicate(note : Note):
 	var _note = noteList.addNoteFromContext(
@@ -500,8 +501,8 @@ func load_project(_project_name : String) -> void:
 ######################################################## BOOKMARKS
 func _____BOOKMARKS()->void:pass
 
-func CreateBookmark(_position : Vector2 = Vector2.ZERO) -> Bookmark:
-	var _bookmark = bookmarks.createBookmark("Bookmark", _position)
+func CreateBookmark(_name : String = "Bookmark", _position : Vector2 = Vector2.ZERO) -> Bookmark:
+	var _bookmark = bookmarks.createBookmark(_name, _position)
 	_bookmark.tree_exited.connect(DestroyBookmark)#MAYBE .bind(_bookmark))
 	_bookmark.NameChangeRequested.connect(RenameBookmark.bind(_bookmark))
 	_bookmark.NameChanged.connect(UpdateBookmarkList)
@@ -546,8 +547,8 @@ func BookmarkFocus(_bm_name : String) -> void:
 
 func loadBookmarks(_bookmarks: Dictionary) -> void:
 	for __key in _bookmarks.keys():
-		var __bm = CreateBookmark(_bookmarks[__key])
-		__bm.bm_name = __key
+		var __bm = CreateBookmark(__key, _bookmarks[__key])
+		#__bm.bm_name = __key
 		#__bm.position = _bookmarks[__key]
 
 

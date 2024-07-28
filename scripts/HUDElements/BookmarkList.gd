@@ -2,7 +2,7 @@
 
 extends Panel
 
-@onready var tp : Vector2
+@onready var tp : Vector2 # Target Position
 @onready var init_p : Vector2
 @onready var close_p : Vector2
 
